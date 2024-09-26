@@ -90,30 +90,30 @@ filter {}
 
 project "Motor"
 
-kind "StaticLib"
-targetdir "build/%{cfg.buildcfg}"
-includedirs "include"
-conan_config_lib()
-pchheader "stdafx.hpp"
-pchsource "src/stdafx.cpp"
-forceincludes { "stdafx.hpp" }
-files {
+    kind "StaticLib"
+    targetdir "build/%{cfg.buildcfg}"
+    includedirs "include"
+    conan_config_lib()
+    pchheader "stdafx.hpp"
+    pchsource "src/stdafx.cpp"
+    forceincludes { "stdafx.hpp" }
+    files {
+        "premake5.lua",
+        "src/build/conanfile.txt",
+        "src/build/conan.lua",
+        -- "src/stdafx.cpp", "src/stdafx.hpp",
+        "src/Window.cpp",
+    }
 
-"premake5.lua",
-"src/build/conanfile.txt",
-"src/build/conan.lua",
-"src/stdafx.cpp", "src/stdafx.hpp",
-"src/Window.cpp", "include/tija/Window.hpp",
-}
 project"Window"
 
-kind "WindowedApp"
-language "C++"
-targetdir "build/%{prj.name}/%{cfg.buildcfg}"
-includedirs "include"
-links "Tija"
-conan_config_exec("Debug")
-conan_config_exec("Release")
-conan_config_exec("RelWithDebInfo")
-debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
-files "examples/window.cpp"
+    kind "WindowedApp"
+    language "C++"
+    targetdir "build/%{prj.name}/%{cfg.buildcfg}"
+    includedirs "include"
+    links "Motor"
+    conan_config_exec("Debug")
+    conan_config_exec("Release")
+    conan_config_exec("RelWithDebInfo")
+    debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
+    files "examples/window.cpp"
