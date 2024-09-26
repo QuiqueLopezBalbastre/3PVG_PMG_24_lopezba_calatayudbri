@@ -33,3 +33,6 @@
 
 #folders
 /build/*
+
+#exceptions
+!/tools/premake
