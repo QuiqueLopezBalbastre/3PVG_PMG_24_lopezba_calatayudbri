@@ -35,4 +35,4 @@
 /build/*
 
 #exceptions
-!/tools/premake
+!/tools/premake/*
