@@ -5,7 +5,7 @@ Window::Window() {}
 Window::~Window() {}
 
 int Window::initWindow() {
-  GLFWwindow* window;
+  
   /* Initialize the library */
   if (!glfwInit())
     return -1;

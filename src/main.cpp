@@ -4,7 +4,9 @@
 int WinMain(int argc, char** argv) {
   
   Window window;
-  window.initWindow();
+  if (-1 == window.initWindow()) {
+    return -1;
+  }
 
   window.setCurrentWindowActive();
 
@@ -14,7 +16,9 @@ int WinMain(int argc, char** argv) {
     window.render();
   }
 
-  window.destroyWindow();
+  if (-1 == window.destroyWindow()) {
+    return -1;
+  }
   return 0;
 }
 
