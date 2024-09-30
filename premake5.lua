@@ -94,15 +94,15 @@ project "Motor"
     targetdir "build/%{cfg.buildcfg}"
     includedirs "include"
     conan_config_lib()
-    pchheader "stdafx.hpp"
-    pchsource "src/stdafx.cpp"
-    forceincludes { "stdafx.hpp" }
+    -- pchheader "stdafx.hpp"
+    -- pchsource "src/stdafx.cpp"
+    -- forceincludes { "stdafx.hpp" }
     files {
         "premake5.lua",
         "src/build/conanfile.txt",
         "src/build/conan.lua",
         -- "src/stdafx.cpp", "src/stdafx.hpp",
-        "src/Window.cpp",
+        "src/window.cpp", "include/window.hpp"
     }
 
 project"Window"
@@ -115,5 +115,5 @@ project"Window"
     conan_config_exec("Debug")
     conan_config_exec("Release")
     conan_config_exec("RelWithDebInfo")
-    debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
-    files "examples/window.cpp"
+    debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
+    files "src/main.cpp"
