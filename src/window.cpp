@@ -1,39 +1,19 @@
-#include <stdio.h>
 #include "Window.hpp"
+#include <stdio.h>
 
-Window::Window() {}
-Window::~Window() {}
 
-int Window::initWindow() {
-  
-  /* Initialize the library */
-  if (!glfwInit())
-    return -1;
 
-  /* Create a windowed mode window and its OpenGL context */
-  window = glfwCreateWindow(640, 480, "LUQUI Engine", NULL, NULL);
-  if (!window)
-  {
-    glfwTerminate();
-    return -1;
-  }
-  return 0;
+std::optional<Window> Window::make(int window_width, int window_height, const char* window_name)
+{
+  Window win;
+  win.window = glfwCreateWindow(window_width, window_height, window_name, NULL, NULL);
+  return std::optional<Window>{win};
 }
 
-int Window::initWindow(unsigned int window_width, unsigned int window_height) {
-  GLFWwindow* window;
-  /* Initialize the library */
-  if (!glfwInit())
-    return -1;
 
-  /* Create a windowed mode window and its OpenGL context */
-  window = glfwCreateWindow(window_width, window_height, "LUQUI Engine", NULL, NULL);
-  if (!window)
-  {
-    glfwTerminate();
-    return -1;
-  }
-  return 0;
+
+Window::~Window() {
+  glfwDestroyWindow(window);
 }
 
 void Window::setCurrentWindowActive() {
@@ -51,15 +31,14 @@ void Window::render() {
   glfwPollEvents();
 }
 
-bool Window::closeWindow() {
+bool Window::isOpen() {
   return glfwWindowShouldClose(window);
 }
 
-int Window::destroyWindow() {
-  if (this == nullptr) {
-    printf("Window already closed\n");
-    return -1;
-  }
-  glfwTerminate();
-  return 0;
-}
+//int Window::destroyWindow() {
+//  if (this == nullptr) {
+//    printf("Window already closed\n");
+//    return -1;
+//  }
+//  return 0;
+//}
