@@ -1,15 +1,16 @@
 #include <GLFW/glfw3.h>
+#include <optional>
 
 class Window {
 public:
-  Window();
+   Window(GLFWwindow* glfwWindow);
   ~Window();
-  int initWindow();
-  int initWindow(unsigned int window_width, unsigned int window_height);
+  static std::optional<Window> make(int window_width, int window_height, const char* window_name);
   void setCurrentWindowActive();
   void render();
-  bool closeWindow();
   int destroyWindow();
+  bool isOpen();
+
   GLFWwindow* window;
 private:
 };

@@ -3,9 +3,10 @@
 
 
 int WinMain(int argc, char** argv) {
-  auto ws = WindowSystem::make();
+  //auto ws = WindowSystem::make();
 
-  auto window = Window::make(640, 480);
+    glfwInit();
+  auto window = Window::make(640, 480,"LUQUI black window");
   if (nullptr == window->window) {
     return -1;
   }
@@ -21,8 +22,10 @@ int WinMain(int argc, char** argv) {
   //if (-1 == window.destroyWindow()) {
   //  return -1;
   //}
+
   window->~Window();
-  ws->~WindowSystem();
+  glfwTerminate();
+  //ws->~WindowSystem();
   return 0;
 }
 

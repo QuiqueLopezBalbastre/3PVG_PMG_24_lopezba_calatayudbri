@@ -102,7 +102,9 @@ project "Motor"
         "src/build/conanfile.txt",
         "src/build/conan.lua",
         -- "src/stdafx.cpp", "src/stdafx.hpp",
-        "src/window.cpp", "include/window.hpp"
+        "src/window.cpp", "include/window.hpp",
+        "src/window_system.cpp", "include/window_system.hpp",
+        "src/figure.cpp", "include/figure.hpp"
     }
 
 project"Window"
@@ -116,4 +118,17 @@ project"Window"
     conan_config_exec("Release")
     conan_config_exec("RelWithDebInfo")
     debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
-    files "src/main.cpp"
+    files "src/window_main.cpp"
+
+project"Triangle"
+
+    kind "WindowedApp"
+    language "C++"
+    targetdir "build/%{prj.name}/%{cfg.buildcfg}"
+    includedirs "include"
+    links "Motor"
+    conan_config_exec("Debug")
+    conan_config_exec("Release")
+    conan_config_exec("RelWithDebInfo")
+    debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
+    files "src/triangle_main.cpp"

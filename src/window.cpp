@@ -5,12 +5,20 @@
 
 std::optional<Window> Window::make(int window_width, int window_height, const char* window_name)
 {
-  Window win;
-  win.window = glfwCreateWindow(window_width, window_height, window_name, NULL, NULL);
-  return std::optional<Window>{win};
+  GLFWwindow* w = glfwCreateWindow(window_width, window_height, window_name, NULL, NULL);
+
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+  return std::optional<Window>{w};
 }
 
-
+Window::Window(GLFWwindow* w) {
+    window = w;
+    
+}
 
 Window::~Window() {
   glfwDestroyWindow(window);
@@ -29,6 +37,11 @@ void Window::render() {
 
   /* Poll for and process events */
   glfwPollEvents();
+}
+
+int Window::destroyWindow()
+{
+	return 0;
 }
 
 bool Window::isOpen() {
