@@ -1,6 +1,6 @@
 #include "window_system.hpp"
-#include "Window.hpp"
 #include "figure.hpp"
+#include "Window.hpp"
 
 
 int WinMain(int argc, char** argv) {
@@ -17,7 +17,9 @@ int WinMain(int argc, char** argv) {
   /* Loop until the user closes the window */
   while (!window->isOpen())
   {
-    window->render();
+     Figure triangle;
+    window->renderFigure(triangle);
+
   }
 
   //if (-1 == window.destroyWindow()) {

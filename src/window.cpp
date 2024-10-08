@@ -1,6 +1,5 @@
 #include "Window.hpp"
 #include <stdio.h>
-#include <figure.hpp>
 
 
 std::optional<Window> Window::make(int window_width, int window_height, const char* window_name)
@@ -27,15 +26,27 @@ void Window::render() {
   /* Render here */
   glClear(GL_COLOR_BUFFER_BIT);
 
-  // Create a Figure object and draw the triangle
-  Figure triangle;
-  triangle.drawTriangle();
-
   /* Swap front and back buffers */
   glfwSwapBuffers(window);
 
   /* Poll for and process events */
   glfwPollEvents();
+}
+
+void Window::renderFigure(Figure& figure)
+{
+    /* Render here */
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // Create a Figure object and draw the triangle
+    
+    figure.drawFigure();
+
+    /* Swap front and back buffers */
+    glfwSwapBuffers(window);
+
+    /* Poll for and process events */
+    glfwPollEvents();
 }
 
 int Window::destroyWindow()

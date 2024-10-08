@@ -1,3 +1,6 @@
+#ifndef DRAW_FIGURE_HPP
+#define DRAW_FIGURE_HPP 1
+
 #include <GLFW/glfw3.h>
 #include <vector>
 
@@ -15,3 +18,5 @@ private:
   std::vector<Vec2> vertices;
   int num_vertex;
 };
+
+#endif
