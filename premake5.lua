@@ -102,8 +102,8 @@ project "Motor"
         "src/build/conanfile.txt",
         "src/build/conan.lua",
         -- "src/stdafx.cpp", "src/stdafx.hpp",
-        "src/window.cpp", "include/window.hpp",
         "src/window_system.cpp", "include/window_system.hpp",
+        "src/window.cpp", "include/window.hpp",
         "src/figure.cpp", "include/figure.hpp"
     }
 
