@@ -13,7 +13,7 @@ Figure::~Figure()
   vertices.clear();
 }
 
-void Figure::drawTriangle()
+void Figure::drawFigure()
 {
   // Define the vertices for the triangle
   glBegin(GL_TRIANGLES);
