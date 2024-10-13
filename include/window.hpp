@@ -10,6 +10,8 @@ public:
   void setCurrentWindowActive();
   void render();
   void renderFigure(Figure& figure);
+  void handleInput(Figure& figure);
+
   int destroyWindow();
   bool isOpen();
 

@@ -49,6 +49,27 @@ void Window::renderFigure(Figure& figure)
     glfwPollEvents();
 }
 
+void Window::handleInput(Figure& figure)
+{
+    Figure::Vec2 offset = figure.getOffset();  // Obtener el offset actual de la figura
+
+    // Detectar teclas de flecha y ajustar el offset
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+        offset.x += 0.01f;
+    }
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+        offset.x -= 0.01f;
+    }
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+        offset.y += 0.01f;
+    }
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+        offset.y -= 0.01f;
+    }
+
+    figure.setOffset(offset);  // Actualizar el offset de la figura
+}
+
 int Window::destroyWindow()
 {
 	return 0;
@@ -57,6 +78,8 @@ int Window::destroyWindow()
 bool Window::isOpen() {
   return glfwWindowShouldClose(window);
 }
+
+
 
 //int Window::destroyWindow() {
 //  if (this == nullptr) {
