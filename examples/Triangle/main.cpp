@@ -1,7 +1,7 @@
-#include "window_system.hpp"
-#include "figure.hpp"
+#include "Window_System.hpp"
 #include "Window.hpp"
-
+#include "Input.hpp"
+#include "Figure.hpp"
 
 int WinMain(int argc, char** argv) {
   //auto ws = WindowSystem::make();
@@ -21,17 +21,16 @@ int WinMain(int argc, char** argv) {
   };
 
   Figure triangle(customVertices);
-
-  Figure::Vec2 offset = { 0.0f, 0.0f };
-
+  
+  static Input input(window->window);
   /* Loop until the user closes the window */
   while (!window->isOpen())
   {
       /*offset.x += 0.001f;
       offset.y -= 0.001f;
       triangle.setOffset(offset);*/
-
-    window->handleInput(triangle);
+    triangle.moveFigure(input);
+    //window->handleInput(triangle);
     window->renderFigure(triangle);
 
   }
