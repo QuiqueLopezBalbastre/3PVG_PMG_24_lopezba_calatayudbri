@@ -1,42 +1,41 @@
-#ifndef INPUT_H
-#define INPUT_H
+#ifndef __INPUT__
+#define __INPUT__ 1
 
 #include <GLFW/glfw3.h>
 #include <unordered_map>
 #include <functional>
 #include <vector>
-#include "KeyCodes.h"  // Incluimos nuestro enum
-#include "window.hpp"    // Incluimos la clase Window
+//#include "Window.hpp"    // Incluimos la clase Window
 
-// Definimos una enumeración para las acciones del motor
-enum class KEY {
-  KEY_UNKNOWN = -1,
-  KEY_A = 0,
-  KEY_W,
-  KEY_S,
-  KEY_D,
-  KEY_SPACE,
-  KEY_LEFT,
-  KEY_RIGHT,
-  KEY_UP,
-  KEY_DOWN,
-  KEY_ESCAPE,
-  KEY_TAB,
-};
-enum class Modifier_Key {
-  MOD_KEY_SHIFT,
-  MOD_KEY_CONTROL,
-  MOD_KEY_ALT,
-};
-enum class Action {
-  MOVE_FORWARD,
-  JUMP,
-  SHOOT,
-};
 class Input {
 public:
+  // Definimos una enumeración para las acciones del motor
+  enum Key {
+    KEY_UNKNOWN = -1,
+    KEY_A = 0,
+    KEY_W,
+    KEY_S,
+    KEY_D,
+    KEY_SPACE,
+    KEY_LEFT,
+    KEY_RIGHT,
+    KEY_UP,
+    KEY_DOWN,
+    KEY_ESCAPE,
+    KEY_TAB,
+  };
+  enum Modifier_Key {
+    MOD_KEY_SHIFT,
+    MOD_KEY_CONTROL,
+    MOD_KEY_ALT,
+  };
+  enum Action {
+    MOVE_FORWARD,
+    JUMP,
+    SHOOT,
+  };
   // Constructor que recibe una ventana personalizada (Window*)
-  Input(Window* window);
+  Input(GLFWwindow* window);
 
   // Métodos públicos para el usuario
   bool isKeyPressed(int key);
@@ -62,7 +61,7 @@ public:
 
 private:
   // Ventana GLFW (obtenida desde la clase Window*)
-  Window* m_window;
+  GLFWwindow* m_window;
 
   // Mapeo de teclas abstracto (Motor -> GLFW)
   std::unordered_map<int, int> keyMapping;

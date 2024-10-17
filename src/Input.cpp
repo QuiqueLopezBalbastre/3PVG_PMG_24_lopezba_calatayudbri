@@ -1,24 +1,24 @@
-#include "Input.h"
+#include "Input.hpp"
 #include <iostream>
 
-Input::Input(Window* window) : m_window(window), m_scrollOffset(0.0) {
+Input::Input(GLFWwindow* window) : m_window(window), m_scrollOffset(0.0) {
   setupKeyMapping();
   setupActionMapping();
 }
 
 void Input::setupKeyMapping() {
   // Asignamos cada tecla del motor a su correspondiente tecla en GLFW
-  keyMapping[KEY::KEY_W] = GLFW_KEY_W;
-  keyMapping[KEY::KEY_A] = GLFW_KEY_A;
-  keyMapping[KEY::KEY_S] = GLFW_KEY_S;
-  keyMapping[KEY::KEY_D] = GLFW_KEY_D;
-  keyMapping[KEY::KEY_SPACE] = GLFW_KEY_SPACE;
-  keyMapping[KEY::KEY_LEFT] = GLFW_KEY_LEFT;
-  keyMapping[KEY::KEY_RIGHT] = GLFW_KEY_RIGHT;
-  keyMapping[KEY::KEY_UP] = GLFW_KEY_UP;
-  keyMapping[KEY::KEY_DOWN] = GLFW_KEY_DOWN;
-  keyMapping[KEY::KEY_ESCAPE] = GLFW_KEY_ESCAPE;
-  keyMapping[KEY::KEY_TAB] = GLFW_KEY_ESCAPE;
+  keyMapping[KEY_W] = GLFW_KEY_W;
+  keyMapping[KEY_A] = GLFW_KEY_A;
+  keyMapping[KEY_S] = GLFW_KEY_S;
+  keyMapping[KEY_D] = GLFW_KEY_D;
+  keyMapping[KEY_SPACE] = GLFW_KEY_SPACE;
+  keyMapping[KEY_LEFT] = GLFW_KEY_LEFT;
+  keyMapping[KEY_RIGHT] = GLFW_KEY_RIGHT;
+  keyMapping[KEY_UP] = GLFW_KEY_UP;
+  keyMapping[KEY_DOWN] = GLFW_KEY_DOWN;
+  keyMapping[KEY_ESCAPE] = GLFW_KEY_ESCAPE;
+  keyMapping[KEY_TAB] = GLFW_KEY_ESCAPE;
 
   // Mapeo de teclas modificadoras
   modifierMapping[GLFW_MOD_SHIFT] = GLFW_KEY_LEFT_SHIFT;
@@ -34,24 +34,24 @@ void Input::setupActionMapping() {
 
 bool Input::isKeyPressed(int key) {
   int glfwKey = keyMapping[key];
-  int state = glfwGetKey(m_window->getGLFWwindow(), glfwKey);
+  int state = glfwGetKey(m_window, glfwKey);
   return state == GLFW_PRESS || state == GLFW_REPEAT;
 }
 
 bool Input::isKeyReleased(int key) {
   int glfwKey = keyMapping[key];
-  int state = glfwGetKey(m_window->window, glfwKey);
+  int state = glfwGetKey(m_window, glfwKey);
   return state == GLFW_RELEASE;
 }
 
 bool Input::isMouseButtonPressed(int button) {
   int glfwButton = mouseButtonMapping[button];
-  int state = glfwGetMouseButton(m_window->window, glfwButton);
+  int state = glfwGetMouseButton(m_window, glfwButton);
   return state == GLFW_PRESS;
 }
 
 void Input::getMousePosition(double& xPos, double& yPos) {
-  glfwGetCursorPos(m_window->window, &xPos, &yPos);
+  glfwGetCursorPos(m_window, &xPos, &yPos);
 }
 
 double Input::getMouseScroll() {
@@ -60,7 +60,7 @@ double Input::getMouseScroll() {
 
 bool Input::isModifierPressed(int modifier) {
   int glfwModifier = modifierMapping[modifier];
-  int state = glfwGetKey(m_window->window, glfwModifier);
+  int state = glfwGetKey(m_window, glfwModifier);
   return state == GLFW_PRESS || state == GLFW_REPEAT;
 }
 
@@ -115,7 +115,7 @@ void Input::mouseScrollCallback(GLFWwindow* window, double xoffset, double yoffs
 
 // Inicialización de eventos de teclado y ratón
 void Input::initializeCallbacks() {
-  glfwSetKeyCallback(m_window->window, keyCallback);
-  glfwSetScrollCallback(m_window->window, mouseScrollCallback);
+  glfwSetKeyCallback(m_window, keyCallback);
+  glfwSetScrollCallback(m_window, mouseScrollCallback);
 }
 
