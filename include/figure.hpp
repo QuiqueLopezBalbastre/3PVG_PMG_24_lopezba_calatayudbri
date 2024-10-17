@@ -1,16 +1,18 @@
-#ifndef DRAW_FIGURE_HPP
-#define DRAW_FIGURE_HPP 1
+#ifndef __FIGURE__
+#define __FIGURE__ 1
 
 #include <GLFW/glfw3.h>
 #include <vector>
+#include "Input.hpp"
+#include "Color.hpp"
 
-class Figure
-{
+
+class Figure {
 public:
   struct Vec2 {
     float x, y;
-  }pos,offset;
-  
+  }position, offset;
+
   Figure();
   Figure(std::vector<Vec2>& customVertices);
   ~Figure();
@@ -21,10 +23,11 @@ public:
   Vec2 getOffset();
   void drawFigure();                //Draw triangle
   void setVertices(std::vector<Vec2>& customVertices);
- 
+  void moveFigure(Input& input);
 
 private:
   std::vector<Vec2> vertices;
+  Color color;
   int num_vertex;
 };
 
