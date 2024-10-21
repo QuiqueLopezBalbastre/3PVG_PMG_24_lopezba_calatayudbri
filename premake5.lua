@@ -102,9 +102,11 @@ project "Motor"
         "src/build/conanfile.txt",
         "src/build/conan.lua",
         -- "src/stdafx.cpp", "src/stdafx.hpp",
-        "src/window_system.cpp", "include/window_system.hpp",
-        "src/window.cpp", "include/window.hpp",
-        "src/figure.cpp", "include/figure.hpp"
+        "src/Window_System.cpp", "include/Window_System.hpp",
+        "src/Window.cpp", "include/Window.hpp",
+        "src/Figure.cpp", "include/Figure.hpp",
+        "src/Input.cpp", "include/Input.hpp",
+        "src/Color.cpp", "include/Color.hpp",
     }
 
 project"Window"
@@ -118,7 +120,7 @@ project"Window"
     conan_config_exec("Release")
     conan_config_exec("RelWithDebInfo")
     debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
-    files "src/window_main.cpp"
+    files "examples/Window/main.cpp"
 
 project"Triangle"
 
@@ -131,4 +133,4 @@ project"Triangle"
     conan_config_exec("Release")
     conan_config_exec("RelWithDebInfo")
     debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
-    files "src/triangle_main.cpp"
+    files "examples/Triangle/main.cpp"

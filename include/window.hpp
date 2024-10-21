@@ -1,10 +1,14 @@
+#ifndef __WINDOW__
+#define __WINDOW__ 1
+
+
 #include <GLFW/glfw3.h>
 #include <optional>
-#include "figure.hpp"
+#include "Figure.hpp"
 
 class Window {
 public:
-   Window(GLFWwindow* glfwWindow);
+  Window(GLFWwindow* glfwWindow);
   ~Window();
   static std::optional<Window> make(int window_width, int window_height, const char* window_name);
   void setCurrentWindowActive();
@@ -18,3 +22,4 @@ public:
   GLFWwindow* window;
 private:
 };
+#endif // !__WINDOW__
