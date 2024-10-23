@@ -1,6 +1,7 @@
 [requires]
 glfw/3.3.8
 glew/2.2.0
+assimp/5.4.3
 [generators]
 premake
 [options]

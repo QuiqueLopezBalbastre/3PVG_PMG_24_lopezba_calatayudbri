@@ -35,6 +35,7 @@ configs = {'Debug','Release','RelWithDebInfo'}
     links{ cfg["libs"] }
     links{ cfg["system_libs"] }
     links{ cfg["frameworks"] }
+    links{ cfg["assimp"] }
     defines{ cfg["defines"] }
 
     filter{}
