@@ -107,7 +107,8 @@ project "Motor"
         "src/Window.cpp", "include/Window.hpp",
         "src/Figure.cpp", "include/Figure.hpp",
         "src/Input.cpp", "include/Input.hpp",
-        "src/Color.cpp", "include/Color.hpp",
+        "src/Mesh.cpp", "include/Mesh.hpp",
+        -- "src/Color.cpp", "include/Color.hpp",
     }
 
 project"Window"
@@ -135,3 +136,16 @@ project"Triangle"
     conan_config_exec("RelWithDebInfo")
     debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
     files "examples/Triangle/main.cpp"
+
+project "OBJLoader"
+
+    kind "ConsoleApp"
+    language "C++"
+    targetdir "build/%{prj.name}/%{cfg.buildcfg}"
+    includedirs "include"
+    links "Motor"
+    conan_config_exec("Debug")
+    conan_config_exec("Release")
+    conan_config_exec("RelWithDebInfo")
+    debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
+    files "examples/OBJLoader/main.cpp"
