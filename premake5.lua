@@ -93,7 +93,8 @@ project "Motor"
 
     kind "StaticLib"
     targetdir "build/%{cfg.buildcfg}"
-    includedirs "include"
+    includedirs "include" 
+    includedirs "data"
     conan_config_lib()
     -- pchheader "stdafx.hpp"
     -- pchsource "src/stdafx.cpp"

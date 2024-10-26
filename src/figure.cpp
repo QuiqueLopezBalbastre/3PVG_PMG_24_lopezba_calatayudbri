@@ -11,7 +11,7 @@ Figure::Figure() : offset({ 0.0f, 0.0f })  // Initialize the offset
 Figure::Figure(std::vector<Vec2>& customVertices) : offset({ 0.0f, 0.0f })
 {
   setVertices(customVertices);
-  color = Color(255, 255, 255);
+  //color = Color(255, 255, 255);
 }
 
 Figure::~Figure()

@@ -1,9 +1,9 @@
 #ifndef __MESH__ 
 #define __MESH__ 1
 
+#include <GL/glew.h>
 #include <vector>
 #include <string>
-#include <GL/glew.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -17,8 +17,8 @@ class Mesh {
 
 public:
   /** Methods */
-  Mesh();
-  ~Mesh();
+  Mesh() = default;
+  ~Mesh() = default;
   std::vector<Mesh> loadModel(const std::string& path);
   void processNode(aiNode* node, const aiScene* scene, std::vector<Mesh>& meshes);
   Mesh processMesh(aiMesh* mesh, const aiScene* scene);
@@ -31,7 +31,7 @@ public:
 
 
 private:
-  Mesh(Mesh&);
+  Mesh(Mesh&) = default;
   GLuint VAO, VBO, EBO;
 };
 

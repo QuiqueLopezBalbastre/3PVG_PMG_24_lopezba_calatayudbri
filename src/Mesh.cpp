@@ -1,12 +1,12 @@
 #include "Mesh.hpp"
 
-Mesh::Mesh()
-{
-}
-
-Mesh::~Mesh()
-{
-}
+//Mesh::Mesh()
+//{
+//}
+//
+//Mesh::~Mesh()
+//{
+//}
 
 std::vector<Mesh> Mesh::loadModel(const std::string& path) {
   Assimp::Importer importer;
@@ -24,6 +24,10 @@ std::vector<Mesh> Mesh::loadModel(const std::string& path) {
 
   std::vector<Mesh> meshes;
   processNode(scene->mRootNode, scene, meshes);
+  // Llama a setupMesh() para cada malla procesada
+  for (auto& mesh : meshes) {
+    mesh.setupMesh();
+  }
   return meshes;
 }
 Mesh Mesh::processMesh(aiMesh* mesh, const aiScene* scene) {
@@ -95,23 +99,30 @@ void Mesh::setupMesh() {
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
-
-  // Posición
+  /**
+   * RECORDAR.
+   * Es posible que haya que cambiar el orden de las llamadas a función
+   * glEnableVertexAttribArray y glVertexAttribPointer
+   */
+   /** Position */
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 
-  // Normales
+  /** Normals */
   glEnableVertexAttribArray(1);
   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 
-  // Coordenadas de textura
+  // UVs
   glEnableVertexAttribArray(2);
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 }
 
 void Mesh::drawMesh() const {
+  /** Activar textura */
+  //glActiveTexture(GL_TEXTURE0);
   glBindVertexArray(VAO);
   glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
   glBindVertexArray(0);
