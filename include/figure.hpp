@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include "Input.hpp"
-#include "Color.hpp"
+
 
 
 class Figure {
@@ -27,7 +27,7 @@ public:
 
 private:
   std::vector<Vec2> vertices;
-  Color color;
+
   int num_vertex;
 };
 
