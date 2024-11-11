@@ -3,6 +3,7 @@
 #include "Input.hpp"
 #include "Figure.hpp"
 #include "JobSystem.hpp"
+#include <iostream>
 
 int main(int argc, char** argv) {
   //auto ws = WindowSystem::make();
@@ -21,32 +22,37 @@ int main(int argc, char** argv) {
         { 0.0f, 0.6f }
   };
   JobSystem js = JobSystem(std::thread::hardware_concurrency());
-  for (int i = 0; i < js.workers.size(); i++) {
-    js.addJob([i]() {
-      printf("\nThread number = %d", i);
-      });
-  }
-  //printf("Number of threads: %d", std::thread::hardware_concurrency());
+
+  // Encolar trabajos de diferentes tipos y prioridades
+  js.addJob(JobSystem::JobType::Render, JobSystem::JobPriority::High, []() {
+    std::cout << "Trabajo de renderizado (Alta prioridad) completado.\n";
+    });
+
+  js.addJob(JobSystem::JobType::Physics, JobSystem::JobPriority::Medium, []() {
+    std::cout << "Trabajo de fisica (Prioridad media) completado.\n";
+    });
+
+  js.addJob(JobSystem::JobType::AI, JobSystem::JobPriority::Low, []() {
+    std::cout << "Trabajo de AI (Baja prioridad) completado.\n";
+    });
+
+  js.addJob(JobSystem::JobType::Render, JobSystem::JobPriority::Low, []() {
+    std::cout << "Trabajo de renderizado (Baja prioridad) completado.\n";
+    });
+  //std::this_thread::sleep_for(std::chrono::seconds(1));
   Figure triangle(customVertices);
-  triangle.setOffset({ 1.0f, 1.0f });
+
 
   static Input input(window->window);
   /* Loop until the user closes the window */
   while (!window->isOpen())
   {
-    /*offset.x += 0.001f;
-    offset.y -= 0.001f;
-    triangle.setOffset(offset);*/
+
     triangle.moveFigure(input);
-    //window->handleInput(triangle);
     window->renderFigure(triangle);
 
   }
-
-  //if (-1 == window.destroyWindow()) {
-  //  return -1;
-  //}
-
+  js.~JobSystem();
   window->~Window();
   glfwTerminate();
   //ws->~WindowSystem();
