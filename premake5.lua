@@ -36,6 +36,7 @@ configs = {'Debug','Release','RelWithDebInfo'}
     links{ cfg["system_libs"] }
     links{ cfg["frameworks"] }
     links{ cfg["assimp"] }
+    
     defines{ cfg["defines"] }
 
     filter{}
@@ -68,7 +69,7 @@ workspace "Motor"
 configurations { "Debug", "Release", "RelWithDebInfo" }
 architecture "x64"
 location "build"
-cppdialect "c++20"
+cppdialect "c++17"
 startproject "Window"
 filter "configurations:Debug"
 defines { "DEBUG" }
@@ -93,23 +94,23 @@ project "Motor"
 
     kind "StaticLib"
     targetdir "build/%{cfg.buildcfg}"
-    includedirs "include" 
-    includedirs "data"
+    includedirs { "include", "deps/assimp/include", "deps/glew/include",  "deps/glm", "data" } 
+    libdirs { "deps/assimp/lib", "deps/glew/lib"}
+    -- UseLibs {"glload", "freeglut"}
     conan_config_lib()
-    -- pchheader "stdafx.hpp"
-    -- pchsource "src/stdafx.cpp"
-    -- forceincludes { "stdafx.hpp" }
     files {
         "premake5.lua",
         "src/build/conanfile.txt",
         "src/build/conan.lua",
-        -- "src/stdafx.cpp", "src/stdafx.hpp",
         "src/Window_System.cpp", "include/Window_System.hpp",
         "src/Window.cpp", "include/Window.hpp",
         "src/Figure.cpp", "include/Figure.hpp",
         "src/Input.cpp", "include/Input.hpp",
-        "src/Mesh.cpp", "include/Mesh.hpp",
-        -- "src/Color.cpp", "include/Color.hpp",
+        "src/Shader.cpp", "include/Shader.hpp",
+        "src/Program.cpp", "include/Program.hpp",
+        "src/ModelLoader/Model.cpp", "include/ModelLoader/Model.hpp",
+        "src/ModelLoader/Mesh.cpp", "include/ModelLoader/Mesh.hpp",
+        --  "deps/glad/src/glad.c","deps/glad/include/glad.h"
     }
 
 project"Window"
