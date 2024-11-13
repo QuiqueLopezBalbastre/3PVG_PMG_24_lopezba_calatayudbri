@@ -17,55 +17,6 @@ JobSystem::~JobSystem() {
 }
 
 JobSystem::JobSystem(const JobSystem& other) {}
-/*
-void JobSystem::runTasks() {
-  PrioritizedJob job;
-  while (true) {
-    JobType selectedType;
-    bool jobFound = false;
-    {
-      std::unique_lock<std::mutex> lock(mutex);
-      condition.wait(lock, [this]() {
-        if (quit) return true;
-        for (const auto& [type, queue] : tasks) {
-          if (!queue.empty()) return true;
-        }
-        return false;
-        });
-      if (quit && tasks.empty()) return; // Salir si quit_ es true y no hay tareas
-
-      // Buscar el trabajo de mayor prioridad entre todas las colas
-      job.priority = JobPriority::Low;
-      for (auto& [type, queue] : tasks) {
-        if (!queue.empty() && queue.top().priority >= job.priority) {
-          job.priority = queue.top().priority;
-          selectedType = type;
-          job.job = queue.top().job;
-          jobFound = true;
-        }
-      }
-
-      // Si encontramos un trabajo, lo removemos de su cola
-      if (jobFound) {
-        tasks[selectedType].pop();
-      }
-    }
-  }
-  switch (job.priority)
-  {
-  case JobSystem::High:
-    std::cout << "JobFound: Priority High\n" << std::endl;
-    break;
-  case JobSystem::Medium:
-    std::cout << "JobFound: Priority Medium\n" << std::endl;
-    break;
-  case JobSystem::Low:
-    std::cout << "JobFound: Priority Low\n" << std::endl;
-    break;
-  }
-  job.job(); // Ejecutar el trabajo fuera del bloqueo
-}
-*/
 
 void JobSystem::runTasks() {
   while (true) {
@@ -83,22 +34,22 @@ void JobSystem::runTasks() {
         return false;
         });
 
-      if (quit && tasks.empty()) return; // Salir si `quit` es true y no hay tareas
+      if (quit && tasks.empty()) return; // Salir si no quedan trabajos y se ha solicitado terminar
 
-      // Buscar el trabajo de mayor prioridad entre todas las colas
-      job.priority = JobPriority::Low;
-      for (auto& [type, queue] : tasks) {
-        if (!queue.empty() && queue.top().priority >= job.priority) {
-          job.priority = queue.top().priority;
-          selectedType = type;
-          job = queue.top();  // Asignar el trabajo completo
-          jobFound = true;
+      // Buscar el trabajo de mayor prioridad en todas las listas
+      for (auto& [type, list] : tasks) {
+        if (!list.empty()) {
+          if (!jobFound || list.front().priority > job.priority) {
+            job = list.front();
+            selectedType = type;
+            jobFound = true;
+          }
         }
       }
 
-      // Si encontramos un trabajo, lo removemos de su cola
+      // Si encontramos un trabajo, lo eliminamos de su lista
       if (jobFound) {
-        tasks[selectedType].pop();
+        tasks[selectedType].pop_front();
       }
     }
 
@@ -111,11 +62,16 @@ void JobSystem::runTasks() {
 
 
 void JobSystem::addJob(JobType type, JobPriority priority, std::function<void()> job) {
-  //CRITICAL SECTION START
   {
-    std::lock_guard<std::mutex> lock{ mutex };
-    tasks[type].emplace(PrioritizedJob{ priority, std::move(job) });
+    std::lock_guard<std::mutex> lock(mutex);
+
+    // Añadir el nuevo trabajo a la lista correspondiente
+    tasks[type].emplace_back(PrioritizedJob{ priority, std::move(job) });
+
+    // Ordenar la lista de trabajos de mayor a menor prioridad
+    tasks[type].sort([](const PrioritizedJob& a, const PrioritizedJob& b) {
+      return a.priority > b.priority;  // Prioridad alta primero
+      });
   }
-  condition.notify_one();
-  //CRITICAL SECTION END
+  condition.notify_one(); // Notificar a un hilo de que hay un nuevo trabajo
 }

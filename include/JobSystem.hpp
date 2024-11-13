@@ -2,7 +2,8 @@
 #define __JOB_SYSTEM__ 1
 
 #include <vector>
-#include <queue>
+#include <list>
+
 #include <unordered_map>
 #include <functional>
 #include <thread>
@@ -43,7 +44,7 @@ public:
   std::vector<std::thread> workers;
 
 private:
-  std::unordered_map<JobType, std::priority_queue<PrioritizedJob>> tasks;
+  std::unordered_map<JobType, std::list<PrioritizedJob>> tasks;
   std::mutex mutex;
   std::atomic<bool> quit;
   std::condition_variable condition;
