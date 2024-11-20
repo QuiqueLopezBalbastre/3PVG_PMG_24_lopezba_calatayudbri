@@ -1,4 +1,8 @@
 #include <GL/glew.h>
+#include <glm/mat4x4.hpp>
+#include <glm/ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
+#include <glm/ext/matrix_clip_space.hpp> // perspective
+#include <glm/gtc/type_ptr.hpp>
 
 #include "Window_System.hpp"
 #include "Window.hpp"
@@ -7,11 +11,35 @@
 #include "ModelLoader/Mesh.hpp"
 #include "ModelLoader/Model.hpp"
 #include "Input.hpp"
+#include "common.hpp"
+
+//static const char* glErrorString(GLenum err) {
+//  switch (err) {
+//  case GL_NO_ERROR:
+//    return "GL_NO_ERROR";
+//  case GL_INVALID_ENUM:
+//    return "GL_INVALID_ENUM";
+//  case GL_INVALID_VALUE:
+//    return "GL_INVALID_VALUE";
+//  case GL_INVALID_OPERATION:
+//    return "GL_INVALID_OPERATION";
+//  case GL_STACK_OVERFLOW:
+//    return "GL_STACK_OVERFLOW";
+//  case GL_STACK_UNDERFLOW:
+//    return "GL_STACK_UNDERFLOW";
+//  case GL_OUT_OF_MEMORY:
+//    return "GL_OUT_OF_MEMORY";
+//  case GL_INVALID_FRAMEBUFFER_OPERATION:
+//    return "GL_INVALID_FRAMEBUFFER_OPERATION";
+//  default:
+//    return "Unknown error";
+//  }
+//}
 
 int main(int argc, char** argv) {
   //auto ws = WindowSystem::make();
   glfwInit();
-  auto window = Window::make(640, 480, "LUQUI");
+  auto window = Window::make(1280, 720, "LUQUI");
   if (nullptr == window->window) {
     window->~Window();
     glfwTerminate();
@@ -69,31 +97,55 @@ int main(int argc, char** argv) {
 
   /** Uploading Models to represent */
   Model objModel("../data/Models/cubo.obj");
-  //Model objModel("../data/Candle.obj");
-  //Model fbxModel("../data/Minotaur_Male_Lores.fbx");
+  Model objModel1("../data/Models/Candle.obj");
+  //Model fbxModel("../data/Models/Minotaur_Male_Lores.fbx");
+
 
   /* Loop until the user closes the window */
   while (!window->isOpen())
   {
-    //fbxModel.Draw();
+    //std::cout << "First get error: " << glErrorString(glGetError()) << std::endl;
     glEnable(GL_COLOR_BUFFER_BIT);
-    /* Render here */
-    glClearColor(0.0, 1.0, 1.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glEnable(GL_DEPTH_BUFFER_BIT);
-    glClear(GL_DEPTH_BUFFER_BIT);
+    //std::cout << "Second get error: " << glErrorString(glGetError()) << std::endl;
 
-    objModel.Draw();
+    /* Render here */
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+    //std::cout << "Third get error: " << glErrorString(glGetError()) << std::endl;
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //std::cout << "Fourth get error: " << glErrorString(glGetError()) << std::endl;
+    glEnable(GL_DEPTH_TEST);
+    //std::cout << "Fifth get error: " << glErrorString(glGetError()) << std::endl;
+    glClear(GL_DEPTH_BUFFER_BIT);
+    //std::cout << "Before shader calcs " << glErrorString(glGetError()) << std::endl;
+
+    glm::mat4x4 model, view, projection;
+    model = glm::mat4(1.0f);
+    view = glm::mat4(1.0f);
+    projection = glm::mat4(1.0f);
+
+    model = glm::rotate(model, glm::radians((float)glfwGetTime() * 5.0f), glm::vec3(0, 1, 0));
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -5.0f));
+    projection = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 100.f);
+    GLuint model_loc = glGetUniformLocation(program.get_id(), "model");
+    glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(model));
+    GLuint view_loc = glGetUniformLocation(program.get_id(), "view");
+    glUniformMatrix4fv(view_loc, 1, GL_FALSE, glm::value_ptr(view));
+    GLuint projection_loc = glGetUniformLocation(program.get_id(), "projection");
+    glUniformMatrix4fv(projection_loc, 1, GL_FALSE, glm::value_ptr(projection));
+
+
+    //std::cout << "Before Draw " << glErrorString(glGetError()) << std::endl;
+    //objModel.Draw();
+    objModel1.Draw();
+    //std::cout << "After Draw " << glErrorString(glGetError()) << std::endl;
+
+    //fbxModel.Draw();
     /* Swap front and back buffers */
     glfwSwapBuffers(window->window);
 
     /* Poll for and process events */
     glfwPollEvents();
   }
-
-  //if (-1 == window.destroyWindow()) {
-  //  return -1;
-  //}
 
   window->~Window();
   glfwTerminate();

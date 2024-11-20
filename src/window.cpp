@@ -14,7 +14,8 @@ Window::Window(GLFWwindow* w) {
 }
 
 Window::~Window() {
-  glfwDestroyWindow(window);
+  if (destroy)
+    glfwDestroyWindow(window);
 }
 
 Window::Window(Window&& other) noexcept
@@ -41,7 +42,7 @@ void Window::setCurrentWindowActive() {
 
 void Window::render() {
   /* Render here */
-  glClear(GL_COLOR_BUFFER_BIT);
+  //glClear(GL_COLOR_BUFFER_BIT);
 
   /* Swap front and back buffers */
   glfwSwapBuffers(window);
@@ -69,13 +70,3 @@ void Window::renderFigure(Figure& figure)
 bool Window::isOpen() {
   return glfwWindowShouldClose(window);
 }
-
-
-
-//int Window::destroyWindow() {
-//  if (this == nullptr) {
-//    printf("Window already closed\n");
-//    return -1;
-//  }
-//  return 0;
-//}

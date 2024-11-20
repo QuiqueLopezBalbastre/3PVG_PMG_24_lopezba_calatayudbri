@@ -111,6 +111,7 @@ project "Motor"
         "src/ModelLoader/Model.cpp", "include/ModelLoader/Model.hpp",
         "src/ModelLoader/Mesh.cpp", "include/ModelLoader/Mesh.hpp",
         --  "deps/glad/src/glad.c","deps/glad/include/glad.h"
+        "include/common.hpp"
     }
 
 project"Window"

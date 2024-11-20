@@ -31,6 +31,11 @@ bool Program::link()
   return true;
 }
 
+GLuint Program::get_id()
+{
+    return id;
+}
+
 void Program::use() const
 {
   glUseProgram(id);

@@ -12,6 +12,7 @@ public:
   /** Métodos de clase */
   void attach(Shader* shader);
   bool link();
+  GLuint get_id();
   void use() const;
 
 private:

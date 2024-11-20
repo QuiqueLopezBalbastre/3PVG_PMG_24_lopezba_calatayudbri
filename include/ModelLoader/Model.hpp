@@ -14,10 +14,33 @@
 
 class Model {
 public:
+  /*!
+   *  Constructor.
+   *
+   *      @param [in] path
+   */
   Model(const std::string& path);
+  /*!
+   *  Destructor
+   */
   ~Model() = default;
+  /*!
+   *  Operator=s the model.
+   *
+   *      @param [in,out] other
+   *
+   *      @return
+   */
   Model& operator=(Model&& other) noexcept;
+  /*!
+   *  Copy Constructor.
+   *
+   *      @param [in] other
+   */
   Model(const Model& other) = delete;
+  /*!
+   *  Move Constructor
+   */
   Model(Model&& other) = default;
 
   void Draw() const;
@@ -28,6 +51,6 @@ private:
   void loadModel(const std::string& path);
   void processNode(aiNode* node, const aiScene* scene);
   Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-  
+
 };
 #endif // !__MODEL__
