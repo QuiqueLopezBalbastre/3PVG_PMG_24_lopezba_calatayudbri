@@ -1,93 +1,114 @@
 #include "ModelLoader/Mesh.hpp"
 #include "common.hpp"
-#include <iostream>
 
-Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
-  : indices{ indices }
-  , destroy{ true } {
-
+Mesh::Mesh(std::vector<Vertex>vertices, std::vector<unsigned int>indices, std::vector<Texture> textures)
+  : vertices_{ vertices }
+  , indices_size_{ (unsigned int)indices.size() }
+  , destroy{ true }
+  , textures_{ textures }
+{
   glGenVertexArrays(1, &VAO);
-  std::cout << "Mesh() 1 " << glErrorString(glGetError()) << std::endl;
   glGenBuffers(1, &VBO);
-  std::cout << "Mesh() 2 " << glErrorString(glGetError()) << std::endl;
   glGenBuffers(1, &EBO);
-  std::cout << "Mesh() 3 " << glErrorString(glGetError()) << std::endl;
-
+  std::cout << "VAO: " << VAO << std::endl;
+  std::cout << "VBO: " << VBO << std::endl;
+  std::cout << "EBO: " << EBO << std::endl;
+  std::cout << "Mesh 0: " << glErrorString(glGetError()) << std::endl;
   glBindVertexArray(VAO);
-  std::cout << "Mesh() 4 " << glErrorString(glGetError()) << std::endl;
+  std::cout << "Mesh 1: " << glErrorString(glGetError()) << std::endl;
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  std::cout << "Mesh() 5 " << glErrorString(glGetError()) << std::endl;
+  std::cout << "Mesh 2: " << glErrorString(glGetError()) << std::endl;
   glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
-  std::cout << "Mesh() 6 " << glErrorString(glGetError()) << std::endl;
+  std::cout << "Mesh 3: " << glErrorString(glGetError()) << std::endl;
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  std::cout << "Mesh() 7 " << glErrorString(glGetError()) << std::endl;
+  std::cout << "Mesh 4: " << glErrorString(glGetError()) << std::endl;
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
-  std::cout << "Mesh() 8 " << glErrorString(glGetError()) << std::endl;
+  std::cout << "Mesh 5: " << glErrorString(glGetError()) << std::endl;
 
   glEnableVertexAttribArray(0);
-  std::cout << "Mesh() 9 " << glErrorString(glGetError()) << std::endl;
+  std::cout << "Mesh 6: " << glErrorString(glGetError()) << std::endl;
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-  std::cout << "Mesh() 10 " << glErrorString(glGetError()) << std::endl;
+  std::cout << "Mesh 7: " << glErrorString(glGetError()) << std::endl;
 
   glEnableVertexAttribArray(1);
-  std::cout << "Mesh() 11 " << glErrorString(glGetError()) << std::endl;
-
+  std::cout << "Mesh 8: " << glErrorString(glGetError()) << std::endl;
   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
-  std::cout << "Mesh() 12 " << glErrorString(glGetError()) << std::endl;
+  std::cout << "Mesh 9: " << glErrorString(glGetError()) << std::endl;
 
   glEnableVertexAttribArray(2);
-  std::cout << "Mesh() 13 " << glErrorString(glGetError()) << std::endl;
+  std::cout << "Mesh 10: " << glErrorString(glGetError()) << std::endl;
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
-  std::cout << "Mesh() 14 " << glErrorString(glGetError()) << std::endl;
+  std::cout << "Mesh 11: " << glErrorString(glGetError()) << std::endl;
 
   glBindVertexArray(0);
-  std::cout << "Mesh() 15 " << glErrorString(glGetError()) << std::endl;
-
-  //glErrorString(glGetError());
-
-  //std::cout << "Mesh loaded correctly\n" << std::endl;
 }
-// Destructor
-Mesh::~Mesh() {
-  if (destroy)
-  {
+
+Mesh::~Mesh()
+{
+  if (destroy) {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
   }
 }
 
-Mesh::Mesh(Mesh&& other)
+Mesh::Mesh(Mesh&& other) noexcept
 {
-  indices = std::move(other.indices);
+  vertices_ = std::move(other.vertices_);
+  textures_ = std::move(other.textures_);
   VAO = std::move(other.VAO);
   VBO = std::move(other.VBO);
   EBO = std::move(other.EBO);
+  indices_size_ = std::move(other.indices_size_);
   destroy = std::move(other.destroy);
   other.destroy = false;
 }
 
-Mesh& Mesh::operator=(Mesh&& other)
+Mesh& Mesh::operator=(Mesh&& other) noexcept
 {
-  if (this != &other) {
-    // TODO: Insertar una instrucción "return" aquí
-    indices = std::move(other.indices);
+  if (&other != this) {
+    textures_ = std::move(other.textures_);
     VAO = std::move(other.VAO);
     VBO = std::move(other.VBO);
     EBO = std::move(other.EBO);
+    indices_size_ = std::move(other.indices_size_);
     destroy = std::move(other.destroy);
     other.destroy = false;
   }
   return *this;
 }
 
-void Mesh::Draw() const {
-  //std::cout << "Draw Mesh First " << glErrorString(glGetError()) << std::endl;
+void Mesh::Draw(Program program) const
+{
+  // bind appropriate textures
+  unsigned int diffuseNr = 1;
+  unsigned int specularNr = 1;
+  unsigned int normalNr = 1;
+  unsigned int heightNr = 1;
 
+  for (unsigned int i = 0; i < textures_.size(); i++)
+  {
+    glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
+    
+    // retrieve texture number (the N in diffuse_textureN)
+    std::string number;
+    std::string name = textures_[i].type;
+    if (name == "texture_diffuse")
+      number = std::to_string(diffuseNr++);
+    else if (name == "texture_specular")
+      number = std::to_string(specularNr++); // transfer unsigned int to string
+    else if (name == "texture_normal")
+      number = std::to_string(normalNr++); // transfer unsigned int to string
+    else if (name == "texture_height")
+      number = std::to_string(heightNr++); // transfer unsigned int to string
+
+    // now set the sampler to the correct texture unit
+    glUniform1i(glGetUniformLocation(program.get_id(), (name + number).c_str()), i);
+    // and finally bind the texture
+    glBindTexture(GL_TEXTURE_2D, textures_[i].id);
+  }
   glBindVertexArray(VAO);
-  //std::cout << "Draw Mesh Second " << glErrorString(glGetError()) << std::endl;
-  glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
-  //std::cout << "Draw Mesh Third " << glErrorString(glGetError()) << std::endl;
+  glDrawElements(GL_TRIANGLES, indices_size_, GL_UNSIGNED_INT, nullptr);
   glBindVertexArray(0);
 }

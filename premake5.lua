@@ -94,7 +94,7 @@ project "Motor"
 
     kind "StaticLib"
     targetdir "build/%{cfg.buildcfg}"
-    includedirs { "include", "deps/assimp/include", "deps/glew/include",  "deps/glm", "data" } 
+    includedirs { "include", "deps/assimp/include", "deps/glew/include",  "deps/glm", "deps/stb","data" } 
     libdirs { "deps/assimp/lib", "deps/glew/lib"}
     -- UseLibs {"glload", "freeglut"}
     conan_config_lib()
@@ -110,8 +110,7 @@ project "Motor"
         "src/Program.cpp", "include/Program.hpp",
         "src/ModelLoader/Model.cpp", "include/ModelLoader/Model.hpp",
         "src/ModelLoader/Mesh.cpp", "include/ModelLoader/Mesh.hpp",
-        --  "deps/glad/src/glad.c","deps/glad/include/glad.h"
-        "include/common.hpp"
+        "include/common.hpp", "src/stb_image.cpp"
     }
 
 project"Window"

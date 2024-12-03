@@ -1,5 +1,6 @@
 #include "Program.hpp"
 #include <iostream>
+#include "common.hpp"
 
 Program::Program()
 {
@@ -33,11 +34,34 @@ bool Program::link()
 
 GLuint Program::get_id()
 {
-    return id;
+  return id;
+}
+
+void Program::setUniform(const std::string& name, int value)
+{
+  GLint location = glGetUniformLocation(id, name.c_str());
+  std::cout << "Program: " << glErrorString(glGetError()) << std::endl;
+
+  if (location != -1) {
+    //std::cout << "Uniform location = " << location << std::endl;
+    glUniform1i(location, value);
+  }
 }
 
 void Program::use() const
 {
   glUseProgram(id);
 
+}
+
+bool Program::createProgram(Program& program, Shader* vertex_shader, Shader* fragment_shader)
+{
+  //Program program = Program();
+  program.attach(vertex_shader);
+  program.attach(fragment_shader);
+  if (!program.link()) {
+    std::cout << "Error al linkar el programa" << std::endl;
+    return false;
+  }
+  return true;
 }

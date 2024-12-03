@@ -44,7 +44,6 @@ bool Shader::compile()
   else
     isCompiled = true;
   return isCompiled;
-
 }
 
 unsigned int Shader::get_id()

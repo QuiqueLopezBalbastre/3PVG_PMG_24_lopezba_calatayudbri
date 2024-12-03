@@ -2,7 +2,8 @@
 #define __COMMON__ 
 
 #include <GL/glew.h>
-
+#include <iostream>
+#define OPENGL_CHECK do{std::cout << "OpenGL " << __FILE__ << __LINE__ << " "<< glErrorString(glGetError()) << std::endl;} while(false)
 
 static const char* glErrorString(GLenum err) {
   switch (err) {
