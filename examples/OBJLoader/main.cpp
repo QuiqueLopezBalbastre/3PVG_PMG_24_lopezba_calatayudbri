@@ -36,11 +36,14 @@ int main(int argc, char** argv) {
 
   in vec2 TexCoords;
 
-  uniform sampler2D texture_diffuse1;
+  uniform sampler2D texture_diffuse;
 
   void main()
   {
-    FragColor = texture(texture_diffuse1, TexCoords);
+
+    FragColor = texture(texture_diffuse, TexCoords);
+       // Muestra coordenadas UV como color
+      //FragColor = vec4(TexCoords, 0.0, 1.0);
   }
     );
 
@@ -90,9 +93,10 @@ int main(int argc, char** argv) {
   //Model objModel("../data/Models/cubo.obj");
   //Model objModel1("../data/Models/Candle.obj");
   //Model texCube("../data/Models/cube/cube.obj");
+  Model texCube("../data/Models/wendigo/Wendigo.obj");
   std::cout << "Model load error: " << glErrorString(glGetError()) << std::endl;
-  Model fbxModel("../data/Models/Minotaur_Male_Lores.fbx");
-  Model fbxModel1("../data/Models/mustang/Mustang.obj");
+  //Model fbxModel("../data/Models/Minotaur_Male_Lores.fbx");
+  //Model fbxModel1("../data/Models/mustang/Mustang.obj");
   //Model gltfModel("../data/Models/fire_axe/fire_axe.gltf");
 
 
@@ -112,8 +116,8 @@ int main(int argc, char** argv) {
     projection = glm::mat4(1.0f);
 
     model = glm::rotate(model, glm::radians((float)glfwGetTime() * 10.0f), glm::vec3(0, 1, 0));
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -5.0f));
-    projection = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 100.f);
+    view = glm::translate(view, glm::vec3(10.0f, -50.0f, -100.0f));
+    projection = glm::perspective(glm::radians(120.0f), 640.0f / 480.0f, 0.1f, 1000.f);
 
     glEnable(GL_TEXTURE_2D);
     GLuint model_loc = glGetUniformLocation(program.get_id(), "model");
@@ -128,9 +132,9 @@ int main(int argc, char** argv) {
 
     //objModel.Draw();
     //objModel1.Draw(program);
-    //texCube.Draw(program);
+    texCube.Draw(program);
     //fbxModel.Draw(program);
-    fbxModel1.Draw(program);
+    //fbxModel1.Draw(program);
 
 
     /* Swap front and back buffers */

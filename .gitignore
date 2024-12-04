@@ -36,3 +36,4 @@
 
 #exceptions
 !/tools/premake/*
+!/data/*.obj

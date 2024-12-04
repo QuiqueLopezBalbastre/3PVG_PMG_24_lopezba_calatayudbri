@@ -78,7 +78,7 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
     if (mesh->HasNormals()) {
       vertex.normal = { mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z };
     }
-    else {
+    else {  
       vertex.normal = { 0.0f, 0.0f, 0.0f };
     }
 
