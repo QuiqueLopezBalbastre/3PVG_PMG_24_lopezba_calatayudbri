@@ -6,6 +6,7 @@
 #include <optional>
 
 
+
 class WindowSystem {
 public:
   static std::optional<WindowSystem> make();  // Inicializador
