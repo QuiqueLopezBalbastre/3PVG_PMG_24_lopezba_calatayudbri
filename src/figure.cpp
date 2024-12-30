@@ -8,7 +8,7 @@ Figure::Figure() : offset({ 0.0f, 0.0f })  // Initialize the offset
   num_vertex = 3;
 }
 
-Figure::Figure(std::vector<Vec2>& customVertices) : offset({ 0.0f, 0.0f })
+Figure::Figure(std::vector<Vec2>& customVertices) : offset({0.0f, 0.0f})
 {
   setVertices(customVertices);
   //color = Color(255, 255, 255);

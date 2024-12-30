@@ -102,7 +102,8 @@ project "Motor"
         "premake5.lua",
         "src/build/conanfile.txt",
         "src/build/conan.lua",
-        -- "src/Window_System.cpp", "include/Window_System.hpp",
+        -- "src/stdafx.cpp", "src/stdafx.hpp",
+        "src/WindowSystem.cpp", "include/WindowSystem.hpp",
         "src/Window.cpp", "include/Window.hpp",
         "src/Figure.cpp", "include/Figure.hpp",
         "src/Input.cpp", "include/Input.hpp",
@@ -113,7 +114,7 @@ project "Motor"
         "include/common.hpp", "src/stb_image.cpp"
     }
 
-project"Window"
+project "Window"
 
     kind "WindowedApp"
     language "C++"
@@ -126,7 +127,7 @@ project"Window"
     debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
     files "examples/Window/main.cpp"
 
-project"Triangle"
+project "Triangle"
 
     kind "WindowedApp"
     language "C++"
@@ -139,7 +140,7 @@ project"Triangle"
     debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
     files "examples/Triangle/main.cpp"
 
-project "OBJLoader"
+project "JobSystem"
 
     kind "ConsoleApp"
     language "C++"
@@ -150,4 +151,4 @@ project "OBJLoader"
     conan_config_exec("Release")
     conan_config_exec("RelWithDebInfo")
     debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
-    files "examples/OBJLoader/main.cpp"
+    files "examples/JobSystem/main.cpp"

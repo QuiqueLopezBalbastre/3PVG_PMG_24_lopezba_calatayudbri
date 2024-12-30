@@ -1,7 +1,7 @@
 #include <GLFW/glfw3.h>
 #include <stdio.h>
 
-#include "Window_System.hpp"
+#include "WindowSystem.hpp"
 
 
 
