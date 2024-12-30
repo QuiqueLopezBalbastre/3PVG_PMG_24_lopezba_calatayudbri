@@ -136,6 +136,19 @@ project "Triangle"
     debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
     files "examples/Triangle/main.cpp"
 
+project "OBJLoader"
+
+    kind "ConsoleApp"
+    language "C++"
+    targetdir "build/%{prj.name}/%{cfg.buildcfg}"
+    includedirs "include"
+    links "Motor"
+    conan_config_exec("Debug")
+    conan_config_exec("Release")
+    conan_config_exec("RelWithDebInfo")
+    debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
+    files "examples/OBJLoader/main.cpp"
+
 project "JobSystem"
 
     kind "ConsoleApp"
