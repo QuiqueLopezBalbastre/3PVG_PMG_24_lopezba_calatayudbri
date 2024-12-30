@@ -115,9 +115,8 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 
 unsigned int Model::TextureFromFile(const char* path, const std::string& directory)
 {
-  std::string filename = std::string(path);
-  filename = directory + '/' + filename;
-
+  std::string filename = directory + '/' + std::string(path);
+  std::cout << "Cargando textura: " << filename << std::endl;
   unsigned int textureID;
   glGenTextures(1, &textureID);
 
@@ -157,5 +156,8 @@ void Model::Draw(Program program) const {
   for (const auto& mesh : meshes) {
     mesh.Draw(program);
   }
+  // Restaurar estado de OpenGL
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glActiveTexture(GL_TEXTURE0);
 }
 

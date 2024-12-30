@@ -102,7 +102,7 @@ project "Motor"
         "premake5.lua",
         "src/build/conanfile.txt",
         "src/build/conan.lua",
-        "src/Window_System.cpp", "include/Window_System.hpp",
+        -- "src/Window_System.cpp", "include/Window_System.hpp",
         "src/Window.cpp", "include/Window.hpp",
         "src/Figure.cpp", "include/Figure.hpp",
         "src/Input.cpp", "include/Input.hpp",

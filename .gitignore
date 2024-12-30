@@ -36,4 +36,5 @@
 
 #exceptions
 !/tools/premake/*
-!/data/*.obj
+!data/Models/cube/cube.obj
+!data/Models/cube/wheelchair.obj
