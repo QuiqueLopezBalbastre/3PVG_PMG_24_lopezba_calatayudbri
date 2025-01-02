@@ -35,6 +35,8 @@ configs = {'Debug','Release','RelWithDebInfo'}
     links{ cfg["libs"] }
     links{ cfg["system_libs"] }
     links{ cfg["frameworks"] }
+    links{ cfg["assimp"] }
+    
     defines{ cfg["defines"] }
 
     filter{}
@@ -67,7 +69,7 @@ workspace "Motor"
 configurations { "Debug", "Release", "RelWithDebInfo" }
 architecture "x64"
 location "build"
-cppdialect "c++20"
+cppdialect "c++17"
 startproject "Window"
 filter "configurations:Debug"
 defines { "DEBUG" }
@@ -92,11 +94,10 @@ project "Motor"
 
     kind "StaticLib"
     targetdir "build/%{cfg.buildcfg}"
-    includedirs "include"
+    includedirs { "include", "deps/assimp/include", "deps/glew/include",  "deps/glm", "deps/stb","data" } 
+    libdirs { "deps/assimp/lib", "deps/glew/lib"}
+    -- UseLibs {"glload", "freeglut"}
     conan_config_lib()
-    -- pchheader "stdafx.hpp"
-    -- pchsource "src/stdafx.cpp"
-    -- forceincludes { "stdafx.hpp" }
     files {
         "premake5.lua",
         "src/build/conanfile.txt",
@@ -106,8 +107,11 @@ project "Motor"
         "src/Window.cpp", "include/Window.hpp",
         "src/Figure.cpp", "include/Figure.hpp",
         "src/Input.cpp", "include/Input.hpp",
-        -- "src/Color.cpp", "include/Color.hpp",
-        "src/JobSystem.cpp", "include/JobSystem.hpp",
+        "src/Shader.cpp", "include/Shader.hpp",
+        "src/Program.cpp", "include/Program.hpp",
+        "src/ModelLoader/Model.cpp", "include/ModelLoader/Model.hpp",
+        "src/ModelLoader/Mesh.cpp", "include/ModelLoader/Mesh.hpp",
+        "include/common.hpp", "src/stb_image.cpp"
     }
 
 project "Window"
@@ -135,6 +139,19 @@ project "Triangle"
     conan_config_exec("RelWithDebInfo")
     debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
     files "examples/Triangle/main.cpp"
+
+project "OBJLoader"
+
+    kind "ConsoleApp"
+    language "C++"
+    targetdir "build/%{prj.name}/%{cfg.buildcfg}"
+    includedirs "include"
+    links "Motor"
+    conan_config_exec("Debug")
+    conan_config_exec("Release")
+    conan_config_exec("RelWithDebInfo")
+    debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
+    files "examples/OBJLoader/main.cpp"
 
 project "JobSystem"
 
