@@ -122,7 +122,5 @@ void InputSystem::update(InputComponent* inputComponent, TransformComponent* tra
     if (inputComponent->keyReceived == Input::KEY_X) {
       transform->scale -= {0.25f * 0.016f, 0.25f * 0.016f, 0.0f};
     }
-
-
   }
 }

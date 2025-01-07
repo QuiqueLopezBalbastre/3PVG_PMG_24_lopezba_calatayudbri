@@ -6,6 +6,7 @@
 #include <functional>
 #include "Entity.hpp"
 #include "Input.hpp"
+#include "Scripting.hpp"
 
 #define M_PI 3.141592f
 
@@ -108,9 +109,6 @@ namespace {
 // PhysicsComponent
 // AudioComponent
 // ParticleComponent
-struct ScriptComponent : ComponentBase {
-  std::shared_ptr<Script*> script;
-};
 struct InputComponent : ComponentBase {
   bool isMovingForward = false;
   bool isJumping = false;
@@ -129,6 +127,7 @@ struct AnimationComponent : ComponentBase {
 };
 // MaterialComponent
 struct ScriptComponent : ComponentBase {
+  std::shared_ptr<LuaScript*> script;
   std::function<void(float)> update;
 };
 
