@@ -9,25 +9,73 @@
 
 class Input {
 public:
-  // Definimos una enumeración para las acciones del motor
-  enum Key {
-  //TO DO: Ordenar las key por orden alfabético
+  // Definimos una enumeraciï¿½n para las acciones del motor
+  enum Key
+  {
+   
     KEY_UNKNOWN = -1,
+    // letters
     KEY_A = 0,
-    KEY_W,
-    KEY_S,
+    KEY_B,
+    KEY_C,
     KEY_D,
     KEY_E,
+    KEY_F,
+    KEY_G,
+    KEY_H,
+    KEY_I,
+    KEY_J,
+    KEY_K,
+    KEY_L,
+    KEY_M,
+    KEY_N,
+    KEY_O,
+    KEY_P,
     KEY_Q,
-    KEY_Z, 
+    KEY_R,
+    KEY_S,
+    KEY_T,
+    KEY_U,
+    KEY_V,
+    KEY_W,
     KEY_X,
-    KEY_SPACE,
-    KEY_LEFT,
-    KEY_RIGHT,
+    KEY_Y,
+    KEY_Z,
+    // numbers
+    KEY_0,
+    KEY_1,
+    KEY_2,
+    KEY_3,
+    KEY_4,
+    KEY_5,
+    KEY_6,
+    KEY_7,
+    KEY_8,
+    KEY_9,
+    // Fs
+    KEY_F1,
+    KEY_F2,
+    KEY_F3,
+    KEY_F4,
+    KEY_F5,
+    KEY_F6,
+    KEY_F7,
+    KEY_F8,
+    KEY_F9,
+    KEY_F10,
+    KEY_F11,
+    KEY_F12,
+    // movement
     KEY_UP,
     KEY_DOWN,
-    KEY_ESCAPE,
+    KEY_LEFT,
+    KEY_RIGHT,
+    // others
+    KEY_SPACE,
     KEY_TAB,
+    KEY_ENTER,
+    KEY_BACKSPACE,
+    KEY_ESCAPE,
   };
   enum Modifier_Key {
     MOD_KEY_SHIFT,
@@ -42,7 +90,7 @@ public:
   // Constructor que recibe una ventana personalizada (Window*)
   Input(GLFWwindow* window);
 
-  // Métodos públicos para el usuario
+  // Mï¿½todos pï¿½blicos para el usuario
   bool isKeyPressed(int key);
   bool isKeyReleased(int key);
   bool isMouseButtonPressed(int button);
@@ -58,12 +106,12 @@ public:
   void mapAction(Action action, int key);
   bool isActionPressed(Action action);
 
-  // Debouncing (evitar múltiples lecturas de teclas)
+  // Debouncing (evitar mï¿½ltiples lecturas de teclas)
   bool wasKeyJustPressed(int key);
 
   int getCurrentlyPressedKey();
 
-  // Inicialización de eventos de teclado/ratón y callbacks
+  // Inicializaciï¿½n de eventos de teclado/ratï¿½n y callbacks
   void initializeCallbacks();
 
 private:
@@ -78,13 +126,13 @@ private:
   // Mapeo de acciones
   std::unordered_map<Action, int> actionMapping;
 
-  // Estado del scroll del ratón
+  // Estado del scroll del ratï¿½n
   double m_scrollOffset;
 
   // Tecla de estado para debouncing
   std::unordered_map<int, bool> keyWasPressed;
 
-  // Métodos privados
+  // Mï¿½todos privados
   void setupKeyMapping();
   void setupActionMapping();
 
