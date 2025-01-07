@@ -13,7 +13,7 @@ int main() {
   if (nullptr == window->window) {
     return -1;
   }
-  srand(time(NULL));
+  srand((unsigned int)time(NULL));
   window->setCurrentWindowActive();
 
   // Declaramos un gestor de input asociado a la ventana en activo.
@@ -32,6 +32,7 @@ int main() {
   ecsmanager.addComponentType<ShapeComponent>();
   ecsmanager.addComponentType<AnimationComponent>();
   ecsmanager.addComponentType<InputComponent>();
+  ecsmanager.addComponentType<ScriptComponent>();
 
   // Creamos una entidad que será gestionada por el usuario.
   Entity player = ecsmanager.createEntity();
@@ -43,7 +44,7 @@ int main() {
   std::cout << "Player is entity: " << player;
 
   // Creamos entidades y modificamos sus componentes.
-  for (int i = 0; i < 100; i++) {
+  for (int i = 0; i < 0; i++) {
     Entity entity = ecsmanager.createEntity();
     ecsmanager.editComponent<TransformComponent>(entity, [](TransformComponent& transform)
       {int x = rand() % 10;
@@ -64,9 +65,23 @@ int main() {
         anim.duration = 60.0f;
         anim.translation = { 0.0f, 0.0f, 0.0f };
         anim.scale = { 0.0f , 0.0f, 0.0f };
-        anim.rotation = { 0.0f, 0.0f, 25.0f }; 
+        anim.rotation = { 0.0f, 0.0f, 25.0f };
       });
   }
+    Entity scriptentity = ecsmanager.createEntity();
+    ecsmanager.editComponent<ShapeComponent>(scriptentity, [](ShapeComponent& shape) {shape = createTriangle(0.1f, { 0.0f, 0.0f, 1.0f, 1.0f }); });
+    ecsmanager.editComponent<TransformComponent>(scriptentity, [](TransformComponent& transform)
+      {
+        transform.position = { -0.5f, 0.5f, 0.0f };
+        transform.scale = { 1.0f, 1.0f, 0.0f };
+      });
+    ecsmanager.editComponent<ScriptComponent>(scriptentity, [](ScriptComponent& script)
+      {
+        script.script = std::make_shared<LuaScript>("C:/Users/quilo/Documents/GitHub/3PVG_PMG_24_lopezba_calatayudbri/data/Scripts/HelloWorld.lua");
+      });
+    auto scriptcmp = ecsmanager.getComponent<ScriptComponent>(scriptentity);
+    scriptcmp.value()->script->run(scriptcmp.value()->script->getContent());
+
   // Ciclo del juego
   while (!window->isOpen()) {
     window->clear();

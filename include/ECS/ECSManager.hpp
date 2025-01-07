@@ -104,7 +104,7 @@ bool ECSManager::editComponent(size_t entity, const std::function<void(T&)>& edi
 
   // Expandir el vector si la entidad excede el tamaño actual
   if (entity >= componentList->componentlist.size()) {
-    componentList->grow(entity + 1); // Crece para incluir la entidad
+    componentList->grow((unsigned int)entity + 1); // Crece para incluir la entidad
   }
 
   // Inicializar el componente si es nulo

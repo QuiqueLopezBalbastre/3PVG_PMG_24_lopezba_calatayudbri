@@ -127,8 +127,6 @@ struct AnimationComponent : ComponentBase {
 };
 // MaterialComponent
 struct ScriptComponent : ComponentBase {
-  std::shared_ptr<LuaScript*> script;
-  std::function<void(float)> update;
+  std::shared_ptr<LuaScript> script;
 };
-
 #endif // !__COMPONENT__
