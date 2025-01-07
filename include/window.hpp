@@ -20,7 +20,11 @@ public:
   static std::optional<Window> make(int window_width, int window_height, const char* window_name);
   void setCurrentWindowActive();
   void render();
+  void clear();
   void renderFigure(Figure& figure);
+  void handleInput(Figure& figure);
+
+  int destroyWindow();
   bool isOpen();
 
   /** Atributos */

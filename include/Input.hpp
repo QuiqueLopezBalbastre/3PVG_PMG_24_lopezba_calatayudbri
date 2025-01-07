@@ -11,11 +11,16 @@ class Input {
 public:
   // Definimos una enumeración para las acciones del motor
   enum Key {
+  //TO DO: Ordenar las key por orden alfabético
     KEY_UNKNOWN = -1,
     KEY_A = 0,
     KEY_W,
     KEY_S,
     KEY_D,
+    KEY_E,
+    KEY_Q,
+    KEY_Z, 
+    KEY_X,
     KEY_SPACE,
     KEY_LEFT,
     KEY_RIGHT,
@@ -55,6 +60,8 @@ public:
 
   // Debouncing (evitar múltiples lecturas de teclas)
   bool wasKeyJustPressed(int key);
+
+  int getCurrentlyPressedKey();
 
   // Inicialización de eventos de teclado/ratón y callbacks
   void initializeCallbacks();

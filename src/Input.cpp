@@ -12,6 +12,10 @@ void Input::setupKeyMapping() {
   keyMapping[KEY_A] = GLFW_KEY_A;
   keyMapping[KEY_S] = GLFW_KEY_S;
   keyMapping[KEY_D] = GLFW_KEY_D;
+  keyMapping[KEY_E] = GLFW_KEY_E;
+  keyMapping[KEY_Q] = GLFW_KEY_Q;
+  keyMapping[KEY_Z] = GLFW_KEY_Z;
+  keyMapping[KEY_X] = GLFW_KEY_X;
   keyMapping[KEY_SPACE] = GLFW_KEY_SPACE;
   keyMapping[KEY_LEFT] = GLFW_KEY_LEFT;
   keyMapping[KEY_RIGHT] = GLFW_KEY_RIGHT;
@@ -94,7 +98,14 @@ bool Input::wasKeyJustPressed(int key) {
   }
   return false;
 }
-
+int Input::getCurrentlyPressedKey() {
+  for (const auto& [key, glfwKey] : keyMapping) {
+    if (isKeyPressed(key)) { // Utiliza la función isKeyPressed
+      return key; // Devuelve la primera tecla detectada como pulsada
+    }
+  }
+  return KEY_UNKNOWN; // Si no hay ninguna tecla pulsada
+}
 // Callbacks de teclado y scroll
 void Input::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
   if (action == GLFW_PRESS) {

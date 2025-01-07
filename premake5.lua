@@ -94,7 +94,7 @@ project "Motor"
 
     kind "StaticLib"
     targetdir "build/%{cfg.buildcfg}"
-    includedirs { "include", "deps/assimp/include", "deps/glew/include",  "deps/glm", "deps/stb","data" } 
+    includedirs { "include", "deps/assimp/include", "deps/glew/include",  "deps/glm", "deps/stb", "data", "deps/imgui" } 
     libdirs { "deps/assimp/lib", "deps/glew/lib"}
     -- UseLibs {"glload", "freeglut"}
     conan_config_lib()
@@ -111,7 +111,15 @@ project "Motor"
         "src/Program.cpp", "include/Program.hpp",
         "src/ModelLoader/Model.cpp", "include/ModelLoader/Model.hpp",
         "src/ModelLoader/Mesh.cpp", "include/ModelLoader/Mesh.hpp",
-        "include/common.hpp", "src/stb_image.cpp"
+        "include/common.hpp", "src/stb_image.cpp",
+        -- "src/Color.cpp", "include/Color.hpp",
+        "src/JobSystem.cpp", "include/JobSystem.hpp",
+        "src/Scripting.cpp", "include/Scripting.hpp",
+        "src/ImguiPanel.cpp", "include/ImguiPanel.hpp",
+        "src/ECS/Entity.cpp", "include/ECS/Entity.hpp",
+        "src/ECS/Component.cpp", "include/ECS/Component.hpp",
+        "src/ECS/System.cpp", "include/ECS/System.hpp",
+        "src/ECS/ECSManager.cpp", "include/ECS/ECSManager.hpp",
     }
 
 project "Window"
@@ -165,3 +173,17 @@ project "JobSystem"
     conan_config_exec("RelWithDebInfo")
     debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
     files "examples/JobSystem/main.cpp"
+
+
+project "ECS"
+
+    kind "ConsoleApp"
+    language "C++"
+    targetdir "build/%{prj.name}/%{cfg.buildcfg}"
+    includedirs "include"
+    links "Motor"
+    conan_config_exec("Debug")
+    conan_config_exec("Release")
+    conan_config_exec("RelWithDebInfo")
+    debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
+    files "examples/ECS/main.cpp"
