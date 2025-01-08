@@ -34,11 +34,16 @@ public:
   Mesh& operator=(Mesh&& other) noexcept;
   void Draw(Program program) const;
   std::vector<Texture> textures_;
+  GLuint VAO, VBO, EBO;
+  GLuint getVAO();
+  GLuint getVBO();
+  GLuint getEBO();
+  std::vector<Vertex> vertices_;
+  std::vector<unsigned int> indices_;
+  std::vector<Vertex> getVertices();
+  unsigned int indices_size_;
 private:
   bool destroy;
-  GLuint VAO, VBO, EBO;
-  unsigned int indices_size_;
-  std::vector<Vertex> vertices_;
 };
 
 

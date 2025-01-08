@@ -116,7 +116,6 @@ project "Motor"
         "src/JobSystem.cpp", "include/JobSystem.hpp",
         "src/Scripting.cpp", "include/Scripting.hpp",
         "src/ImguiPanel.cpp", "include/ImguiPanel.hpp",
-        "src/ECS/Entity.cpp", "include/ECS/Entity.hpp",
         "src/ECS/Component.cpp", "include/ECS/Component.hpp",
         "src/ECS/System.cpp", "include/ECS/System.hpp",
         "src/ECS/ECSManager.cpp", "include/ECS/ECSManager.hpp",
