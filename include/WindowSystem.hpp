@@ -11,10 +11,10 @@ class WindowSystem {
 public:
   static std::optional<WindowSystem> make();  // Inicializador
   ~WindowSystem();                            // Destructor
-  WindowSystem(WindowSystem&) = default;
+  WindowSystem(WindowSystem&);
 private:
   WindowSystem() = default;                   // Constructor
-  WindowSystem(const WindowSystem&) = delete;                // Constructor de copia
+  WindowSystem(const WindowSystem&) = delete; // Constructor de copia
   WindowSystem* ws;
 };
 
