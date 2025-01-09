@@ -7,6 +7,7 @@
 #include <optional>
 #include <vector>
 #include <string>
+#include <assimp/material.h>
 #include "../Program.hpp"
 
 class Mesh {
@@ -21,6 +22,7 @@ public:
     unsigned int id;
     std::string type;
     std::string path;
+    aiTextureType assimpType;
   };
   struct Vertex {
     glm::vec3 position;

@@ -1,3 +1,4 @@
+// Model.hpp
 #ifndef __MODEL__ 
 #define __MODEL__ 1
 
@@ -8,47 +9,67 @@
 #include <stb_image.h>
 #include <vector>
 #include <string>
+#include <future>
+#include <memory>
 #include "Mesh.hpp"
 #include "../Program.hpp"
 #include "JobSystem.hpp"
 
 class Model {
 public:
+  // Constructors for synchronous and asynchronous loading
   Model(const std::string& path);
   Model(const std::string& path, JobSystem& jobSystem);
-  // Método para finalizar el modelo (si se usó JobSystem)
-  void finalizeModel();
+
+  // Destructor and move semantics
   ~Model() = default;
-  
   Model(const Model& other) = delete;
-  Model& operator=(const Model& other) = delete;;
-  Model(Model&& other) noexcept : meshes(std::move(other.meshes)) {}
+  Model& operator=(const Model& other) = delete;
+  Model(Model&& other) noexcept;
   Model& operator=(Model&& other) noexcept;
-  
-  std::vector<Mesh::Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
-  bool isLoadComplete();
-  //std::vector <Mesh> getMeshes();
-  std::vector<Mesh> meshes;
+
+  // Public interface
+  void finalizeModel();
   void Draw(Program program) const;
+  bool isLoadComplete() const { return loadComplete; }
+  bool isDataLoaded() const { return dataLoaded; }
+  bool isGLResourcesCreated() const { return glResourcesCreated; }
+
+  // Public data (consider making private with accessors)
+  std::vector<Mesh> meshes;
+  void createGLResources();
 
 private:
+  // Structures for handling loading state
+  struct MaterialInfo {
+    std::string path;
+    std::string type;
+    aiTextureType assimpType;
+  };
 
-  struct MeshData {
+  struct MeshLoadData {
     std::vector<Mesh::Vertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<Mesh::Texture> textures;
-  };   
-  std::vector<MeshData> tempMeshes;
+    std::vector<MaterialInfo> materialInfo;
+    std::string directory;
+  };
+
+  // Member variables for loading state
+  std::vector<MeshLoadData> meshesData;
   std::vector<Mesh::Texture> textures_loaded;
   std::string directory;
-  bool asyncMode;
+  bool asyncMode = false;
   bool loadComplete = false;
+  bool dataLoaded = false;
+  bool glResourcesCreated = false;
+
+  // Private methods for loading and processing
   void loadModel(const std::string& path);
-  void asyncLoadModel(const std::string& path, JobSystem& jobSystem);
+  void loadModelDataAsync(const std::string& path, JobSystem& jobSystem);
   void processNode(aiNode* node, const aiScene* scene);
-  Model::MeshData processMesh(aiMesh* mesh, const aiScene* scene);
+  MeshLoadData processMeshData(aiMesh* mesh, const aiScene* scene);
+  std::vector<Mesh::Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
   unsigned int TextureFromFile(const char* path, const std::string& directory);
 };
 
 #endif
-

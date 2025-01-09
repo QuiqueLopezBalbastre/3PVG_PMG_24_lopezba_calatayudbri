@@ -4,53 +4,15 @@
 #include <string>
 #include <unordered_map>
 #include <functional>
-#include "Entity.hpp"
+#include "common.hpp"
 #include "Input.hpp"
 #include "Scripting.hpp"
 
+using Entity = unsigned int;
+
 #define M_PI 3.141592f
 
-struct Vec3 {
-  float x, y, z;
-  Vec3 operator+(const Vec3& other) const {
-    return { x + other.x, y + other.y, z + other.z };
-  }
 
-  Vec3 operator*(float scalar) const {
-    return { x * scalar, y * scalar, z * scalar };
-  }
-
-  Vec3& operator+=(const Vec3& other) {
-    x += other.x;
-    y += other.y;
-    z += other.z;
-    return *this;
-  }
-  Vec3& operator-=(const Vec3& other) {
-    x -= other.x;
-    y -= other.y;
-    z -= other.z;
-    return *this;
-  }
-};
-struct Vec4 {
-  float x, y, z, w;
-  Vec4 operator+(const Vec4& other) const {
-    return { x + other.x, y + other.y, z + other.z, w + other.w };
-  }
-
-  Vec4 operator*(float scalar) const {
-    return { x * scalar, y * scalar, z * scalar , w * scalar };
-  }
-
-  Vec4& operator+=(const Vec4& other) {
-    x += other.x;
-    y += other.y;
-    z += other.z;
-    w += other.w;
-    return *this;
-  }
-};
 struct ComponentBase {
   bool active;
 };

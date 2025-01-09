@@ -1,136 +1,106 @@
+// Model.cpp
 #include "ModelLoader/Model.hpp"
 #include <iostream>
 
-//Model::Model()
-//{
-//}
 Model::Model(const std::string& path) : asyncMode(false) {
   loadModel(path);
 }
-Model::Model(const std::string& path, JobSystem& jobSystem) : asyncMode(true) {
-  asyncLoadModel(path, jobSystem);
-}
-void Model::finalizeModel()
-{
-  for (const auto& tempMesh : tempMeshes) {
-    meshes.emplace_back(tempMesh.vertices, tempMesh.indices, tempMesh.textures);
-  }
 
-  tempMeshes.clear();
-  std::cout << "Carga de modelo completada" << std::endl;
+Model::Model(const std::string& path, JobSystem& jobSystem) : asyncMode(true) {
+  loadModelDataAsync(path, jobSystem);
 }
-//Model::Model(const std::string& path)
-//{
-//  if (!path.empty()) {
-//
-//    Assimp::Importer importer;
-//    const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
-//
-//    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-//      std::cerr << "Error al cargar modelo: " << importer.GetErrorString() << std::endl;
-//      return;
-//    }
-//    directory = path.substr(0, path.find_last_of('/'));
-//
-//    processNode(scene->mRootNode, scene);
-//    std::cerr << importer.GetErrorString() << std::endl;
-//
-//    if (meshes.size() > 0)
-//      std::cout << "El modelo se cargo correctamente. " << std::endl;
-//  }
-//}
+
+Model::Model(Model&& other) noexcept :
+  meshes(std::move(other.meshes)),
+  meshesData(std::move(other.meshesData)),
+  textures_loaded(std::move(other.textures_loaded)),
+  directory(std::move(other.directory)),
+  asyncMode(other.asyncMode),
+  loadComplete(other.loadComplete),
+  dataLoaded(other.dataLoaded),
+  glResourcesCreated(other.glResourcesCreated) {
+}
 
 Model& Model::operator=(Model&& other) noexcept {
   if (this != &other) {
     meshes = std::move(other.meshes);
+    meshesData = std::move(other.meshesData);
+    textures_loaded = std::move(other.textures_loaded);
+    directory = std::move(other.directory);
+    asyncMode = other.asyncMode;
+    loadComplete = other.loadComplete;
+    dataLoaded = other.dataLoaded;
+    glResourcesCreated = other.glResourcesCreated;
   }
   return *this;
 }
+
 void Model::loadModel(const std::string& path) {
   Assimp::Importer importer;
   const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
   if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-    std::cerr << "Error al cargar modelo: " << importer.GetErrorString() << std::endl;
+    std::cerr << "Error loading model: " << importer.GetErrorString() << std::endl;
     return;
   }
 
   directory = path.substr(0, path.find_last_of('/'));
   processNode(scene->mRootNode, scene);
+  dataLoaded = true;
 
-  if (0 < tempMeshes.size())
-    std::cout << "LOADMODEL -- Numero de mallas procesadas: " << tempMeshes.size() << std::endl;
-  else
-    std::cerr << "LOADMODEL -- Numero de mallas procesadas: 0";
+  // In synchronous mode, we create GL resources immediately
+  createGLResources();
 }
 
-void Model::asyncLoadModel(const std::string& path, JobSystem& jobSystem) {
+void Model::loadModelDataAsync(const std::string& path, JobSystem& jobSystem) {
   auto self = std::shared_ptr<Model>(this, [](Model*) {});
-  jobSystem.addJob(JobSystem::JobType::General, JobSystem::JobPriority::High, [self, path]() {
-    Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
-    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-      std::cerr << "Error al cargar modelo: " << importer.GetErrorString() << std::endl;
-      return;
-    }
+  jobSystem.addJob(JobSystem::JobType::General, JobSystem::JobPriority::High,
+    [self, path]() {
+      Assimp::Importer importer;
+      const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
-    self->directory = path.substr(0, path.find_last_of('/'));
-    self->processNode(scene->mRootNode, scene);
-    self->loadComplete = true;
-    std::cout << "Modelo cargado con JobSystem." << std::endl;
-    if (0 < self->tempMeshes.size())
-      std::cout << "Numero de mallas procesadas: " << self->tempMeshes.size() << std::endl;
-    else
-      std::cerr << "Numero de mallas procesadas: 0";
+      if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
+        std::cerr << "Error loading model: " << importer.GetErrorString() << std::endl;
+        return;
+      }
+
+      self->directory = path.substr(0, path.find_last_of('/'));
+
+      // Process nodes in parallel
+      std::vector<std::future<void>> nodeFutures;
+      for (unsigned int i = 0; i < scene->mRootNode->mNumChildren; i++) {
+        nodeFutures.push_back(std::async(std::launch::async,
+          [self, node = scene->mRootNode->mChildren[i], scene]() {
+            self->processNode(node, scene);
+          }));
+      }
+
+      // Wait for all nodes to be processed
+      for (auto& future : nodeFutures) {
+        future.wait();
+      }
+
+      self->dataLoaded = true;
+      std::cout << "Model data loaded asynchronously." << std::endl;
     });
 }
+
 void Model::processNode(aiNode* node, const aiScene* scene) {
   for (unsigned int i = 0; i < node->mNumMeshes; i++) {
     aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-    tempMeshes.push_back(processMesh(mesh, scene));
+    meshesData.push_back(processMeshData(mesh, scene));
   }
+
   for (unsigned int i = 0; i < node->mNumChildren; i++) {
     processNode(node->mChildren[i], scene);
   }
 }
-std::vector<Mesh::Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
-{
-  std::vector<Mesh::Texture> textures;
-  for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-  {
-    aiString str;
-    mat->GetTexture(type, i, &str);
-    // check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-    bool skip = false;
-    for (unsigned int j = 0; j < textures_loaded.size(); j++)
-    {
-      if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
-      {
-        textures.push_back(textures_loaded[j]);
-        skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
-        break;
-      }
-    }
-    if (!skip)
-    {   // if texture hasn't been loaded already, load it
-      Mesh::Texture texture;
-      texture.id = TextureFromFile(str.C_Str(), this->directory);
-      texture.type = typeName;
-      texture.path = str.C_Str();
-      textures.push_back(texture);
-      textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecessary load duplicate textures.
-    }
-  }
-  return textures;
-}
-bool Model::isLoadComplete()
-{
-  return loadComplete;
-}
-Model::MeshData Model::processMesh(aiMesh* mesh, const aiScene* scene) {
-  MeshData data;
-  //Process vertices
+
+Model::MeshLoadData Model::processMeshData(aiMesh* mesh, const aiScene* scene) {
+  MeshLoadData data;
+
+  // Process vertices
   for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
     Mesh::Vertex vertex;
     vertex.position = { mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z };
@@ -138,58 +108,106 @@ Model::MeshData Model::processMesh(aiMesh* mesh, const aiScene* scene) {
     if (mesh->HasNormals()) {
       vertex.normal = { mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z };
     }
-    else {
-      vertex.normal = { 0.0f, 0.0f, 0.0f };
-    }
 
     if (mesh->mTextureCoords[0]) {
       vertex.texCoords = { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y };
     }
-    else {
-      vertex.texCoords = { 0.0f, 0.0f };
-    }
 
     data.vertices.push_back(vertex);
   }
-  //Process indices
+
+  // Process indices
   for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
     aiFace face = mesh->mFaces[i];
     for (unsigned int j = 0; j < face.mNumIndices; j++) {
       data.indices.push_back(face.mIndices[j]);
     }
   }
-  //Process materials
-  if (mesh->mMaterialIndex >= 0)
-  {
+
+  // Process materials
+  if (mesh->mMaterialIndex >= 0) {
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-    std::vector<Mesh::Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-    data.textures.insert(data.textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-    std::vector<Mesh::Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-    data.textures.insert(data.textures.end(), specularMaps.begin(), specularMaps.end());
+
+    // Store material information for later processing
+    for (unsigned int i = 0; i < material->GetTextureCount(aiTextureType_DIFFUSE); i++) {
+      aiString texPath;
+      material->GetTexture(aiTextureType_DIFFUSE, i, &texPath);
+
+      MaterialInfo matInfo;
+      matInfo.path = texPath.C_Str();
+      matInfo.type = "texture_diffuse";
+      matInfo.assimpType = aiTextureType_DIFFUSE;
+      data.materialInfo.push_back(matInfo);
+    }
+
+    for (unsigned int i = 0; i < material->GetTextureCount(aiTextureType_SPECULAR); i++) {
+      aiString texPath;
+      material->GetTexture(aiTextureType_SPECULAR, i, &texPath);
+
+      MaterialInfo matInfo;
+      matInfo.path = texPath.C_Str();
+      matInfo.type = "texture_specular";
+      matInfo.assimpType = aiTextureType_SPECULAR;
+      data.materialInfo.push_back(matInfo);
+    }
   }
+
+  data.directory = directory;
   return data;
-};
+}
 
+void Model::createGLResources() {
+  if (!dataLoaded) {
+    std::cerr << "Cannot create GL resources before data is loaded" << std::endl;
+    return;
+  }
 
+  for (const auto& meshData : meshesData) {
+    std::vector<Mesh::Texture> textures;
 
-unsigned int Model::TextureFromFile(const char* path, const std::string& directory)
-{
+    // Process all materials for this mesh
+    for (const auto& matInfo : meshData.materialInfo) {
+      bool skip = false;
+
+      // Check if we've already loaded this texture
+      for (const auto& loadedTex : textures_loaded) {
+        if (loadedTex.path == matInfo.path) {
+          textures.push_back(loadedTex);
+          skip = true;
+          break;
+        }
+      }
+
+      if (!skip) {
+        Mesh::Texture texture;
+        texture.id = TextureFromFile(matInfo.path.c_str(), meshData.directory);
+        texture.type = matInfo.type;
+        texture.path = matInfo.path;
+
+        textures.push_back(texture);
+        textures_loaded.push_back(texture);
+      }
+    }
+
+    // Create mesh with OpenGL buffers
+    meshes.emplace_back(meshData.vertices, meshData.indices, textures);
+  }
+
+  meshesData.clear();
+  glResourcesCreated = true;
+  loadComplete = true;
+}
+
+unsigned int Model::TextureFromFile(const char* path, const std::string& directory) {
   std::string filename = directory + '/' + std::string(path);
-  std::cout << "Cargando textura: " << filename << std::endl;
   unsigned int textureID;
   glGenTextures(1, &textureID);
 
   int width, height, nrComponents;
   unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-  if (data)
-  {
-    GLenum format;
-    if (nrComponents == 1)
-      format = GL_RED;
-    else if (nrComponents == 3)
-      format = GL_RGB;
-    else if (nrComponents == 4)
-      format = GL_RGBA;
+  if (data) {
+    GLenum format = (nrComponents == 1) ? GL_RED :
+      (nrComponents == 3) ? GL_RGB : GL_RGBA;
 
     glBindTexture(GL_TEXTURE_2D, textureID);
     glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
@@ -202,8 +220,7 @@ unsigned int Model::TextureFromFile(const char* path, const std::string& directo
 
     stbi_image_free(data);
   }
-  else
-  {
+  else {
     std::cout << "Texture failed to load at path: " << path << std::endl;
     stbi_image_free(data);
   }
@@ -211,14 +228,16 @@ unsigned int Model::TextureFromFile(const char* path, const std::string& directo
   return textureID;
 }
 
-
-
 void Model::Draw(Program program) const {
   for (const auto& mesh : meshes) {
     mesh.Draw(program);
   }
-  // Restaurar estado de OpenGL
   glBindTexture(GL_TEXTURE_2D, 0);
   glActiveTexture(GL_TEXTURE0);
 }
 
+void Model::finalizeModel() {
+  if (dataLoaded && !glResourcesCreated) {
+    createGLResources();
+  }
+}
