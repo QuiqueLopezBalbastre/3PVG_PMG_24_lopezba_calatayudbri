@@ -5,7 +5,7 @@
 
 class Shader {
 public:
-  static enum ShaderType {
+  enum ShaderType {
     kShaderType_Invalid,
     kShaderType_Vertex,
     kShaderType_Fragment,

@@ -6,9 +6,12 @@
 #include "ECS/Component.hpp"
 #include "ECS/System.hpp"
 #include "ECS/ECSManager.hpp"
+#include <imgui.h>
 
 int main() {
   glfwInit();
+  //IMGUI_CHECKVERSION();
+  //ImGui::CreateContext();
   auto window = Window::make(1280, 1040, "LUQUI");
   if (nullptr == window->window) {
     return -1;
@@ -68,23 +71,28 @@ int main() {
         anim.rotation = { 0.0f, 0.0f, 25.0f };
       });
   }
-    Entity scriptentity = ecsmanager.createEntity();
-    ecsmanager.editComponent<ShapeComponent>(scriptentity, [](ShapeComponent& shape) {shape = createTriangle(0.1f, { 0.0f, 0.0f, 1.0f, 1.0f }); });
-    ecsmanager.editComponent<TransformComponent>(scriptentity, [](TransformComponent& transform)
-      {
-        transform.position = { -0.5f, 0.5f, 0.0f };
-        transform.scale = { 1.0f, 1.0f, 0.0f };
-      });
-    ecsmanager.editComponent<ScriptComponent>(scriptentity, [](ScriptComponent& script)
-      {
-        script.script = std::make_shared<LuaScript>("C:/Users/quilo/Documents/GitHub/3PVG_PMG_24_lopezba_calatayudbri/data/Scripts/HelloWorld.lua");
-      });
-    auto scriptcmp = ecsmanager.getComponent<ScriptComponent>(scriptentity);
-    scriptcmp.value()->script->run(scriptcmp.value()->script->getContent());
+  Entity scriptentity = ecsmanager.createEntity();
+  ecsmanager.editComponent<ShapeComponent>(scriptentity, [](ShapeComponent& shape) {shape = createTriangle(0.1f, { 0.0f, 0.0f, 1.0f, 1.0f }); });
+  ecsmanager.editComponent<TransformComponent>(scriptentity, [](TransformComponent& transform)
+    {
+      transform.position = { -0.5f, 0.5f, 0.0f };
+      transform.scale = { 1.0f, 1.0f, 0.0f };
+    });
+  ecsmanager.editComponent<ScriptComponent>(scriptentity, [](ScriptComponent& script)
+    {
+      script.script = std::make_shared<LuaScript>("C:/Users/quilo/Documents/GitHub/3PVG_PMG_24_lopezba_calatayudbri/data/Scripts/HelloWorld.lua");
+    });
+  auto scriptcmp = ecsmanager.getComponent<ScriptComponent>(scriptentity);
+  scriptcmp.value()->script->run(scriptcmp.value()->script->getContent());
 
   // Ciclo del juego
   while (!window->isOpen()) {
     window->clear();
+    //ImGui::NewFrame();
+    //ImGui::SetNextWindowSize({100.0f, 100.0f});
+    //ImGui::SetNextWindowPos({ 0.0f, 0.0f });
+    //ImGui::Begin("Hi", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+    //ImGui::ShowDemoWindow();
 
     for (Entity entity = 0; entity < ecsmanager.get_nextEntity(); ++entity) {
       if (!ecsmanager.isEntityAlive(entity)) continue;
@@ -106,9 +114,10 @@ int main() {
         inputSystem.update(inputComponentOpt.value(), transformOpt.value(), input);
     }
 
-
+    //ImGui::Render();
     // Intercambiar buffers
     window->render();
+    //ImGui::End();
   }
 
   window->~Window();

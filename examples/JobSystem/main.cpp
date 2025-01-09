@@ -139,13 +139,13 @@ int main(int argc, char** argv) {
   window->setCurrentWindowActive();
 
   // Initialize job system for async loading
-  JobSystem js(std::thread::hardware_concurrency() * 0.5f);
+  JobSystem js((unsigned int)(std::thread::hardware_concurrency() * 0.5f));
 
   // Create and compile shaders
   Shader vertex;
   vertex.loadSource(Shader::ShaderType::kShaderType_Vertex,
     kExampleVertexShader,
-    strlen(kExampleVertexShader));
+    (unsigned int)(strlen(kExampleVertexShader)));
   if (!vertex.compile()) {
     std::cout << "Failed to compile vertex shader" << std::endl;
     return -1;
@@ -154,7 +154,7 @@ int main(int argc, char** argv) {
   Shader fragment;
   fragment.loadSource(Shader::ShaderType::kShaderType_Fragment,
     kExampleFragmentShader,
-    strlen(kExampleFragmentShader));
+    (unsigned int)(strlen(kExampleFragmentShader)));
   if (!fragment.compile()) {
     std::cout << "Failed to compile fragment shader" << std::endl;
     return -1;

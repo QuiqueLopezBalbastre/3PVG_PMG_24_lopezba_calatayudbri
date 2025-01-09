@@ -2,9 +2,9 @@
 #include "Window.hpp"
 #include "Input.hpp"
 #include "Figure.hpp"
-#include "JobSystem.hpp"
 
-int main(int argc, char** argv) {
+
+int WinMain(int argc, char** argv) {
   //auto ws = WindowSystem::make();
 
   glfwInit();

@@ -67,12 +67,12 @@ int main(int argc, char** argv) {
     );
   /** Creating shaders */
   Shader vertex = Shader();
-  vertex.loadSource(Shader::ShaderType::kShaderType_Vertex, kExampleVertexShader, strlen(kExampleVertexShader));
+  vertex.loadSource(Shader::ShaderType::kShaderType_Vertex, kExampleVertexShader, (unsigned int)strlen(kExampleVertexShader));
   vertex.compile();
   if (!vertex.get_isCompiled())
     return -1;
   Shader fragment = Shader();
-  fragment.loadSource(Shader::ShaderType::kShaderType_Fragment, kExampleFragmentShader, strlen(kExampleFragmentShader));
+  fragment.loadSource(Shader::ShaderType::kShaderType_Fragment, kExampleFragmentShader, (unsigned int)strlen(kExampleFragmentShader));
   fragment.compile();
   if (!fragment.get_isCompiled())
     return -1;
