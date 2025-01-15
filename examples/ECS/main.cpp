@@ -6,7 +6,6 @@
 #include "ECS/Component.hpp"
 #include "ECS/System.hpp"
 #include "ECS/ECSManager.hpp"
-#include <imgui.h>
 
 int main() {
   glfwInit();
@@ -88,11 +87,7 @@ int main() {
   // Ciclo del juego
   while (!window->isOpen()) {
     window->clear();
-    //ImGui::NewFrame();
-    //ImGui::SetNextWindowSize({100.0f, 100.0f});
-    //ImGui::SetNextWindowPos({ 0.0f, 0.0f });
-    //ImGui::Begin("Hi", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-    //ImGui::ShowDemoWindow();
+ 
 
     for (Entity entity = 0; entity < ecsmanager.get_nextEntity(); ++entity) {
       if (!ecsmanager.isEntityAlive(entity)) continue;

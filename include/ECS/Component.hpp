@@ -7,6 +7,7 @@
 #include "common.hpp"
 #include "Input.hpp"
 #include "Scripting.hpp"
+#include "ModelLoader/Model.hpp"
 
 using Entity = unsigned int;
 
@@ -23,8 +24,7 @@ struct TransformComponent : ComponentBase {
   Vec3 scale;
 };
 struct RenderComponent : ComponentBase {
-  std::string meshName;
-  std::string textureName;
+    std::shared_ptr<Model> model;
 };
 enum class ShapeType {
   Square,
