@@ -24,6 +24,7 @@ struct TransformComponent : ComponentBase {
   Vec3 scale;
 };
 struct RenderComponent : ComponentBase {
+ 
     std::shared_ptr<Model> model;
 };
 enum class ShapeType {

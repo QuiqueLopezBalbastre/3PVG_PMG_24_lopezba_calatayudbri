@@ -9,6 +9,8 @@ public:
   RenderSystem();
   void update(const std::vector<TransformComponent>& transforms, const std::vector<RenderComponent>& renders);
   void drawShape(const TransformComponent* transform, const ShapeComponent* shape);
+  void drawModel(const TransformComponent* transform, const RenderComponent* model, Program program);
+
 private:
   void renderEntity(Entity entity, const TransformComponent& transform, const RenderComponent& render);
 };

@@ -37,9 +37,27 @@ void RenderSystem::renderEntity(Entity entity, const TransformComponent& transfo
 {
   std::cout << "Rendering entity " << entity << " at position ("
     << transform.position.x << ", " << transform.position.y << ", " << transform.position.z
-    << ") with mesh " << render.meshName
-    << " and texture " << render.textureName << ".\n";
+    << ".\n";
 }
+
+void RenderSystem::drawModel(const TransformComponent* transform, const RenderComponent* model, Program program) {
+    if (!model || !model->model) return;
+
+    glPushMatrix();
+
+    // Aplicar transformaciones
+    glTranslatef(transform->position.x, transform->position.y, transform->position.z);
+    glRotatef(transform->rotation.x, 1.0f, 0.0f, 0.0f);
+    glRotatef(transform->rotation.y, 0.0f, 1.0f, 0.0f);
+    glRotatef(transform->rotation.z, 0.0f, 0.0f, 1.0f);
+    glScalef(transform->scale.x, transform->scale.y, transform->scale.z);
+
+    // Dibujar el modelo
+    model->model->Draw(program);
+
+    glPopMatrix();
+}
+
 
 void RenderSystem::drawShape(const TransformComponent* transform, const ShapeComponent* shape) {
   glPushMatrix();
