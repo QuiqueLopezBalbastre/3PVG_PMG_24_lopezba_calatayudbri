@@ -8,6 +8,7 @@
 #include "Input.hpp"
 #include "Scripting.hpp"
 #include "ModelLoader/Model.hpp"
+#include "glm/vec3.hpp"
 
 using Entity = unsigned int;
 
@@ -19,9 +20,9 @@ struct ComponentBase {
 };
 
 struct TransformComponent : ComponentBase {
-  Vec3 position;
-  Vec3 rotation;
-  Vec3 scale;
+  glm::vec3 position;
+  glm::vec3 rotation;
+  glm::vec3 scale;
 };
 struct RenderComponent : ComponentBase {
  
@@ -82,9 +83,9 @@ struct InputComponent : ComponentBase {
   double mouseY = 0.0;
 };
 struct AnimationComponent : ComponentBase {
-  Vec3 translation;  // Movimiento por frame (x, y, z)
-  Vec3 rotation;     // Rotación por frame (pitch, yaw, roll)
-  Vec3 scale;        // Escalado por frame (x, y, z)
+  glm::vec3 translation;  // Movimiento por frame (x, y, z)
+  glm::vec3 rotation;     // Rotación por frame (pitch, yaw, roll)
+  glm::vec3 scale;        // Escalado por frame (x, y, z)
   float duration;    // Duración de la animación en segundos
   float elapsedTime; // Tiempo transcurrido desde el inicio
 };

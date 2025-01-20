@@ -159,7 +159,7 @@ int main() {
 //Model Entity
 Entity modelEntity = ecsmanager.createEntity();
 ecsmanager.editComponent<TransformComponent>(modelEntity, [](TransformComponent& transform) {
-	transform.position = { 0.0f, 0.0f, -5.0f };
+	transform.position = { 0.0f, 0.0f, 0.0f };
 	transform.scale = { 1.0f, 1.0f, 1.0f };
 	});
 
@@ -170,6 +170,10 @@ ecsmanager.editComponent<ScriptComponent>(modelEntity, [](ScriptComponent& scrip
 
 ecsmanager.editComponent<RenderComponent>(modelEntity, [](RenderComponent& modelComp) {
 	modelComp.model = std::make_shared<Model>("../data/Models/cube/cube.obj");
+	});
+
+ecsmanager.editComponent<InputComponent>(modelEntity, [](InputComponent& input) {
+	input.active = true;
 	});
 			//////////////////////////////////
 
@@ -188,8 +192,26 @@ ecsmanager.editComponent<RenderComponent>(modelEntity, [](RenderComponent& model
 		view = glm::mat4(1.0f);
 		projection = glm::mat4(1.0f);
 
-		model = glm::rotate(model, glm::radians((float)glfwGetTime() * 10.0f), glm::vec3(0, 1, 0));
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -5.0f));
+		auto modelTransform = ecsmanager.getComponent<TransformComponent>(modelEntity);
+		if (modelTransform) {
+			model = glm::mat4(1.0f);
+			// Aplica las transformaciones en orden: escala, rotación, traslación
+			model = glm::translate(model, modelTransform.value()->position);
+			model = glm::rotate(model, glm::radians((float)glfwGetTime() * 10.0f), glm::vec3(0, 1, 0));
+			model = glm::scale(model, modelTransform.value()->scale);
+		}
+		if (modelTransform) {
+			glm::vec3 model_pos;
+			model_pos.x = modelTransform.value()->position.x;
+			model_pos.y = modelTransform.value()->position.y;
+			model_pos.z = modelTransform.value()->position.z;
+
+			view = glm::lookAt(
+				glm::vec3(0.0f, 0.0f, 5.0f), // Posición de la cámara
+				glm::vec3(-model_pos), // Punto al que mira
+				glm::vec3(0.0f, 1.0f, 0.0f)  // Vector "up"
+			);
+		}
 		projection = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 100.f);
 
 		glEnable(GL_TEXTURE_2D);
