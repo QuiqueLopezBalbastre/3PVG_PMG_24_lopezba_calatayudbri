@@ -1,26 +1,30 @@
 #include "WindowSystem.hpp"
 #include "Window.hpp"
 
-int WinMain(int argc, char** argv) {
-  //auto ws = WindowSystem::make();
+int main(int argc, char** argv) {
+    // Create the window system first
+    auto windowSystem = WindowSystem::make();
+    if (!windowSystem) {
+        // Handle initialization failure
+        printf("Failed to initialize GLFW\n");
+        return -1;
+    }
 
-  glfwInit();
-  auto window = Window::make(640, 480, "LUQUI black window");
-  if (nullptr == window->window) {
-    return -1;
-  }
+    // Now create the window using the initialized system
+    auto window = Window::make(640, 480, "LUQUI black window");
+    if (!window || window->window == nullptr) {
+        printf("Failed to create window\n");
+        return -1;
+    }
 
-  window->setCurrentWindowActive();
+    window->setCurrentWindowActive();
 
-  /* Loop until the user closes the window */
-  while (!window->isOpen())
-  {
-    window->render();
-  }
+    // Main render loop
+    while (!window->isOpen()) {
+        window->render();
+    }
 
-  window->~Window();
-  glfwTerminate();
-  //ws->~WindowSystem();
-  return 0;
+    // The WindowSystem destructor will handle GLFW termination
+    return 0;
 }
 
