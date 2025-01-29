@@ -19,6 +19,24 @@ struct ComponentBase {
   bool active;
 };
 
+enum class LightType {
+    Directional,
+    Point,
+    Spot,
+    Ambient
+};
+
+struct LightComponent : ComponentBase
+{
+    LightType type;
+    glm::vec3 color;
+    glm::vec3 position;
+    glm::vec3 direction;
+    float intensity;
+    float radius; // Para point lights y spotlight
+    float cutoff; // Para spotlight
+};
+
 struct TransformComponent : ComponentBase {
   glm::vec3 position;
   glm::vec3 rotation;
