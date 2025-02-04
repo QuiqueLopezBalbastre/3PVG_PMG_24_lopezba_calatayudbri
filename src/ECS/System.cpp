@@ -43,6 +43,9 @@ void RenderSystem::renderEntity(Entity entity, const TransformComponent& transfo
 void RenderSystem::drawModel(const TransformComponent* transform, const RenderComponent* model, Program program) {
 	if (!model || !model->model) return;
 
+	// Pasar la luz ambiental al shader
+	GLuint ambientLightLoc = glGetUniformLocation(program.get_id(), "ambientLight");
+	glUniform3f(ambientLightLoc, 0.5f, 0.5f, 0.5f); // Ejemplo de luz ambiental
 
 	model->model->Draw(program);
 }

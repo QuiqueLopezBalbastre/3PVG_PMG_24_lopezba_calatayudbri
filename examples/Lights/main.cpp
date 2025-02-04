@@ -38,13 +38,18 @@ int main() {
 	in vec2 TexCoords;
 
 	uniform sampler2D texture_diffuse;
+	uniform vec3 ambientLight; // Color de la luz ambiental
+	uniform float ambientIntensity; // Intensidad de la luz ambiental
 
 	void main()
 	{
-
-		FragColor = texture(texture_diffuse, TexCoords);
-		// Muestra coordenadas UV como color
-	   //FragColor = vec4(TexCoords, 0.0, 1.0);
+		vec4 textureColor = texture(texture_diffuse, TexCoords);
+		if (textureColor.a < 0.1) { // Si no hay textura, usar un color base
+			textureColor = vec4(0.8, 0.8, 0.8, 1.0); // Gris claro
+		}
+		vec3 finalColor = textureColor.rgb * ambientLight * ambientIntensity;
+		FragColor = vec4(finalColor, textureColor.a);
+		//FragColor = vec4(TexCoords, 0.0, 1.0); // ver las normales
 	}
 		);
 
@@ -96,83 +101,31 @@ int main() {
 
 	// Declaramos los sistemas que se utilizarán en el programa.
 	RenderSystem renderSystem;
-	AnimationSystem animationSystem;
 	InputSystem inputSystem;
 
 	// Crear listas de componentes
 	ecsmanager.addComponentType<TransformComponent>();
-	ecsmanager.addComponentType<ShapeComponent>();
-	ecsmanager.addComponentType<AnimationComponent>();
 	ecsmanager.addComponentType<InputComponent>();
-	ecsmanager.addComponentType<ScriptComponent>();
 	ecsmanager.addComponentType<RenderComponent>();
 	ecsmanager.addComponentType<LightComponent>();
-
-	///////---->2D<------///////
-// Creamos una entidad que será gestionada por el usuario.
-	Entity player = ecsmanager.createEntity();
-	ecsmanager.editComponent<InputComponent>(player, [](InputComponent& input) {input.active = true; });
-	ecsmanager.editComponent<ShapeComponent>(player, [](ShapeComponent& shape) {shape = createSquare(0.2f, { 0.0f, 1.0f, 0.0f, 1.0f }); });
-	ecsmanager.editComponent<TransformComponent>(player, [](TransformComponent& transform)
-		{transform.position = { 0.5f, 0.5f, 0.0f };
-	transform.scale = { 1.0f, 1.0f, 0.0f }; });
-	std::cout << "Player is entity: " << player;
-
-	// Creamos entidades y modificamos sus componentes.
-	for (int i = 0; i < 0; i++) {
-		Entity entity = ecsmanager.createEntity();
-		ecsmanager.editComponent<TransformComponent>(entity, [](TransformComponent& transform)
-			{int x = rand() % 10;
-		int y = rand() % 10;
-		int dirx = rand() % 2;
-		if (0 == dirx)
-			dirx = -1;
-		int diry = rand() % 2;
-		if (0 == diry)
-			diry = -1;
-		transform.position.x = (float)x * 0.1f * (float)dirx;      // Modificar la posición X
-		transform.position.y = (float)y * 0.1f * (float)diry;      // Modificar la posición Y
-		transform.scale = { 1.0f, 1.0f, 2.0f }; });                // Cambiar el escalado})
-		ecsmanager.editComponent<ShapeComponent>(entity, [](ShapeComponent& shape) {shape = createSquare(0.01f, { 1.0f,0.0f,0.0f,1.0f }); });
-		ecsmanager.editComponent<AnimationComponent>(entity, [](AnimationComponent& anim)
-			{
-				anim.active = true;
-				anim.duration = 60.0f;
-				anim.translation = { 0.0f, 0.0f, 0.0f };
-				anim.scale = { 0.0f , 0.0f, 0.0f };
-				anim.rotation = { 0.0f, 0.0f, 25.0f };
-			});
-	}
-	Entity scriptentity = ecsmanager.createEntity();
-	ecsmanager.editComponent<ShapeComponent>(scriptentity, [](ShapeComponent& shape) {shape = createTriangle(0.1f, { 0.0f, 0.0f, 1.0f, 1.0f }); });
-	ecsmanager.editComponent<TransformComponent>(scriptentity, [](TransformComponent& transform)
-		{
-			transform.position = { -0.5f, 0.5f, 0.0f };
-			transform.scale = { 1.0f, 1.0f, 0.0f };
-		});
-	ecsmanager.editComponent<ScriptComponent>(scriptentity, [](ScriptComponent& script)
-		{
-			script.script = std::make_shared<LuaScript>("../data/Scripts/HelloWorld.lua");
-		});
-	auto scriptcmp = ecsmanager.getComponent<ScriptComponent>(scriptentity);
-	scriptcmp.value()->script->run(scriptcmp.value()->script->getContent());
-	////////////////////////////////////////
 
 	///////---->3D<------///////
 //Model Entity
 Entity modelEntity = ecsmanager.createEntity();
+
 ecsmanager.editComponent<TransformComponent>(modelEntity, [](TransformComponent& transform) {
 	transform.position = { 0.0f, 0.0f, 0.0f };
 	transform.scale = { 1.0f, 1.0f, 1.0f };
 	});
 
-//// Componente de script para lógica personalizada
-ecsmanager.editComponent<ScriptComponent>(modelEntity, [](ScriptComponent& scriptComp) {
-	scriptComp.script = std::make_shared<LuaScript>("../data/Scripts/HelloWorld.lua");
+ecsmanager.editComponent<LightComponent>(modelEntity, [](LightComponent& light) {
+	light.type = LightType::Ambient;
+	light.color = glm::vec3(0.0f, 0.0f, 1.0f);
+	light.intensity = 1.0f; // Intensidad de la luz ambiental
 	});
 
 ecsmanager.editComponent<RenderComponent>(modelEntity, [](RenderComponent& modelComp) {
-	modelComp.model = std::make_shared<Model>("../data/Models/cube/cube.obj");
+	modelComp.model = std::make_shared<Model>("../data/Models/Alduin/Alduin.obj");
 	});
 
 ecsmanager.editComponent<InputComponent>(modelEntity, [](InputComponent& input) {
@@ -210,12 +163,12 @@ ecsmanager.editComponent<InputComponent>(modelEntity, [](InputComponent& input) 
 			model_pos.z = modelTransform.value()->position.z;
 
 			view = glm::lookAt(
-				glm::vec3(0.0f, 0.0f, 5.0f), // Posición de la cámara
+				glm::vec3(0.0f, 350.0f, 500.0f), // Posición de la cámara
 				glm::vec3(-model_pos), // Punto al que mira
 				glm::vec3(0.0f, 1.0f, 0.0f)  // Vector "up"
 			);
 		}
-		projection = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 100.f);
+		projection = glm::perspective(glm::radians(90.0f), 1280.0f / 1040.0f,0.10f, 1000.f);
 
 		glEnable(GL_TEXTURE_2D);
 		GLuint model_loc = glGetUniformLocation(program.get_id(), "model");
@@ -228,28 +181,32 @@ ecsmanager.editComponent<InputComponent>(modelEntity, [](InputComponent& input) 
 		glUniformMatrix4fv(projection_loc, 1, GL_FALSE, glm::value_ptr(projection));
 
 
-		//window->clear();
-
-
 		for (Entity entity = 0; entity < ecsmanager.get_nextEntity(); ++entity) {
 			if (!ecsmanager.isEntityAlive(entity)) continue;
 			// Obtener referencias opcionales a los componentes
 			auto transformOpt = ecsmanager.getComponent<TransformComponent>(entity);
-			auto animationOpt = ecsmanager.getComponent<AnimationComponent>(entity);
-			// Actualizar animación si el componente existe
-			if (transformOpt && animationOpt) {
-				animationSystem.update(transformOpt.value(), animationOpt.value(), 0.01f);
-			}
-
-			// Dibujar la entidad si tiene transform y shape
-			auto shapeOpt = ecsmanager.getComponent<ShapeComponent>(entity);
-			if (transformOpt && shapeOpt) {
-				renderSystem.drawShape(transformOpt.value(), shapeOpt.value());
-			}
+			
 			auto inputComponentOpt = ecsmanager.getComponent<InputComponent>(entity);
 			if (inputComponentOpt)
 				inputSystem.update(inputComponentOpt.value(), transformOpt.value(), input);
 
+			auto lightOpt = ecsmanager.getComponent<LightComponent>(modelEntity);
+
+			if (lightOpt) {
+				std::cout << "Light color: (" << lightOpt.value()->color.r << ", "
+					<< lightOpt.value()->color.g << ", "
+					<< lightOpt.value()->color.b << ")\n";
+				std::cout << "Light intensity: " << lightOpt.value()->intensity << "\n";
+			}
+
+
+			if (lightOpt && lightOpt.value()->type == LightType::Ambient) {
+				GLuint ambientLightLoc = glGetUniformLocation(program.get_id(), "ambientLight");
+				GLuint ambientIntensityLoc = glGetUniformLocation(program.get_id(), "ambientIntensity");
+
+				glUniform3f(ambientLightLoc, lightOpt.value()->color.r, lightOpt.value()->color.g, lightOpt.value()->color.b);
+				glUniform1f(ambientIntensityLoc, lightOpt.value()->intensity);
+			}
 			//Dibujado del modelo//
 			auto modelOpt = ecsmanager.getComponent<RenderComponent>(entity);
 			if (transformOpt && modelOpt) {
