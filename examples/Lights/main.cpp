@@ -13,8 +13,6 @@
 #include "ECS/ECSManager.hpp"
 
 
-
-
 int main() {
 	glfwInit();
 	//IMGUI_CHECKVERSION();
@@ -48,7 +46,10 @@ int main() {
 			textureColor = vec4(0.8, 0.8, 0.8, 1.0); // Gris claro
 		}
 		vec3 finalColor = textureColor.rgb * ambientLight * ambientIntensity;
+		//vec3 finalColor = (textureColor.r * ambientLight.r, textureColor.g * ambientLight.g, textureColor.b * ambientLight.b);
+
 		FragColor = vec4(finalColor, textureColor.a);
+		//FragColor = vec4(ambientLight,textureColor.a);
 		//FragColor = vec4(TexCoords, 0.0, 1.0); // ver las normales
 	}
 		);
@@ -77,12 +78,12 @@ int main() {
 	vertex.loadSource(Shader::ShaderType::kShaderType_Vertex, kExampleVertexShader, (unsigned int)strlen(kExampleVertexShader));
 	vertex.compile();
 	if (!vertex.get_isCompiled())
-		return -1;
+		return -2;
 	Shader fragment = Shader();
 	fragment.loadSource(Shader::ShaderType::kShaderType_Fragment, kExampleFragmentShader, (unsigned int)strlen(kExampleFragmentShader));
 	fragment.compile();
 	if (!fragment.get_isCompiled())
-		return -1;
+		return -3;
 
 	/** Creating Program */
 	Program program = Program();
@@ -90,7 +91,7 @@ int main() {
 	program.attach(&fragment);
 	if (!program.link()) {
 		std::cout << "Error al linkar el programa" << std::endl;
-		return -1;
+		return -4;
 	}
 	program.use();
 
@@ -111,35 +112,36 @@ int main() {
 
 	///////---->3D<------///////
 //Model Entity
-Entity modelEntity = ecsmanager.createEntity();
+	Entity modelEntity = ecsmanager.createEntity();
 
-ecsmanager.editComponent<TransformComponent>(modelEntity, [](TransformComponent& transform) {
-	transform.position = { 0.0f, 0.0f, 0.0f };
-	transform.scale = { 1.0f, 1.0f, 1.0f };
-	});
+	ecsmanager.editComponent<TransformComponent>(modelEntity, [](TransformComponent& transform) {
+		transform.position = { 0.0f, 0.0f, 0.0f };
+		transform.scale = { 1.0f, 1.0f, 1.0f };
+		});
 
-ecsmanager.editComponent<LightComponent>(modelEntity, [](LightComponent& light) {
-	light.type = LightType::Ambient;
-	light.color = glm::vec3(0.0f, 0.0f, 1.0f);
-	light.intensity = 1.0f; // Intensidad de la luz ambiental
-	});
+	ecsmanager.editComponent<LightComponent>(modelEntity, [](LightComponent& light) {
+		light.type = LightType::Ambient;
+		light.color = glm::vec3(1.0f, 0.0f, 0.0f);
+		light.intensity = 1.0f; // Intensidad de la luz ambiental
+		});
 
-ecsmanager.editComponent<RenderComponent>(modelEntity, [](RenderComponent& modelComp) {
-	modelComp.model = std::make_shared<Model>("../data/Models/Alduin/Alduin.obj");
-	});
+	ecsmanager.editComponent<RenderComponent>(modelEntity, [](RenderComponent& modelComp) {
+		modelComp.model = std::make_shared<Model>("../data/Models/Alduin/Alduin.obj");
+		});
 
-ecsmanager.editComponent<InputComponent>(modelEntity, [](InputComponent& input) {
-	input.active = true;
-	});
-			//////////////////////////////////
+	ecsmanager.editComponent<InputComponent>(modelEntity, [](InputComponent& input) {
+		input.active = true;
+		});
+	//////////////////////////////////
 
 // Ciclo del juego
 	while (!window->isOpen()) {
-				///Rendering//
+		program.use();
+		///Rendering//
 		glEnable(GL_COLOR_BUFFER_BIT);
 
 		///* Render here */
-		glClearColor(0.5, 0.5, 0.5, 1.0);
+		glClearColor(0.0, 0.0, 0.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 
@@ -168,7 +170,7 @@ ecsmanager.editComponent<InputComponent>(modelEntity, [](InputComponent& input) 
 				glm::vec3(0.0f, 1.0f, 0.0f)  // Vector "up"
 			);
 		}
-		projection = glm::perspective(glm::radians(90.0f), 1280.0f / 1040.0f,0.10f, 1000.f);
+		projection = glm::perspective(glm::radians(90.0f), 1280.0f / 1040.0f, 0.10f, 1000.f);
 
 		glEnable(GL_TEXTURE_2D);
 		GLuint model_loc = glGetUniformLocation(program.get_id(), "model");
@@ -181,23 +183,23 @@ ecsmanager.editComponent<InputComponent>(modelEntity, [](InputComponent& input) 
 		glUniformMatrix4fv(projection_loc, 1, GL_FALSE, glm::value_ptr(projection));
 
 
-		for (Entity entity = 0; entity < ecsmanager.get_nextEntity(); ++entity) {
+		for (Entity entity = 1; entity < ecsmanager.get_nextEntity(); ++entity) {
 			if (!ecsmanager.isEntityAlive(entity)) continue;
 			// Obtener referencias opcionales a los componentes
 			auto transformOpt = ecsmanager.getComponent<TransformComponent>(entity);
-			
+
 			auto inputComponentOpt = ecsmanager.getComponent<InputComponent>(entity);
 			if (inputComponentOpt)
 				inputSystem.update(inputComponentOpt.value(), transformOpt.value(), input);
 
 			auto lightOpt = ecsmanager.getComponent<LightComponent>(modelEntity);
 
-			if (lightOpt) {
+			/*if (lightOpt) {
 				std::cout << "Light color: (" << lightOpt.value()->color.r << ", "
 					<< lightOpt.value()->color.g << ", "
 					<< lightOpt.value()->color.b << ")\n";
 				std::cout << "Light intensity: " << lightOpt.value()->intensity << "\n";
-			}
+			}*/
 
 
 			if (lightOpt && lightOpt.value()->type == LightType::Ambient) {
@@ -205,6 +207,15 @@ ecsmanager.editComponent<InputComponent>(modelEntity, [](InputComponent& input) 
 				GLuint ambientIntensityLoc = glGetUniformLocation(program.get_id(), "ambientIntensity");
 
 				glUniform3f(ambientLightLoc, lightOpt.value()->color.r, lightOpt.value()->color.g, lightOpt.value()->color.b);
+
+				//glUniform3f(ambientLightLoc, 1.0f, 0.0f, 0.0f);
+				GLfloat values[3] = { 1.0f, 1.0f, 1.0f };
+				
+				glGetUniformfv(program.get_id(), ambientLightLoc, values);
+				std::cout << entity <<"    > First_ambientLight: ("
+					<< values[0] << ", "
+					<< values[1] << ", "
+					<< values[2] << ")\n";
 				glUniform1f(ambientIntensityLoc, lightOpt.value()->intensity);
 			}
 			//Dibujado del modelo//
@@ -214,13 +225,40 @@ ecsmanager.editComponent<InputComponent>(modelEntity, [](InputComponent& input) 
 			}
 		}
 
-		//ImGui::Render();
-		// Intercambiar buffers
-		window->render();
-		//ImGui::End();
-	}
+		GLint numUniforms = 0;
+		glGetProgramiv(program.get_id(), GL_ACTIVE_UNIFORMS, &numUniforms);
 
-	window->~Window();
-	glfwTerminate();
-	return 0;
-}
+		std::cout << "Uniforms activos en el shader:\n";
+		for (GLint i = 0; i < numUniforms; i++) {
+			char name[256];
+			GLsizei length;
+			GLint size;
+			GLenum type;
+			glGetActiveUniform(program.get_id(), i, sizeof(name), &length, &size, &type, name);
+			std::cout << "  - " << name << " (size: " << size << ", type: " << type << ")\n";
+
+			// Si es "ambientLight", obtenemos su valor y lo imprimimos
+			if (std::strcmp(name, "ambientLight") == 0) {
+				GLint location = glGetUniformLocation(program.get_id(), name);
+				if (location != -1) {
+					GLfloat ambientLight[3]; // Vec3
+					glGetUniformfv(program.get_id(), location, ambientLight);
+					std::cout << "    > ambientLight: ("
+						<< ambientLight[0] << ", "
+						<< ambientLight[1] << ", "
+						<< ambientLight[2] << ")\n";
+				}
+			}
+
+		}
+
+			//ImGui::Render();
+			// Intercambiar buffers
+			window->render();
+			//ImGui::End();
+		}
+
+		window->~Window();
+		glfwTerminate();
+		return 0;
+	}
