@@ -2,6 +2,8 @@
 #define __SHADER_H__ 1
 
 #include <GL/glew.h>
+#include "string"
+
 
 class Shader {
 public:
@@ -17,6 +19,7 @@ public:
 
   /** Métodos de clase */
   bool loadSource(const ShaderType shader_type, const char* source, const unsigned int source_size);
+  bool loadFromFile(const ShaderType shader_type, const std::string& filePath);
   bool compile();
   bool get_isCompiled() const;
   unsigned int get_id();

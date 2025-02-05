@@ -27,64 +27,27 @@ int main() {
 	// Declaramos un gestor de input asociado a la ventana en activo.
 	Input input(window->window);
 
-	///// ----->SHADERS & PROGRAM<-----/////
 
-#define GLSL(x) "#version 330\n"#x
-	static const char* kExampleFragmentShader = GLSL(
-		out vec4 FragColor;
-
-	in vec2 TexCoords;
-
-	uniform sampler2D texture_diffuse;
-	uniform vec3 ambientLight; // Color de la luz ambiental
-	uniform float ambientIntensity; // Intensidad de la luz ambiental
-
-	void main()
-	{
-		vec4 textureColor = texture(texture_diffuse, TexCoords);
-		if (textureColor.a < 0.1) { // Si no hay textura, usar un color base
-			textureColor = vec4(0.8, 0.8, 0.8, 1.0); // Gris claro
-		}
-		vec3 finalColor = textureColor.rgb * ambientLight * ambientIntensity;
-		//vec3 finalColor = (textureColor.r * ambientLight.r, textureColor.g * ambientLight.g, textureColor.b * ambientLight.b);
-
-		FragColor = vec4(finalColor, textureColor.a);
-		//FragColor = vec4(ambientLight,textureColor.a);
-		//FragColor = vec4(TexCoords, 0.0, 1.0); // ver las normales
-	}
-		);
-
-
-#define GLSL(x) "#version 330\n"#x
-	static const char* kExampleVertexShader = GLSL(
-		layout(location = 0) in vec3 aPos;
-	layout(location = 1) in vec3 aNormal;
-	layout(location = 2) in vec2 aTexCoords;
-
-	out vec2 TexCoords;
-
-	uniform mat4 model;
-	uniform mat4 view;
-	uniform mat4 projection;
-
-	void main()
-	{
-		TexCoords = aTexCoords;
-		gl_Position = projection * view * model * vec4(aPos, 1.0);
-	}
-		);
 	/** Creating shaders */
 	Shader vertex = Shader();
-	vertex.loadSource(Shader::ShaderType::kShaderType_Vertex, kExampleVertexShader, (unsigned int)strlen(kExampleVertexShader));
-	vertex.compile();
-	if (!vertex.get_isCompiled())
+	if (!vertex.loadFromFile(Shader::ShaderType::kShaderType_Vertex, "../data/Shaders/vertex.vs")) {
+		std::cerr << "Error al cargar el vertex shader desde archivo." << std::endl;
 		return -2;
-	Shader fragment = Shader();
-	fragment.loadSource(Shader::ShaderType::kShaderType_Fragment, kExampleFragmentShader, (unsigned int)strlen(kExampleFragmentShader));
-	fragment.compile();
-	if (!fragment.get_isCompiled())
+	}
+	if (!vertex.compile()) {
+		std::cerr << "Error al compilar el vertex shader." << std::endl;
 		return -3;
+	}
 
+	Shader fragment = Shader();
+	if (!fragment.loadFromFile(Shader::ShaderType::kShaderType_Fragment, "../data/Shaders/fragment.fs")) {
+		std::cerr << "Error al cargar el fragment shader desde archivo." << std::endl;
+		return -4;
+	}
+	if (!fragment.compile()) {
+		std::cerr << "Error al compilar el fragment shader." << std::endl;
+		return -5;
+	}
 	/** Creating Program */
 	Program program = Program();
 	program.attach(&vertex);

@@ -1,5 +1,7 @@
 #include "Shader.hpp"
 #include <iostream>
+#include "fstream"
+#include "sstream"
 
 Shader::Shader()
 {
@@ -30,6 +32,26 @@ bool Shader::loadSource(const ShaderType shader_type, const char* source, const 
   GLint size = source_size;
   glShaderSource(id, 1, &source, &size);
   return true;
+}
+
+bool Shader::loadFromFile(const ShaderType shader_type, const std::string& filePath)
+{
+    std::ifstream file(filePath);
+    if (!file.is_open()) {
+        std::cerr << "Error al abrir el archivo: " << filePath << std::endl;
+        return false;
+    }
+
+    // Lee el contenido del archivo
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    std::string source = buffer.str();
+
+    // Cierra el archivo
+    file.close();
+
+    // Carga el shader desde el contenido del archivo
+    return loadSource(shader_type, source.c_str(), source.size());
 }
 
 bool Shader::compile()
