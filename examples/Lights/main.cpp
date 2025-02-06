@@ -13,6 +13,36 @@
 #include "ECS/ECSManager.hpp"
 
 
+void PrintShaderValues(Program program)
+{
+	GLint numUniforms = 0;
+	glGetProgramiv(program.get_id(), GL_ACTIVE_UNIFORMS, &numUniforms);
+
+	std::cout << "Uniforms activos en el shader:\n";
+	for (GLint i = 0; i < numUniforms; i++) {
+		char name[256];
+		GLsizei length;
+		GLint size;
+		GLenum type;
+		glGetActiveUniform(program.get_id(), i, sizeof(name), &length, &size, &type, name);
+		std::cout << "  - " << name << " (size: " << size << ", type: " << type << ")\n";
+
+		// Si es "ambientLight", obtenemos su valor y lo imprimimos
+		if (std::strcmp(name, "LightType") == 0) {
+			GLint location = glGetUniformLocation(program.get_id(), name);
+			if (location != -1) {
+				GLfloat ambientLight[3]; // Vec3
+				glGetUniformfv(program.get_id(), location, ambientLight);
+				std::cout << "    > LightType: ("
+					<< ambientLight[0] << ", "
+					<< ambientLight[1] << ", "
+					<< ambientLight[2] << ")\n";
+			}
+		}
+
+	}
+}
+
 int main() {
 	glfwInit();
 	//IMGUI_CHECKVERSION();
@@ -84,7 +114,9 @@ int main() {
 
 	ecsmanager.editComponent<LightComponent>(modelEntity, [](LightComponent& light) {
 		light.type = LightType::Ambient;
-		light.color = glm::vec3(1.0f, 0.0f, 0.0f);
+		//light.type = LightType::Point;
+
+		light.color = glm::vec3(1.0f, 1.0f, 1.0f);
 		light.intensity = 1.0f; // Intensidad de la luz ambiental
 		});
 
@@ -157,64 +189,23 @@ int main() {
 
 			auto lightOpt = ecsmanager.getComponent<LightComponent>(modelEntity);
 
-			/*if (lightOpt) {
-				std::cout << "Light color: (" << lightOpt.value()->color.r << ", "
-					<< lightOpt.value()->color.g << ", "
-					<< lightOpt.value()->color.b << ")\n";
-				std::cout << "Light intensity: " << lightOpt.value()->intensity << "\n";
-			}*/
-
-
 			if (lightOpt && lightOpt.value()->type == LightType::Ambient) {
 				GLuint ambientLightLoc = glGetUniformLocation(program.get_id(), "ambientLight");
 				GLuint ambientIntensityLoc = glGetUniformLocation(program.get_id(), "ambientIntensity");
+				GLuint LightTypeLoc = glGetUniformLocation(program.get_id(), "LightType");
 
 				glUniform3f(ambientLightLoc, lightOpt.value()->color.r, lightOpt.value()->color.g, lightOpt.value()->color.b);
-
-				//glUniform3f(ambientLightLoc, 1.0f, 0.0f, 0.0f);
-				GLfloat values[3] = { 1.0f, 1.0f, 1.0f };
-				
-				glGetUniformfv(program.get_id(), ambientLightLoc, values);
-				std::cout << entity <<"    > First_ambientLight: ("
-					<< values[0] << ", "
-					<< values[1] << ", "
-					<< values[2] << ")\n";
 				glUniform1f(ambientIntensityLoc, lightOpt.value()->intensity);
+				glUniform1i(LightTypeLoc, static_cast<int>(lightOpt.value()->type));
 			}
 			//Dibujado del modelo//
 			auto modelOpt = ecsmanager.getComponent<RenderComponent>(entity);
 			if (transformOpt && modelOpt) {
 				renderSystem.drawModel(transformOpt.value(), modelOpt.value(), program);
 			}
-		}
+		}	
 
-		GLint numUniforms = 0;
-		glGetProgramiv(program.get_id(), GL_ACTIVE_UNIFORMS, &numUniforms);
-
-		std::cout << "Uniforms activos en el shader:\n";
-		for (GLint i = 0; i < numUniforms; i++) {
-			char name[256];
-			GLsizei length;
-			GLint size;
-			GLenum type;
-			glGetActiveUniform(program.get_id(), i, sizeof(name), &length, &size, &type, name);
-			std::cout << "  - " << name << " (size: " << size << ", type: " << type << ")\n";
-
-			// Si es "ambientLight", obtenemos su valor y lo imprimimos
-			if (std::strcmp(name, "ambientLight") == 0) {
-				GLint location = glGetUniformLocation(program.get_id(), name);
-				if (location != -1) {
-					GLfloat ambientLight[3]; // Vec3
-					glGetUniformfv(program.get_id(), location, ambientLight);
-					std::cout << "    > ambientLight: ("
-						<< ambientLight[0] << ", "
-						<< ambientLight[1] << ", "
-						<< ambientLight[2] << ")\n";
-				}
-			}
-
-		}
-
+		PrintShaderValues(program);
 			//ImGui::Render();
 			// Intercambiar buffers
 			window->render();
