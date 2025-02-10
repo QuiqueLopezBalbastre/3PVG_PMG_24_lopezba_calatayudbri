@@ -39,7 +39,7 @@ void main()
         // Calcular la atenuación de la luz puntual
         float distance = length(pointLightPosition - FragPos);
         
-        float attenuation = 1.0 - smoothstep(0.0, pointLightRadius, distance);
+        float attenuation = 1.0 / (1.0 + 0.1 * distance + 0.01 * (distance * distance));
 
         // Aplicar la luz difusa y la atenuación
         finalColor = textureColor.rgb * (ambientLight * ambientIntensity + diffuse * attenuation);
