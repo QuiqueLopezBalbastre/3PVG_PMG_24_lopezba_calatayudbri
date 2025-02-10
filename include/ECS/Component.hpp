@@ -9,6 +9,8 @@
 #include "Scripting.hpp"
 #include "ModelLoader/Model.hpp"
 #include "glm/vec3.hpp"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 using Entity = unsigned int;
 
@@ -20,21 +22,21 @@ struct ComponentBase {
 };
 
 enum class LightType {
-    Directional,
-    Point,
-    Spot,
-    Ambient
+  Directional,
+  Point,
+  Spot,
+  Ambient
 };
 
 struct LightComponent : ComponentBase
 {
-    LightType type;
-    glm::vec3 color;
-    glm::vec3 position;
-    glm::vec3 direction;
-    float intensity;
-    float radius; // Para point lights y spotlight
-    float cutoff; // Para spotlight
+  LightType type;
+  glm::vec3 color;
+  glm::vec3 position;
+  glm::vec3 direction;
+  float intensity;
+  float radius; // Para point lights y spotlight
+  float cutoff; // Para spotlight
 };
 
 struct TransformComponent : ComponentBase {
@@ -43,8 +45,8 @@ struct TransformComponent : ComponentBase {
   glm::vec3 scale;
 };
 struct RenderComponent : ComponentBase {
- 
-    std::shared_ptr<Model> model;
+
+  std::shared_ptr<Model> model;
 };
 enum class ShapeType {
   Square,
@@ -87,7 +89,31 @@ namespace {
   }
 }
 // TO DO:
-// CameraComponent
+struct CameraComponent : ComponentBase {
+  // Propiedades de la cámara
+  glm::vec3 position{ 0.0f, 0.0f, 5.0f };    // Posición por defecto
+  glm::vec3 target{ 0.0f, 0.0f, 0.0f };      // Punto al que mira
+  glm::vec3 up{ 0.0f, 1.0f, 0.0f };          // Vector up
+
+  // Matrices de la cámara
+  glm::mat4 view{ 1.0f };
+  glm::mat4 projection{ 1.0f };
+
+  // Propiedades de proyección
+  float fov{ 45.0f };
+  float aspectRatio{ 640.0f / 480.0f };
+  float nearPlane{ 0.1f };
+  float farPlane{ 100.0f };
+  // Método para actualizar la matriz de vista
+  void updateViewMatrix() {
+    view = glm::lookAt(position, target, up);
+  }
+
+  // Método para actualizar la matriz de proyección
+  void updateProjectionMatrix() {
+    projection = glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
+  }
+};
 // PhysicsComponent
 // AudioComponent
 // ParticleComponent
