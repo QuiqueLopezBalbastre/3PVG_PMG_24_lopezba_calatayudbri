@@ -35,8 +35,7 @@ void PrintShaderValues(Program program)
 				glGetUniformfv(program.get_id(), location, ambientLight);
 				std::cout << "    > LightType: ("
 					<< ambientLight[0] << ", "
-					<< ambientLight[1] << ", "
-					<< ambientLight[2] << ")\n";
+					")\n";
 			}
 		}
 
@@ -112,13 +111,19 @@ int main() {
 		transform.scale = { 1.0f, 1.0f, 1.0f };
 		});
 
-	ecsmanager.editComponent<LightComponent>(modelEntity, [](LightComponent& light) {
-		light.type = LightType::Ambient;
-		//light.type = LightType::Point;
+	//ecsmanager.editComponent<LightComponent>(modelEntity, [](LightComponent& light) {
+	//	light.type = LightType::Ambient;
+	//	light.color = glm::vec3(1.0f, 1.0f, 1.0f);
+	//	light.intensity = 1.0f; // Intensidad de la luz ambiental
+	//	});
 
-		light.color = glm::vec3(1.0f, 1.0f, 1.0f);
-		light.intensity = 1.0f; // Intensidad de la luz ambiental
-		});
+	ecsmanager.editComponent<LightComponent>(modelEntity, [](LightComponent& light) {
+		light.type = LightType::Point; // Cambiar a luz puntual
+		light.color = glm::vec3(1.0f, 1.0f, 1.0f); // Color de la luz puntual (amarillo)
+		light.position = glm::vec3(0.0f, 400.0f, 0.0f); // Posición de la luz puntual
+		light.intensity = 2.0f; // Intensidad de la luz puntual
+		light.radius = 10000.0f; // Radio de influencia de la luz puntual
+});
 
 	ecsmanager.editComponent<RenderComponent>(modelEntity, [](RenderComponent& modelComp) {
 		modelComp.model = std::make_shared<Model>("../data/Models/Alduin/Alduin.obj");
@@ -136,7 +141,7 @@ int main() {
 		glEnable(GL_COLOR_BUFFER_BIT);
 
 		///* Render here */
-		glClearColor(0.0, 0.0, 0.0, 1.0);
+		glClearColor(0.4, 0.4, 0.4, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 
@@ -198,6 +203,21 @@ int main() {
 				glUniform1f(ambientIntensityLoc, lightOpt.value()->intensity);
 				glUniform1i(LightTypeLoc, static_cast<int>(lightOpt.value()->type));
 			}
+
+			if (lightOpt && lightOpt.value()->type == LightType::Point) {
+				GLuint pointLightColorLoc = glGetUniformLocation(program.get_id(), "pointLightColor");
+				GLuint pointLightPositionLoc = glGetUniformLocation(program.get_id(), "pointLightPosition");
+				GLuint pointLightIntensityLoc = glGetUniformLocation(program.get_id(), "pointLightIntensity");
+				GLuint pointLightRadiusLoc = glGetUniformLocation(program.get_id(), "pointLightRadius");
+				GLuint LightTypeLoc = glGetUniformLocation(program.get_id(), "LightType");
+
+				glUniform3f(pointLightColorLoc, lightOpt.value()->color.r, lightOpt.value()->color.g, lightOpt.value()->color.b);
+				glUniform3f(pointLightPositionLoc, lightOpt.value()->position.x, lightOpt.value()->position.y, lightOpt.value()->position.z);
+				glUniform1f(pointLightIntensityLoc, lightOpt.value()->intensity);
+				glUniform1f(pointLightRadiusLoc, lightOpt.value()->radius);
+				glUniform1i(LightTypeLoc, static_cast<int>(lightOpt.value()->type));
+			}
+
 			//Dibujado del modelo//
 			auto modelOpt = ecsmanager.getComponent<RenderComponent>(entity);
 			if (transformOpt && modelOpt) {
@@ -205,8 +225,8 @@ int main() {
 			}
 		}	
 
-		PrintShaderValues(program);
-			//ImGui::Render();
+		//PrintShaderValues(program);
+ 
 			// Intercambiar buffers
 			window->render();
 			//ImGui::End();

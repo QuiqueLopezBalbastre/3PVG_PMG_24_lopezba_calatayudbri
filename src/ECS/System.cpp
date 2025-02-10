@@ -43,8 +43,6 @@ void RenderSystem::renderEntity(Entity entity, const TransformComponent& transfo
 void RenderSystem::drawModel(const TransformComponent* transform, const RenderComponent* model, Program program) {
 	if (!model || !model->model) return;
 
-
-
 	model->model->Draw(program);
 }
 
