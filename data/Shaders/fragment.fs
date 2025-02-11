@@ -6,14 +6,26 @@ out vec4 FragColor;
 in vec2 TexCoords;
 in vec3 FragPos;
 in vec3 Normal;
+
 uniform sampler2D texture_diffuse;
+
 uniform vec3 ambientLight; // Color de la luz ambiental
 uniform float ambientIntensity; // Intensidad de la luz ambiental
 
 uniform vec3 pointLightColor; // Color de la point light
 uniform vec3 pointLightPosition; // Posición de la point light
 uniform float pointLightIntensity; // Intensidad de la point light
-uniform float pointLightRadius; // Radio de la luz puntual
+uniform float pointLightRadius; // Radio de la point light
+
+// Luz focal (Spotlight)
+uniform vec3 spotlightColor;
+uniform vec3 spotlightPosition;
+uniform vec3 spotlightDirection;
+uniform float spotlightIntensity;
+uniform float spotlightCutoff; // Ángulo de corte interior (en radianes)
+uniform float spotlightOuterCutoff; // Ángulo de corte exterior (en radianes)
+
+
 uniform int LightType;
 
 
@@ -46,7 +58,22 @@ void main()
         finalColor = textureColor.rgb * (ambientLight * ambientIntensity + diffuse * attenuation);
         
     } else if (LightType == 2) { // Spot Light
-        finalColor = textureColor.rgb * ambientLight * ambientIntensity * 1.5; // Ejemplo para luz focal
+      
+    vec3 lightDir = normalize(spotlightPosition - FragPos);
+        float theta = dot(lightDir, normalize(-spotlightDirection));
+        float epsilon = spotlightCutoff - spotlightOuterCutoff;
+        float intensity = clamp((theta - spotlightOuterCutoff) / epsilon, 0.0, 1.0);
+
+        if (theta > spotlightOuterCutoff) {
+            float diff = max(dot(Normal, lightDir), 0.0);
+            vec3 diffuse = diff * spotlightColor * spotlightIntensity * intensity;
+            float distance = length(spotlightPosition - FragPos);
+            float attenuation = 1.0 / (1.0 + 0.1 * distance + 0.01 * (distance * distance));
+            finalColor = textureColor.rgb * (ambientLight * ambientIntensity + diffuse * attenuation);
+        } else {
+            finalColor = textureColor.rgb * ambientLight * ambientIntensity; // Fuera del cono de luz
+        }
+
     } else if (LightType == 3) { // Ambient Light
         finalColor = textureColor.rgb * ambientLight * ambientIntensity; // Luz ambiental (sin cambios)
     }else

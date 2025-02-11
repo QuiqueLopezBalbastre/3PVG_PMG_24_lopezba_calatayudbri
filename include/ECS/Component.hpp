@@ -35,6 +35,7 @@ struct LightComponent : ComponentBase
     float intensity;
     float radius; // Para point lights y spotlight
     float cutoff; // Para spotlight
+    float outerCutoff;
 };
 
 struct TransformComponent : ComponentBase {
