@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+ï»¿#include <GL/glew.h>
 #include <glm/mat4x4.hpp>
 #include <glm/ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
 #include <glm/ext/matrix_clip_space.hpp> // perspective
@@ -44,8 +44,7 @@ void PrintShaderValues(Program program)
 
 int main() {
 	glfwInit();
-	//IMGUI_CHECKVERSION();
-	//ImGui::CreateContext();
+
 	auto window = Window::make(1280, 1040, "LUQUI");
 	if (nullptr == window->window) {
 		return -1;
@@ -92,7 +91,7 @@ int main() {
 	// Creamos un gestor de entidades
 	ECSManager ecsmanager;
 
-	// Declaramos los sistemas que se utilizarán en el programa.
+	// Declaramos los sistemas que se utilizarï¿½n en el programa.
 	RenderSystem renderSystem;
 	InputSystem inputSystem;
 
@@ -102,35 +101,46 @@ int main() {
 	ecsmanager.addComponentType<RenderComponent>();
 	ecsmanager.addComponentType<LightComponent>();
 
-	///////---->3D<------///////
-//Model Entity
-	Entity modelEntity = ecsmanager.createEntity();
+	// Crear una entidad para la luz
+	Entity lightEntity = ecsmanager.createEntity();
 
-	ecsmanager.editComponent<TransformComponent>(modelEntity, [](TransformComponent& transform) {
-		transform.position = { 0.0f, 0.0f, 0.0f };
+	// Configurar la luz como Point Light
+	ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
+		light.type = LightType::Point; // Tipo de luz (Point Light)
+		light.color = glm::vec3(1.0f, 1.0f, 1.0f); // Color de la luz (blanco)
+		light.position = glm::vec3(0.0f, 400.0f, 0.0f); // PosiciÃ³n de la luz
+		light.intensity = 2.0f; // Intensidad de la luz
+		light.radius = 10000.0f; // Radio de influencia de la luz
+		});
+
+	// Crear la primera entidad para el modelo 1
+	Entity modelEntity1 = ecsmanager.createEntity();
+
+	ecsmanager.editComponent<TransformComponent>(modelEntity1, [](TransformComponent& transform) {
+		transform.position = { -200.0f, 0.0f, 0.0f }; // PosiciÃ³n del primer modelo
 		transform.scale = { 1.0f, 1.0f, 1.0f };
 		});
 
-	//ecsmanager.editComponent<LightComponent>(modelEntity, [](LightComponent& light) {
-	//	light.type = LightType::Ambient;
-	//	light.color = glm::vec3(1.0f, 1.0f, 1.0f);
-	//	light.intensity = 1.0f; // Intensidad de la luz ambiental
-	//	});
-
-	ecsmanager.editComponent<LightComponent>(modelEntity, [](LightComponent& light) {
-		light.type = LightType::Point; // Cambiar a luz puntual
-		light.color = glm::vec3(1.0f, 1.0f, 1.0f); // Color de la luz puntual (amarillo)
-		light.position = glm::vec3(0.0f, 400.0f, 0.0f); // Posición de la luz puntual
-		light.intensity = 2.0f; // Intensidad de la luz puntual
-		light.radius = 10000.0f; // Radio de influencia de la luz puntual
-});
-
-	ecsmanager.editComponent<RenderComponent>(modelEntity, [](RenderComponent& modelComp) {
-		modelComp.model = std::make_shared<Model>("../data/Models/Alduin/Alduin.obj");
+	ecsmanager.editComponent<RenderComponent>(modelEntity1, [](RenderComponent& modelComp) {
+		modelComp.model = std::make_shared<Model>("../data/Models/Alduin/Alduin.obj"); // Cargar el primer modelo
 		});
 
-	ecsmanager.editComponent<InputComponent>(modelEntity, [](InputComponent& input) {
-		input.active = true;
+	ecsmanager.editComponent<InputComponent>(modelEntity1, [](InputComponent& input)
+		{
+			input.active = true;
+		});
+	// Crear la segunda entidad para el modelo 2
+	Entity modelEntity2 = ecsmanager.createEntity();
+
+	ecsmanager.editComponent<TransformComponent>(modelEntity2, [](TransformComponent& transform) {
+		transform.position = { 200.0f, -600.0f, 0.0f }; // PosiciÃ³n del segundo modelo
+		transform.scale = { 1.0f, 1.0f, 1.0f };
+
+		transform.rotation = { 0.0f,45.0f,0.0f };
+		});
+
+	ecsmanager.editComponent<RenderComponent>(modelEntity2, [](RenderComponent& modelComp) {
+		modelComp.model = std::make_shared<Model>("../data/Models/Alduin/Alduin.obj"); // Cargar el segundo modelo
 		});
 	//////////////////////////////////
 
@@ -150,10 +160,11 @@ int main() {
 		view = glm::mat4(1.0f);
 		projection = glm::mat4(1.0f);
 
-		auto modelTransform = ecsmanager.getComponent<TransformComponent>(modelEntity);
+		auto modelTransform = ecsmanager.getComponent<TransformComponent>(modelEntity1);
+
 		if (modelTransform) {
 			model = glm::mat4(1.0f);
-			// Aplica las transformaciones en orden: escala, rotación, traslación
+			// Aplica las transformaciones en orden: escala, rotaciï¿½n, traslaciï¿½n
 			model = glm::translate(model, modelTransform.value()->position);
 			model = glm::rotate(model, glm::radians((float)glfwGetTime() * 10.0f), glm::vec3(0, 1, 0));
 			model = glm::scale(model, modelTransform.value()->scale);
@@ -165,8 +176,8 @@ int main() {
 			model_pos.z = modelTransform.value()->position.z;
 
 			view = glm::lookAt(
-				glm::vec3(0.0f, 350.0f, 500.0f), // Posición de la cámara
-				glm::vec3(-model_pos), // Punto al que mira
+				glm::vec3(0.0f, 350.0f, 500.0f), // Posicion de la camara
+				glm::vec3(model_pos), // Punto al que mira
 				glm::vec3(0.0f, 1.0f, 0.0f)  // Vector "up"
 			);
 		}
@@ -182,28 +193,18 @@ int main() {
 		GLuint projection_loc = glGetUniformLocation(program.get_id(), "projection");
 		glUniformMatrix4fv(projection_loc, 1, GL_FALSE, glm::value_ptr(projection));
 
-
 		for (Entity entity = 1; entity < ecsmanager.get_nextEntity(); ++entity) {
 			if (!ecsmanager.isEntityAlive(entity)) continue;
+
 			// Obtener referencias opcionales a los componentes
 			auto transformOpt = ecsmanager.getComponent<TransformComponent>(entity);
-
 			auto inputComponentOpt = ecsmanager.getComponent<InputComponent>(entity);
+			auto lightOpt = ecsmanager.getComponent<LightComponent>(lightEntity); // Usar la entidad de luz
+
 			if (inputComponentOpt)
 				inputSystem.update(inputComponentOpt.value(), transformOpt.value(), input);
 
-			auto lightOpt = ecsmanager.getComponent<LightComponent>(modelEntity);
-
-			if (lightOpt && lightOpt.value()->type == LightType::Ambient) {
-				GLuint ambientLightLoc = glGetUniformLocation(program.get_id(), "ambientLight");
-				GLuint ambientIntensityLoc = glGetUniformLocation(program.get_id(), "ambientIntensity");
-				GLuint LightTypeLoc = glGetUniformLocation(program.get_id(), "LightType");
-
-				glUniform3f(ambientLightLoc, lightOpt.value()->color.r, lightOpt.value()->color.g, lightOpt.value()->color.b);
-				glUniform1f(ambientIntensityLoc, lightOpt.value()->intensity);
-				glUniform1i(LightTypeLoc, static_cast<int>(lightOpt.value()->type));
-			}
-
+			// Configurar la luz en el shader
 			if (lightOpt && lightOpt.value()->type == LightType::Point) {
 				GLuint pointLightColorLoc = glGetUniformLocation(program.get_id(), "pointLightColor");
 				GLuint pointLightPositionLoc = glGetUniformLocation(program.get_id(), "pointLightPosition");
@@ -218,21 +219,21 @@ int main() {
 				glUniform1i(LightTypeLoc, static_cast<int>(lightOpt.value()->type));
 			}
 
-			//Dibujado del modelo//
+			// Dibujado del modelo
 			auto modelOpt = ecsmanager.getComponent<RenderComponent>(entity);
 			if (transformOpt && modelOpt) {
 				renderSystem.drawModel(transformOpt.value(), modelOpt.value(), program);
 			}
-		}	
-
-		//PrintShaderValues(program);
- 
-			// Intercambiar buffers
-			window->render();
-			//ImGui::End();
 		}
 
-		window->~Window();
-		glfwTerminate();
-		return 0;
+		//PrintShaderValues(program);
+
+			// Intercambiar buffers
+		window->render();
+		//ImGui::End();
 	}
+
+	window->~Window();
+	glfwTerminate();
+	return 0;
+}

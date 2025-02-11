@@ -34,12 +34,13 @@ void main()
 
         // Calcular la intensidad de la luz basada en el ángulo entre la normal y la dirección de la luz
         float diff = max(dot(Normal, lightDir), 0.0); // Producto punto entre la normal y la dirección de la luz
-        vec3 diffuse = diff * pointLightColor * pointLightIntensity;
+        vec3 diffuse = diff * textureColor.rgb *pointLightColor * pointLightIntensity;
 
         // Calcular la atenuación de la luz puntual
         float distance = length(pointLightPosition - FragPos);
         
-        float attenuation = 1.0 / (1.0 + 0.1 * distance + 0.01 * (distance * distance));
+        float attenuation = 1.0 - clamp(distance / pointLightRadius, 0.0, pointLightIntensity); 
+        attenuation = attenuation * attenuation; // Atenuación cuadrática para un decaimiento más suave
 
         // Aplicar la luz difusa y la atenuación
         finalColor = textureColor.rgb * (ambientLight * ambientIntensity + diffuse * attenuation);
