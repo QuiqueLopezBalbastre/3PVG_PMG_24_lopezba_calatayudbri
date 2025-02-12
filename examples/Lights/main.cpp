@@ -107,7 +107,7 @@ int main() {
 	ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
 		light.type = LightType::Spot; // Tipo de luz (Spotlight)
 		light.color = glm::vec3(1.0f, 1.0f, 1.0f); // Color de la luz (blanco)
-		light.position = glm::vec3(0.0f, 400.0f, 500.0f); // Posición de la luz
+		light.position = glm::vec3(0.0f, 800.0f, 500.0f); // Posición de la luz
 		light.direction = glm::vec3(0.0f, -1.0f, -1.0f); // Dirección de la luz
 		light.intensity = 2.0f; // Intensidad de la luz
 		light.cutoff = glm::cos(glm::radians(12.5f)); // Ángulo de corte interior (12.5 grados)
@@ -120,7 +120,7 @@ int main() {
 	//	light.color = glm::vec3(0.0f, 1.0f, 0.0f); // Color de la luz (RGB)
 	//	light.position = glm::vec3(0.0f, 100.0f, 0.0f); // Posición de la luz
 	//	light.intensity = 2.0f; // Intensidad de la luz
-	//	light.radius = 5.0f; // Radio de influencia de la luz
+	//	light.radius = 50.0f; // Radio de influencia de la luz
 	//	});
 
 	//ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {

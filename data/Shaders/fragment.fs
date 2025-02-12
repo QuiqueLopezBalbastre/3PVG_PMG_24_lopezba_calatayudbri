@@ -55,7 +55,7 @@ void main()
         attenuation = attenuation * attenuation; // Atenuación cuadrática para un decaimiento más suave
 
         // Aplicar la luz difusa y la atenuación
-        finalColor = textureColor.rgb * (ambientLight * ambientIntensity + diffuse * attenuation);
+        finalColor = textureColor.rgb * (diffuse * attenuation);
         
     } else if (LightType == 2) { // Spot Light
       
@@ -64,14 +64,14 @@ void main()
         float epsilon = spotlightCutoff - spotlightOuterCutoff;
         float intensity = clamp((theta - spotlightOuterCutoff) / epsilon, 0.0, 1.0);
 
-        if (theta > spotlightOuterCutoff) {
+        if (theta < spotlightOuterCutoff) {
             float diff = max(dot(Normal, lightDir), 0.0);
             vec3 diffuse = diff * spotlightColor * spotlightIntensity * intensity;
             float distance = length(spotlightPosition - FragPos);
             float attenuation = 1.0 / (1.0 + 0.1 * distance + 0.01 * (distance * distance));
-            finalColor = textureColor.rgb * (ambientLight * ambientIntensity + diffuse * attenuation);
+            finalColor = textureColor.rgb * diffuse * attenuation;
         } else {
-            finalColor = textureColor.rgb * ambientLight * ambientIntensity; // Fuera del cono de luz
+            finalColor = textureColor.rgb * spotlightColor * spotlightIntensity; // Fuera del cono de luz
         }
 
     } else if (LightType == 3) { // Ambient Light
@@ -80,11 +80,6 @@ void main()
     {
 	    FragColor = vec4(TexCoords, 0.0, 1.0); // ver las normales
     }
-
-    float distanceToLight = length(pointLightPosition - FragPos);
-    if (distanceToLight < 1.0) { // Si el fragmento está cerca de la luz
-        FragColor = vec4(1.0, 0.0, 0.0, 1.0); // Muestra la posición de la luz en rojo
-    } else {
         FragColor = vec4(finalColor, textureColor.a);
-    }
+    
 }
