@@ -25,6 +25,9 @@ uniform float spotlightIntensity;
 uniform float spotlightCutoff; // Ángulo de corte interior (en radianes)
 uniform float spotlightOuterCutoff; // Ángulo de corte exterior (en radianes)
 
+uniform vec3 directionalLightColor;
+uniform vec3 directionalLightDirection;
+uniform float directionalLightIntensity;
 
 uniform int LightType;
 
@@ -39,7 +42,18 @@ void main()
 
     // Calcular el color final según el tipo de luz
     if (LightType == 0) { // Directional Light
-        finalColor = textureColor.rgb * ambientLight * ambientIntensity * 0.8; // Ejemplo para luz direccional
+      
+      // Calcular la dirección de la luz (ya está normalizada)
+        vec3 lightDir = normalize(-directionalLightDirection);
+
+        // Calcular la intensidad de la luz basada en el ángulo entre la normal y la dirección de la luz
+        float diff = max(dot(Normal, lightDir), 0.0); // Producto punto entre la normal y la dirección de la luz
+        vec3 diffuse = diff * textureColor.rgb * directionalLightColor * directionalLightIntensity;
+
+        // Combinar la luz ambiental y la luz difusa
+        finalColor = textureColor.rgb * diffuse;
+
+      
     } else if (LightType == 1) { // Point Light
    // Calcular la dirección de la luz
         vec3 lightDir = normalize(pointLightPosition - FragPos);

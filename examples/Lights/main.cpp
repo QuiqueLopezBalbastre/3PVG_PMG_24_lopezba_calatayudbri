@@ -105,14 +105,21 @@ int main() {
 	Entity lightEntity = ecsmanager.createEntity();
 
 	ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
-		light.type = LightType::Spot; // Tipo de luz (Spotlight)
+		light.type = LightType::Directional; // Tipo de luz (Directional Light)
 		light.color = glm::vec3(1.0f, 1.0f, 1.0f); // Color de la luz (blanco)
-		light.position = glm::vec3(0.0f, 800.0f, 500.0f); // Posición de la luz
-		light.direction = glm::vec3(0.0f, -1.0f, -1.0f); // Dirección de la luz
-		light.intensity = 2.0f; // Intensidad de la luz
-		light.cutoff = glm::cos(glm::radians(12.5f)); // Ángulo de corte interior (12.5 grados)
-		light.outerCutoff = glm::cos(glm::radians(17.5f)); // Ángulo de corte exterior (17.5 grados)
+		light.direction = glm::vec3(-0.5f, -1.0f, -0.5f); // Dirección de la luz (apuntando hacia abajo y hacia la izquierda)
+		light.intensity = 1.0f; // Intensidad de la luz
 		});
+
+	//ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
+	//	light.type = LightType::Spot; // Tipo de luz (Spotlight)
+	//	light.color = glm::vec3(1.0f, 1.0f, 1.0f); // Color de la luz (blanco)
+	//	light.position = glm::vec3(0.0f, 800.0f, 500.0f); // Posición de la luz
+	//	light.direction = glm::vec3(0.0f, -1.0f, -1.0f); // Dirección de la luz
+	//	light.intensity = 2.0f; // Intensidad de la luz
+	//	light.cutoff = glm::cos(glm::radians(12.5f)); // Ángulo de corte interior (12.5 grados)
+	//	light.outerCutoff = glm::cos(glm::radians(17.5f)); // Ángulo de corte exterior (17.5 grados)
+	//	});
 
 	// Configurar la luz como Point Light
 	//ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
@@ -229,6 +236,18 @@ int main() {
 			glUniform1f(spotlightIntensityLoc, lightOpt.value()->intensity);
 			glUniform1f(spotlightCutoffLoc, lightOpt.value()->cutoff);
 			glUniform1f(spotlightOuterCutoffLoc, lightOpt.value()->outerCutoff);
+			glUniform1i(LightTypeLoc, static_cast<int>(lightOpt.value()->type));
+		}
+
+		if (lightOpt && lightOpt.value()->type == LightType::Directional) {
+			GLuint directionalLightColorLoc = glGetUniformLocation(program.get_id(), "directionalLightColor");
+			GLuint directionalLightDirectionLoc = glGetUniformLocation(program.get_id(), "directionalLightDirection");
+			GLuint directionalLightIntensityLoc = glGetUniformLocation(program.get_id(), "directionalLightIntensity");
+			GLuint LightTypeLoc = glGetUniformLocation(program.get_id(), "LightType");
+
+			glUniform3f(directionalLightColorLoc, lightOpt.value()->color.r, lightOpt.value()->color.g, lightOpt.value()->color.b);
+			glUniform3f(directionalLightDirectionLoc, lightOpt.value()->direction.x, lightOpt.value()->direction.y, lightOpt.value()->direction.z);
+			glUniform1f(directionalLightIntensityLoc, lightOpt.value()->intensity);
 			glUniform1i(LightTypeLoc, static_cast<int>(lightOpt.value()->type));
 		}
 
