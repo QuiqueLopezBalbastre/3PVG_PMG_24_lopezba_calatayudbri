@@ -31,7 +31,6 @@ uniform float directionalLightIntensity;
 
 uniform int LightType;
 
-
 void main()
 {
 	vec4 textureColor = texture(texture_diffuse, TexCoords);
