@@ -88,12 +88,21 @@ namespace {
     return { true, ShapeType::Circle, vertices, color };
   }
 }
-// TO DO:
+
 struct CameraComponent : ComponentBase {
-  // Propiedades de la cámara
-  glm::vec3 position{ 0.0f, 0.0f, 5.0f };    // Posición por defecto
-  glm::vec3 target{ 0.0f, 0.0f, 0.0f };      // Punto al que mira
-  glm::vec3 up{ 0.0f, 1.0f, 0.0f };          // Vector up
+  glm::vec3 position{ 0.0f, 0.0f, 5.0f };
+  glm::vec3 front{ 0.0f, 0.0f, -1.0f };    // Dirección a la que mira la cámara
+  glm::vec3 up{ 0.0f, 1.0f, 0.0f };
+  glm::vec3 right{ 1.0f, 0.0f, 0.0f };     // Vector derecho para strafing
+
+  // Ángulos de Euler para la rotación
+  float yaw{ -90.0f };   // Rotación horizontal (en grados)
+  float pitch{ 0.0f };   // Rotación vertical (en grados)
+
+  // Configuración de la cámara
+  float movementSpeed{ 5.0f };      // Unidades por segundo
+  float sprintMultiplier{ 2.0f };   // Multiplicador de velocidad al correr
+  float mouseSensitivity{ 0.1f };   // Sensibilidad del ratón
 
   // Matrices de la cámara
   glm::mat4 view{ 1.0f };
@@ -101,19 +110,31 @@ struct CameraComponent : ComponentBase {
 
   // Propiedades de proyección
   float fov{ 45.0f };
-  float aspectRatio{ 640.0f / 480.0f };
+  float aspectRatio{ 4.0f / 3.0f };
   float nearPlane{ 0.1f };
   float farPlane{ 100.0f };
-  // Método para actualizar la matriz de vista
-  void updateViewMatrix() {
-    view = glm::lookAt(position, target, up);
+
+  void updateCameraVectors() {
+    // Calcula el vector front basado en los ángulos de Euler
+    front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    front.y = sin(glm::radians(pitch));
+    front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    front = glm::normalize(front);
+
+    // Recalcula los vectores right y up
+    right = glm::normalize(glm::cross(front, glm::vec3(0.0f, 1.0f, 0.0f)));
+    up = glm::normalize(glm::cross(right, front));
   }
 
-  // Método para actualizar la matriz de proyección
+  void updateViewMatrix() {
+    view = glm::lookAt(position, position + front, up);
+  }
+
   void updateProjectionMatrix() {
     projection = glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
   }
 };
+// TO DO:
 // PhysicsComponent
 // AudioComponent
 // ParticleComponent
