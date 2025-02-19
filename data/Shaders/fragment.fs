@@ -7,7 +7,7 @@ in vec2 TexCoords;
 in vec3 FragPos;
 in vec3 Normal;
 
-uniform sampler2D texture_diffuse;
+uniform sampler2D texture_diffuse1;
 
 uniform vec3 ambientLight; // Color de la luz ambiental
 uniform float ambientIntensity; // Intensidad de la luz ambiental
@@ -44,9 +44,9 @@ vec3 CalculatePointLight(vec3 normal, vec3 textureColor)
         // Calcular la atenuación de la luz puntual
         float distance = length(pointLightPosition - FragPos);
         
-        // float attenuation = 1.0 - clamp(distance / pointLightRadius, 0.0); //pointLightIntensity); 
+       
         float attenuation = clamp(1.0f - (distance * distance)/(pointLightRadius * pointLightRadius), 0.0f, 1.0f);
-        // attenuation = attenuation * attenuation; // Atenuación cuadrática para un decaimiento más suave
+
 
         // Aplicar la luz difusa y la atenuación
         diffuse *= attenuation;
@@ -57,7 +57,7 @@ vec3 CalculatePointLight(vec3 normal, vec3 textureColor)
 
 void main()
 {
-	vec4 textureColor = texture(texture_diffuse, TexCoords);
+	vec4 textureColor = texture(texture_diffuse1, TexCoords);
 	if (textureColor.a < 0.1) { // Si no hay textura, usar un color base
 		textureColor = vec4(0.8, 0.8, 0.8, 1.0); // Gris claro
 	}
@@ -103,6 +103,6 @@ void main()
     {
 	    FragColor = vec4(TexCoords, 0.0, 1.0); // ver las normales
     }
-        FragColor = vec4(finalColor, 1.0);
     
+        FragColor = vec4(finalColor, 1.0);
 }

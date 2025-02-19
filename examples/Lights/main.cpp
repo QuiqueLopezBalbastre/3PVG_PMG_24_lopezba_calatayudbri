@@ -84,7 +84,6 @@ int main() {
 		std::cout << "Error al linkar el programa" << std::endl;
 		return -4;
 	}
-	program.use();
 
 	///////END OF PROGRAM & SHADERS/////
 
@@ -102,14 +101,15 @@ int main() {
 	ecsmanager.addComponentType<LightComponent>();
 
 	// Crear una entidad para la luz
-	//Entity lightEntity = ecsmanager.createEntity();
+	Entity lightEntity = ecsmanager.createEntity();
 
-	//ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
-	//	light.type = LightType::Directional;
-	//	light.color = glm::vec3(1.0f, 1.0f, 1.0f);
-	//	light.direction = glm::vec3(-0.5f, -1.0f, -0.5f); // Dirección de la luz (apuntando hacia abajo y hacia la izquierda)
-	//	light.intensity = 1.0f; // Intensidad de la luz
-	//	});
+	ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
+		light.type = LightType::Point; // Tipo de luz (Point Light)
+		light.color = glm::vec3(1.0f, 0.0f, 0.0f); // Color de la luz (RGB)
+		light.position = glm::vec3(20.0f, 100.0f, 0.0f); // Posición de la luz
+		light.intensity = 2.0f; // Intensidad de la luz
+		light.radius = 250.0f; // Radio de influencia de la luz
+		});
 
 	//ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
 	//	light.type = LightType::Spot; // Tipo de luz (Spotlight)
@@ -128,7 +128,7 @@ int main() {
 		light.color = glm::vec3(0.0f, 1.0f, 0.0f); // Color de la luz (RGB)
 		light.position = glm::vec3(0.0f, 100.0f, 0.0f); // Posición de la luz
 		light.intensity = 2.0f; // Intensidad de la luz
-		light.radius = 500.0f; // Radio de influencia de la luz
+		light.radius = 250.0f; // Radio de influencia de la luz
 		});
 
 	//ecsmanager.editComponent<LightComponent>(lightEntity2, [](LightComponent& light) {
@@ -139,6 +139,8 @@ int main() {
 	//	light.radius = 0.0f; // Radio de influencia de la luz (point light)
 	//	});
 
+	auto mesh = std::make_shared<Model>("../data/Models/Alduin/Alduin.obj");
+
 	// Crear la primera entidad para el modelo 1
 	Entity modelEntity1 = ecsmanager.createEntity();
 
@@ -147,8 +149,8 @@ int main() {
 		transform.scale = { 1.0f, 1.0f, 1.0f };
 		});
 
-	ecsmanager.editComponent<RenderComponent>(modelEntity1, [](RenderComponent& modelComp) {
-		modelComp.model = std::make_shared<Model>("../data/Models/Alduin/Alduin.obj"); // Cargar el primer modelo
+	ecsmanager.editComponent<RenderComponent>(modelEntity1, [&](RenderComponent& modelComp) {
+		modelComp.model = mesh; // Cargar el primer modelo
 		});
 
 	ecsmanager.editComponent<InputComponent>(modelEntity1, [](InputComponent& input)
@@ -165,19 +167,27 @@ int main() {
 		transform.rotation = { 0.0f,45.0f,0.0f };
 		});
 
-	ecsmanager.editComponent<RenderComponent>(modelEntity2, [](RenderComponent& modelComp) {
-		modelComp.model = std::make_shared<Model>("../data/Models/Alduin/Alduin.obj"); // Cargar el segundo modelo
+	ecsmanager.editComponent<RenderComponent>(modelEntity2, [&](RenderComponent& modelComp) {
+		modelComp.model = mesh; // Cargar el segundo modelo
 		});
 	//////////////////////////////////
 
 // Ciclo del juego
 	while (!window->isOpen()) {
-		program.use();
+		float rotation = glm::radians((float)glfwGetTime() * 100.0f);
 		//glEnable(GL_COLOR_BUFFER_BIT);
-
+		for (Entity entity = 1; entity < ecsmanager.get_nextEntity(); ++entity)
+		{
+			if (auto transformOpt = ecsmanager.getComponent<TransformComponent>(entity))
+			{
+				transformOpt.value()->rotation.y = rotation;
+				RenderSystem::UpdateTransformMatrix(*transformOpt.value());
+			}
+		}
 		// Limpiar la pantalla
 		glClearColor(0.4, 0.4, 0.4, 1.0);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glFrontFace(GL_CCW);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
 		glDepthMask(true);
@@ -194,28 +204,27 @@ int main() {
 		);
 
 		glm::mat4 projection = glm::perspective(glm::radians(90.0f), 1280.0f / 1040.0f, 0.10f, 1000.f);
-
+		program.use();
 		// Pasar las matrices de vista y proyección al shader
 		GLuint viewLoc = glGetUniformLocation(program.get_id(), "view");
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
 		GLuint projectionLoc = glGetUniformLocation(program.get_id(), "projection");
 		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
 		for (Entity Light_entity = 1; Light_entity < ecsmanager.get_nextEntity(); ++Light_entity) {
 			// Configurar la luz en el shader
+			if (!ecsmanager.isEntityAlive(Light_entity)) continue;
 			auto lightOpt = ecsmanager.getComponent<LightComponent>(Light_entity);
+			if (!lightOpt.has_value()) continue;
 			if (lightOpt && lightOpt.value()->type == LightType::Point) {
-				GLuint pointLightColorLoc = glGetUniformLocation(program.get_id(), "pointLightColor");
-				GLuint pointLightPositionLoc = glGetUniformLocation(program.get_id(), "pointLightPosition");
 				//GLuint pointLightIntensityLoc = glGetUniformLocation(program.get_id(), "pointLightIntensity");
-				GLuint pointLightRadiusLoc = glGetUniformLocation(program.get_id(), "pointLightRadius");
-				GLuint LightTypeLoc = glGetUniformLocation(program.get_id(), "LightType");
-
-				glUniform3f(pointLightColorLoc, lightOpt.value()->color.r, lightOpt.value()->color.g, lightOpt.value()->color.b);
-				glUniform3f(pointLightPositionLoc, lightOpt.value()->position.x, lightOpt.value()->position.y, lightOpt.value()->position.z);
+				program.setVec3("pointLightColor", lightOpt.value()->color);
+				program.setVec3("pointLightPosition", lightOpt.value()->position);
+				program.setFloat("pointLightRadius", lightOpt.value()->radius);
+				program.setInt("LightType", static_cast<int>(lightOpt.value()->type));
 				//glUniform1f(pointLightIntensityLoc, lightOpt.value()->intensity);
-				glUniform1f(pointLightRadiusLoc, lightOpt.value()->radius);
-				glUniform1i(LightTypeLoc, static_cast<int>(lightOpt.value()->type));
+
 			}
 
 			if (lightOpt && lightOpt.value()->type == LightType::Ambient) {
@@ -260,7 +269,7 @@ int main() {
 			// Renderizar todas las entidades
 			for (Entity entity = 1; entity < ecsmanager.get_nextEntity(); ++entity) {
 				if (!ecsmanager.isEntityAlive(entity)) continue;
-
+				if (ecsmanager.getComponent<LightComponent>(entity).has_value()) continue;
 				// Obtener los componentes de la entidad
 				auto transformOpt = ecsmanager.getComponent<TransformComponent>(entity);
 				auto modelOpt = ecsmanager.getComponent<RenderComponent>(entity);
@@ -271,15 +280,11 @@ int main() {
 				}
 
 				if (transformOpt && modelOpt) {
-					// Configurar la matriz de modelo para esta entidad
-					glm::mat4 model = glm::mat4(1.0f);
-					model = glm::translate(model, transformOpt.value()->position);
-					model = glm::rotate(model, glm::radians((float)glfwGetTime() * 10.0f), glm::vec3(0, 1, 0)); // Rotación en Y
-					model = glm::scale(model, transformOpt.value()->scale);
+
 
 					// Pasar la matriz de modelo al shader
 					GLuint modelLoc = glGetUniformLocation(program.get_id(), "model");
-					glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+					glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(transformOpt.value()->transform_matrix));
 
 					// Dibujar el modelo
 					renderSystem.drawModel(transformOpt.value(), modelOpt.value(), program);
@@ -290,8 +295,9 @@ int main() {
 			glDepthMask(false);
 		}
 		glDepthMask(true);
+		glDepthFunc(GL_LESS);
 		glDisable(GL_BLEND);
-
+		program.unuse();
 		// Intercambiar buffers
 		window->render();
 	}

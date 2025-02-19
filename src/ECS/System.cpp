@@ -1,5 +1,11 @@
 #include "ECS/System.hpp"
 #include <iostream>
+#include "glm/glm.hpp"
+#include <glm/mat4x4.hpp>
+#include <glm/ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
+#include <glm/ext/matrix_clip_space.hpp> // perspective
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 #include <Input.hpp>
 
 RenderSystem::RenderSystem()
@@ -40,10 +46,23 @@ void RenderSystem::renderEntity(Entity entity, const TransformComponent& transfo
 		<< ".\n";
 }
 
-void RenderSystem::drawModel(const TransformComponent* transform, const RenderComponent* model, Program program) {
+void RenderSystem::drawModel(const TransformComponent* transform, const RenderComponent* model, Program &program) {
 	if (!model || !model->model) return;
 
 	model->model->Draw(program);
+}
+
+void RenderSystem::UpdateTransformMatrix(TransformComponent& transform)
+{
+	
+	transform.transform_matrix = glm::mat4(1.0f);
+
+		
+
+	transform.transform_matrix = glm::translate(transform.transform_matrix, transform.position);
+	transform.transform_matrix  *= glm::mat4_cast(glm::quat(glm::radians(transform.rotation)));
+	transform.transform_matrix = glm::scale(transform.transform_matrix, transform.scale);
+	
 }
 
 

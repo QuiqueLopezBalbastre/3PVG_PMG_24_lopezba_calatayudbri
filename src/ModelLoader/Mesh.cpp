@@ -77,7 +77,7 @@ Mesh& Mesh::operator=(Mesh&& other) noexcept
   return *this;
 }
 
-void Mesh::Draw(Program program) const
+void Mesh::Draw(Program &program) const
 {
   // bind appropriate textures
   unsigned int diffuseNr = 1;
@@ -102,16 +102,14 @@ void Mesh::Draw(Program program) const
       number = std::to_string(heightNr++); // transfer unsigned int to string
 
     // now set the sampler to the correct texture unit
-    glUniform1i(glGetUniformLocation(program.get_id(), (name + number).c_str()), i);
+    program.setInt(name + number, i);
+    //glUniform1i(glGetUniformLocation(program.get_id(), (name + number).c_str()), i);
     // and finally bind the texture
     glBindTexture(GL_TEXTURE_2D, textures_[i].id);
   }
   glBindVertexArray(VAO);
   glDrawElements(GL_TRIANGLES, indices_size_, GL_UNSIGNED_INT, nullptr);
   glBindVertexArray(0);
-
-  // Limpia estados
-  glActiveTexture(GL_TEXTURE0);
 }
 
 GLuint Mesh::getVAO()
