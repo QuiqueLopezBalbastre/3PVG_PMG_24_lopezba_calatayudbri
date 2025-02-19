@@ -122,23 +122,23 @@ int main() {
 	// Crear una entidad para la luz
 	Entity lightEntity = ecsmanager.createEntity();
 
-	ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
-		light.type = LightType::Point; // Tipo de luz (Point Light)
-		light.color = glm::vec3(1.0f, 0.0f, 0.0f); // Color de la luz (RGB)
-		light.position = glm::vec3(20.0f, 100.0f, 0.0f); // Posición de la luz
-		light.intensity = 2.0f; // Intensidad de la luz
-		light.radius = 250.0f; // Radio de influencia de la luz
-		});
-
 	//ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
-	//	light.type = LightType::Spot; // Tipo de luz (Spotlight)
-	//	light.color = glm::vec3(1.0f, 1.0f, 1.0f); // Color de la luz (blanco)
-	//	light.position = glm::vec3(0.0f, 800.0f, 500.0f); // Posición de la luz
-	//	light.direction = glm::vec3(0.0f, -1.0f, -1.0f); // Dirección de la luz
+	//	light.type = LightType::Point; // Tipo de luz (Point Light)
+	//	light.color = glm::vec3(1.0f, 0.0f, 0.0f); // Color de la luz (RGB)
+	//	light.position = glm::vec3(20.0f, 100.0f, 0.0f); // Posición de la luz
 	//	light.intensity = 2.0f; // Intensidad de la luz
-	//	light.cutoff = glm::cos(glm::radians(12.5f)); // Ángulo de corte interior (12.5 grados)
-	//	light.outerCutoff = glm::cos(glm::radians(17.5f)); // Ángulo de corte exterior (17.5 grados)
+	//	light.radius = 250.0f; // Radio de influencia de la luz
 	//	});
+
+	ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
+		light.type = LightType::Spot; // Tipo de luz (Spotlight)
+		light.color = glm::vec3(1.0f, 1.0f, 1.0f); // Color de la luz (blanco)
+		light.position = glm::vec3(0.0f, 800.0f, 500.0f); // Posición de la luz
+		light.direction = glm::vec3(0.0f, -1.0f, -1.0f); // Dirección de la luz
+		light.intensity = 2.0f; // Intensidad de la luz
+		light.cutoff = glm::cos(glm::radians(12.5f)); // Ángulo de corte interior (12.5 grados)
+		light.outerCutoff = glm::cos(glm::radians(17.5f)); // Ángulo de corte exterior (17.5 grados)
+		});
 
 	// Configurar la luz como Point Light
 	Entity lightEntity2 = ecsmanager.createEntity();
@@ -223,53 +223,25 @@ int main() {
 			auto lightOpt = ecsmanager.getComponent<LightComponent>(Light_entity);
 			if (!lightOpt.has_value()) continue;
 			if (lightOpt && lightOpt.value()->type == LightType::Point) {
-				//GLuint pointLightIntensityLoc = glGetUniformLocation(program.get_id(), "pointLightIntensity");
 				program.setVec3("pointLightColor", lightOpt.value()->color);
 				program.setVec3("pointLightPosition", lightOpt.value()->position);
 				program.setFloat("pointLightRadius", lightOpt.value()->radius);
 				program.setInt("LightType", static_cast<int>(lightOpt.value()->type));
-				//glUniform1f(pointLightIntensityLoc, lightOpt.value()->intensity);
-
 			}
-
-			if (lightOpt && lightOpt.value()->type == LightType::Ambient) {
-				GLuint ambientLightColorLoc = glGetUniformLocation(program.get_id(), "ambientLight");
-				GLuint ambientLightIntensityLoc = glGetUniformLocation(program.get_id(), "ambientIntensity");
-				GLuint LightTypeLoc = glGetUniformLocation(program.get_id(), "LightType");
-
-				glUniform3f(ambientLightColorLoc, lightOpt.value()->color.r, lightOpt.value()->color.g, lightOpt.value()->color.b);
-				glUniform1f(ambientLightIntensityLoc, lightOpt.value()->intensity);
-				glUniform1i(LightTypeLoc, static_cast<int>(lightOpt.value()->type));
-			}
-
 			if (lightOpt && lightOpt.value()->type == LightType::Spot) {
-				GLuint spotlightColorLoc = glGetUniformLocation(program.get_id(), "spotlightColor");
-				GLuint spotlightPositionLoc = glGetUniformLocation(program.get_id(), "spotlightPosition");
-				GLuint spotlightDirectionLoc = glGetUniformLocation(program.get_id(), "spotlightDirection");
-				GLuint spotlightIntensityLoc = glGetUniformLocation(program.get_id(), "spotlightIntensity");
-				GLuint spotlightCutoffLoc = glGetUniformLocation(program.get_id(), "spotlightCutoff");
-				GLuint spotlightOuterCutoffLoc = glGetUniformLocation(program.get_id(), "spotlightOuterCutoff");
-				GLuint LightTypeLoc = glGetUniformLocation(program.get_id(), "LightType");
-
-				glUniform3f(spotlightColorLoc, lightOpt.value()->color.r, lightOpt.value()->color.g, lightOpt.value()->color.b);
-				glUniform3f(spotlightPositionLoc, lightOpt.value()->position.x, lightOpt.value()->position.y, lightOpt.value()->position.z);
-				glUniform3f(spotlightDirectionLoc, lightOpt.value()->direction.x, lightOpt.value()->direction.y, lightOpt.value()->direction.z);
-				glUniform1f(spotlightIntensityLoc, lightOpt.value()->intensity);
-				glUniform1f(spotlightCutoffLoc, lightOpt.value()->cutoff);
-				glUniform1f(spotlightOuterCutoffLoc, lightOpt.value()->outerCutoff);
-				glUniform1i(LightTypeLoc, static_cast<int>(lightOpt.value()->type));
+				program.setVec3("spotlightColor", lightOpt.value()->color);
+				program.setVec3("spotlightPosition", lightOpt.value()->position);
+				program.setVec3("spotlightDirection", lightOpt.value()->direction);
+				program.setFloat("spotlightIntensity", lightOpt.value()->intensity);
+				program.setFloat("spotlightCutoff", lightOpt.value()->cutoff);
+				program.setFloat("spotlightOuterCutoff", lightOpt.value()->outerCutoff);
+				program.setInt("LightType", static_cast<int>(lightOpt.value()->type));
 			}
-
 			if (lightOpt && lightOpt.value()->type == LightType::Directional) {
-				GLuint directionalLightColorLoc = glGetUniformLocation(program.get_id(), "directionalLightColor");
-				GLuint directionalLightDirectionLoc = glGetUniformLocation(program.get_id(), "directionalLightDirection");
-				GLuint directionalLightIntensityLoc = glGetUniformLocation(program.get_id(), "directionalLightIntensity");
-				GLuint LightTypeLoc = glGetUniformLocation(program.get_id(), "LightType");
-
-				glUniform3f(directionalLightColorLoc, lightOpt.value()->color.r, lightOpt.value()->color.g, lightOpt.value()->color.b);
-				glUniform3f(directionalLightDirectionLoc, lightOpt.value()->direction.x, lightOpt.value()->direction.y, lightOpt.value()->direction.z);
-				glUniform1f(directionalLightIntensityLoc, lightOpt.value()->intensity);
-				glUniform1i(LightTypeLoc, static_cast<int>(lightOpt.value()->type));
+				program.setVec3("directionalLightColor", lightOpt.value()->color);
+				program.setVec3("directionalLightDirection", lightOpt.value()->direction);
+				program.setFloat("directionalLightIntensity", lightOpt.value()->intensity);
+				program.setInt("LightType", static_cast<int>(lightOpt.value()->type));
 			}
 			// Renderizar todas las entidades
 			for (Entity entity = 1; entity < ecsmanager.get_nextEntity(); ++entity) {
@@ -281,31 +253,23 @@ int main() {
 				auto inputComponentOpt = ecsmanager.getComponent<InputComponent>(entity);
 
 				if (transformOpt && modelOpt) {
-
-
 					// Pasar la matriz de modelo al shader
 					GLuint modelLoc = glGetUniformLocation(program.get_id(), "model");
 					glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(transformOpt.value()->transform_matrix));
-
 					// Dibujar el modelo
 					renderSystem.drawModel(transformOpt.value(), modelOpt.value(), program);
 				}
-
 				// Gestion de camara
 				auto cameraComponent = ecsmanager.getComponent<CameraComponent>(entity);
 				if (cameraComponent) {
 					if (inputComponentOpt)
 						inputSystem.update(inputComponentOpt.value(), cameraComponent.value(), input, 0.016f);
-
-					//cameraComponent.value()->updatePosition(transformOpt.value());
-					//cameraComponent.value()->updateForward(transformOpt.value());
 					// Usa las matrices de la cámara del componente
 					cameraComponent.value()->updateViewMatrix();
 					cameraComponent.value()->updateProjectionMatrix();
 					view = cameraComponent.value()->view;
 					projection = cameraComponent.value()->projection;
 				}
-
 				auto camera = ecsmanager.getComponent<CameraComponent>(CameraEntity).value();
 				// Pasar las matrices de vista y proyección al shader
 				GLuint viewLoc = glGetUniformLocation(program.get_id(), "view");
@@ -313,7 +277,6 @@ int main() {
 
 				GLuint projectionLoc = glGetUniformLocation(program.get_id(), "projection");
 				glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-
 			}
 
 			glBlendFunc(GL_ONE, GL_ONE);
