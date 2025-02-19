@@ -102,7 +102,7 @@ struct CameraComponent : ComponentBase {
   float pitch{ 0.0f };   // Rotación vertical (en grados)
 
   // Configuración de la cámara
-  float movementSpeed{ 5.0f };      // Unidades por segundo
+  float movementSpeed{ 50.0f };      // Unidades por segundo
   float sprintMultiplier{ 2.0f };   // Multiplicador de velocidad al correr
   float mouseSensitivity{ 0.1f };   // Sensibilidad del ratón
 
@@ -111,10 +111,10 @@ struct CameraComponent : ComponentBase {
   glm::mat4 projection{ 1.0f };
 
   // Propiedades de proyección
-  float fov{ 45.0f };
+  float fov{ 90.0f };
   float aspectRatio{ 4.0f / 3.0f };
   float nearPlane{ 0.1f };
-  float farPlane{ 100.0f };
+  float farPlane{ 1000.0f };
 
   void updateCameraVectors() {
     // Calcula el vector front basado en los ángulos de Euler

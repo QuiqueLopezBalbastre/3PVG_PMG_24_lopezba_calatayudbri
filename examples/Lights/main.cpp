@@ -99,6 +99,25 @@ int main() {
 	ecsmanager.addComponentType<InputComponent>();
 	ecsmanager.addComponentType<RenderComponent>();
 	ecsmanager.addComponentType<LightComponent>();
+	ecsmanager.addComponentType<CameraComponent>();
+
+	//Camera Entity
+	Entity CameraEntity = ecsmanager.createEntity();
+	ecsmanager.addComponent<CameraComponent>(CameraEntity);
+	ecsmanager.editComponent<CameraComponent>(CameraEntity, [](CameraComponent& camera) {
+		camera.position = glm::vec3(0.0f, 300.0f, 300.0f); // Nueva posición
+		camera.updateViewMatrix(); // Actualizar la matriz de vista
+		});
+	ecsmanager.addComponent<InputComponent>(CameraEntity);
+
+	ecsmanager.editComponent<InputComponent>(CameraEntity, [](InputComponent& input) {
+		input.active = true;
+		input.followingMouse = true;
+		});
+	ecsmanager.addComponent<TransformComponent>(CameraEntity);
+	ecsmanager.editComponent<TransformComponent>(CameraEntity, [](TransformComponent& tr) {
+		tr.position = { 0.0f, 0.0f, 5.0f };
+		});
 
 	// Crear una entidad para la luz
 	Entity lightEntity = ecsmanager.createEntity();
@@ -152,11 +171,6 @@ int main() {
 	ecsmanager.editComponent<RenderComponent>(modelEntity1, [&](RenderComponent& modelComp) {
 		modelComp.model = mesh; // Cargar el primer modelo
 		});
-
-	ecsmanager.editComponent<InputComponent>(modelEntity1, [](InputComponent& input)
-		{
-			input.active = true;
-		});
 	// Crear la segunda entidad para el modelo 2
 	Entity modelEntity2 = ecsmanager.createEntity();
 
@@ -196,21 +210,12 @@ int main() {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ZERO);
 
-		// Configurar la cámara y las matrices de transformación
-		glm::mat4 view = glm::lookAt(
-			glm::vec3(0.0f, 350.0f, 500.0f), // Posición de la cámara
-			glm::vec3(0.0f, 0.0f, 0.0f),     // Punto al que mira la cámara
-			glm::vec3(0.0f, 1.0f, 0.0f)      // Vector "up"
-		);
 
-		glm::mat4 projection = glm::perspective(glm::radians(90.0f), 1280.0f / 1040.0f, 0.10f, 1000.f);
 		program.use();
-		// Pasar las matrices de vista y proyección al shader
-		GLuint viewLoc = glGetUniformLocation(program.get_id(), "view");
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-
-		GLuint projectionLoc = glGetUniformLocation(program.get_id(), "projection");
-		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+		glm::mat4x4 model, view, projection;
+		model = glm::mat4(1.0f);
+		view = glm::mat4(1.0f);
+		projection = glm::mat4(1.0f);
 
 		for (Entity Light_entity = 1; Light_entity < ecsmanager.get_nextEntity(); ++Light_entity) {
 			// Configurar la luz en el shader
@@ -275,10 +280,6 @@ int main() {
 				auto modelOpt = ecsmanager.getComponent<RenderComponent>(entity);
 				auto inputComponentOpt = ecsmanager.getComponent<InputComponent>(entity);
 
-				if (inputComponentOpt && transformOpt) {
-					inputSystem.update(inputComponentOpt.value(), transformOpt.value(), input);
-				}
-
 				if (transformOpt && modelOpt) {
 
 
@@ -289,6 +290,30 @@ int main() {
 					// Dibujar el modelo
 					renderSystem.drawModel(transformOpt.value(), modelOpt.value(), program);
 				}
+
+				// Gestion de camara
+				auto cameraComponent = ecsmanager.getComponent<CameraComponent>(entity);
+				if (cameraComponent) {
+					if (inputComponentOpt)
+						inputSystem.update(inputComponentOpt.value(), cameraComponent.value(), input, 0.016f);
+
+					//cameraComponent.value()->updatePosition(transformOpt.value());
+					//cameraComponent.value()->updateForward(transformOpt.value());
+					// Usa las matrices de la cámara del componente
+					cameraComponent.value()->updateViewMatrix();
+					cameraComponent.value()->updateProjectionMatrix();
+					view = cameraComponent.value()->view;
+					projection = cameraComponent.value()->projection;
+				}
+
+				auto camera = ecsmanager.getComponent<CameraComponent>(CameraEntity).value();
+				// Pasar las matrices de vista y proyección al shader
+				GLuint viewLoc = glGetUniformLocation(program.get_id(), "view");
+				glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+				GLuint projectionLoc = glGetUniformLocation(program.get_id(), "projection");
+				glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
 			}
 
 			glBlendFunc(GL_ONE, GL_ONE);
