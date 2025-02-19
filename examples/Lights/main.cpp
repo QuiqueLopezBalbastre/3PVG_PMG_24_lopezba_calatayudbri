@@ -102,14 +102,14 @@ int main() {
 	ecsmanager.addComponentType<LightComponent>();
 
 	// Crear una entidad para la luz
-	Entity lightEntity = ecsmanager.createEntity();
+	//Entity lightEntity = ecsmanager.createEntity();
 
-	ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
-		light.type = LightType::Directional;
-		light.color = glm::vec3(1.0f, 1.0f, 1.0f);
-		light.direction = glm::vec3(-0.5f, -1.0f, -0.5f); // Dirección de la luz (apuntando hacia abajo y hacia la izquierda)
-		light.intensity = 1.0f; // Intensidad de la luz
-		});
+	//ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
+	//	light.type = LightType::Directional;
+	//	light.color = glm::vec3(1.0f, 1.0f, 1.0f);
+	//	light.direction = glm::vec3(-0.5f, -1.0f, -0.5f); // Dirección de la luz (apuntando hacia abajo y hacia la izquierda)
+	//	light.intensity = 1.0f; // Intensidad de la luz
+	//	});
 
 	//ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
 	//	light.type = LightType::Spot; // Tipo de luz (Spotlight)
@@ -128,10 +128,10 @@ int main() {
 		light.color = glm::vec3(0.0f, 1.0f, 0.0f); // Color de la luz (RGB)
 		light.position = glm::vec3(0.0f, 100.0f, 0.0f); // Posición de la luz
 		light.intensity = 2.0f; // Intensidad de la luz
-		light.radius = 50.0f; // Radio de influencia de la luz
+		light.radius = 500.0f; // Radio de influencia de la luz
 		});
 
-	//ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
+	//ecsmanager.editComponent<LightComponent>(lightEntity2, [](LightComponent& light) {
 	//	light.type = LightType::Ambient; // Tipo de luz (Point Light)
 	//	light.color = glm::vec3(1.0f, 1.0f, 1.0f); // Color de la luz (blanco)
 	//	light.position = glm::vec3(0.0f, 400.0f, 0.0f); // Posición de la luz
@@ -179,6 +179,12 @@ int main() {
 		glClearColor(0.4, 0.4, 0.4, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
+		glDepthMask(true);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_ONE, GL_ZERO);
 
 		// Configurar la cámara y las matrices de transformación
 		glm::mat4 view = glm::lookAt(
@@ -201,13 +207,13 @@ int main() {
 			if (lightOpt && lightOpt.value()->type == LightType::Point) {
 				GLuint pointLightColorLoc = glGetUniformLocation(program.get_id(), "pointLightColor");
 				GLuint pointLightPositionLoc = glGetUniformLocation(program.get_id(), "pointLightPosition");
-				GLuint pointLightIntensityLoc = glGetUniformLocation(program.get_id(), "pointLightIntensity");
+				//GLuint pointLightIntensityLoc = glGetUniformLocation(program.get_id(), "pointLightIntensity");
 				GLuint pointLightRadiusLoc = glGetUniformLocation(program.get_id(), "pointLightRadius");
 				GLuint LightTypeLoc = glGetUniformLocation(program.get_id(), "LightType");
 
 				glUniform3f(pointLightColorLoc, lightOpt.value()->color.r, lightOpt.value()->color.g, lightOpt.value()->color.b);
 				glUniform3f(pointLightPositionLoc, lightOpt.value()->position.x, lightOpt.value()->position.y, lightOpt.value()->position.z);
-				glUniform1f(pointLightIntensityLoc, lightOpt.value()->intensity);
+				//glUniform1f(pointLightIntensityLoc, lightOpt.value()->intensity);
 				glUniform1f(pointLightRadiusLoc, lightOpt.value()->radius);
 				glUniform1i(LightTypeLoc, static_cast<int>(lightOpt.value()->type));
 			}
@@ -279,9 +285,13 @@ int main() {
 					renderSystem.drawModel(transformOpt.value(), modelOpt.value(), program);
 				}
 			}
-		}
 
-		//std::cout << "Entity 1 ID: " << modelEntity1 << ", Entity 2 ID: " << modelEntity2 << std::endl;
+			glBlendFunc(GL_ONE, GL_ONE);
+			glDepthMask(false);
+		}
+		glDepthMask(true);
+		glDisable(GL_BLEND);
+
 		// Intercambiar buffers
 		window->render();
 	}

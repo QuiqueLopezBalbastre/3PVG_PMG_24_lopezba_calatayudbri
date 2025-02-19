@@ -31,6 +31,30 @@ uniform float directionalLightIntensity;
 
 uniform int LightType;
 
+
+vec3 CalculatePointLight(vec3 normal, vec3 textureColor)
+{
+    // Calcular la dirección de la luz
+        vec3 lightDir = normalize(pointLightPosition - FragPos);
+
+        // Calcular la intensidad de la luz basada en el ángulo entre la normal y la dirección de la luz
+        float diff = max(dot(normal, lightDir), 0.0); // Producto punto entre la normal y la dirección de la luz
+        vec3 diffuse = diff * textureColor.rgb; //pointLightIntensity;
+
+        // Calcular la atenuación de la luz puntual
+        float distance = length(pointLightPosition - FragPos);
+        
+        // float attenuation = 1.0 - clamp(distance / pointLightRadius, 0.0); //pointLightIntensity); 
+        float attenuation = clamp(1.0f - (distance * distance)/(pointLightRadius * pointLightRadius), 0.0f, 1.0f);
+        // attenuation = attenuation * attenuation; // Atenuación cuadrática para un decaimiento más suave
+
+        // Aplicar la luz difusa y la atenuación
+        diffuse *= attenuation;
+        vec3 finalColor = pointLightColor * diffuse;
+        
+        return finalColor; 
+}
+
 void main()
 {
 	vec4 textureColor = texture(texture_diffuse, TexCoords);
@@ -38,6 +62,7 @@ void main()
 		textureColor = vec4(0.8, 0.8, 0.8, 1.0); // Gris claro
 	}
 	vec3 finalColor = textureColor.rgb;
+    vec3 normalized_normal = normalize(Normal);
 
     // Calcular el color final según el tipo de luz
     if (LightType == 0) { // Directional Light
@@ -54,22 +79,7 @@ void main()
 
       
     } else if (LightType == 1) { // Point Light
-   // Calcular la dirección de la luz
-        vec3 lightDir = normalize(pointLightPosition - FragPos);
-
-        // Calcular la intensidad de la luz basada en el ángulo entre la normal y la dirección de la luz
-        float diff = max(dot(Normal, lightDir), 0.0); // Producto punto entre la normal y la dirección de la luz
-        vec3 diffuse = diff * textureColor.rgb *pointLightColor * pointLightIntensity;
-
-        // Calcular la atenuación de la luz puntual
-        float distance = length(pointLightPosition - FragPos);
-        
-        float attenuation = 1.0 - clamp(distance / pointLightRadius, 0.0, pointLightIntensity); 
-        attenuation = attenuation * attenuation; // Atenuación cuadrática para un decaimiento más suave
-
-        // Aplicar la luz difusa y la atenuación
-        finalColor = textureColor.rgb * (diffuse * attenuation);
-        
+    finalColor = CalculatePointLight(normalized_normal,textureColor.rgb);
     } else if (LightType == 2) { // Spot Light
       
     vec3 lightDir = normalize(spotlightPosition - FragPos);
@@ -93,6 +103,6 @@ void main()
     {
 	    FragColor = vec4(TexCoords, 0.0, 1.0); // ver las normales
     }
-        FragColor = vec4(finalColor, textureColor.a);
+        FragColor = vec4(finalColor, 1.0);
     
 }
