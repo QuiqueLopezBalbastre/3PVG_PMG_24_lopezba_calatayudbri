@@ -72,6 +72,12 @@ void Input::setupKeyMapping()
   keyMapping[KEY_BACKSPACE] = GLFW_KEY_BACKSPACE;
   keyMapping[KEY_ESCAPE] = GLFW_KEY_ESCAPE;
 
+  // Mapeo de botones del raton
+
+  mouseButtonMapping[MOUSE_BUTTON_LEFT] = GLFW_MOUSE_BUTTON_1;
+  mouseButtonMapping[MOUSE_BUTTON_RIGHT] = GLFW_MOUSE_BUTTON_2;
+  //mouseButtonMapping[MOUSE_BUTTON_WHEEL] = GLFW_MOUSE_BUTTON_1;
+
   // Mapeo de teclas modificadoras
   modifierMapping[GLFW_MOD_SHIFT] = GLFW_KEY_LEFT_SHIFT;
   modifierMapping[GLFW_MOD_CONTROL] = GLFW_KEY_LEFT_CONTROL;

@@ -187,7 +187,7 @@ project "ECS"
     debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
     files "examples/ECS/main.cpp"
 
-    project "Lights"
+project "Lights"
 
     kind "ConsoleApp"
     language "C++"
@@ -199,3 +199,16 @@ project "ECS"
     conan_config_exec("RelWithDebInfo")
     debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
     files "examples/Lights/main.cpp"
+
+project "Camera"
+
+    kind "ConsoleApp"
+    language "C++"
+    targetdir "build/%{prj.name}/%{cfg.buildcfg}"
+    includedirs "include"
+    links "Motor"
+    conan_config_exec("Debug")
+    conan_config_exec("Release")
+    conan_config_exec("RelWithDebInfo")
+    debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
+    files "examples/Camera/main.cpp"

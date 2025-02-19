@@ -21,6 +21,7 @@ public:
 };
 class InputSystem {
 public:
-  void update(InputComponent* inputComponent, TransformComponent* transform, Input& input);
+  //void update(InputComponent* inputComponent, TransformComponent* transform, Input& input);
+  void update(InputComponent* input, CameraComponent* camera, Input& inputManager, float deltaTime);
 };
 #endif // !__SYSTEMS__

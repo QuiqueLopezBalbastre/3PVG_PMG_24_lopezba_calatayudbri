@@ -15,7 +15,7 @@ public:
    
     KEY_UNKNOWN = -1,
     // letters
-    KEY_A = 0,
+    KEY_A = 1,
     KEY_B,
     KEY_C,
     KEY_D,
@@ -76,6 +76,11 @@ public:
     KEY_ENTER,
     KEY_BACKSPACE,
     KEY_ESCAPE,
+  };
+  enum Mouse_Key {
+    MOUSE_BUTTON_LEFT,
+    MOUSE_BUTTON_RIGHT,
+    MOUSE_BUTTON_WHEEL,
   };
   enum Modifier_Key {
     MOD_KEY_SHIFT,
