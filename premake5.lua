@@ -94,7 +94,7 @@ project "Motor"
 
     kind "StaticLib"
     targetdir "build/%{cfg.buildcfg}"
-    includedirs { "include", "deps/assimp/include", "deps/glew/include",  "deps/glm", "deps/stb", "data", "deps/imgui" } 
+    includedirs { "include", "deps/assimp/include", "deps/glew/include",  "deps/glm", "deps/stb", "data"} 
     libdirs { "deps/assimp/lib", "deps/glew/lib"}
     -- UseLibs {"glload", "freeglut"}
     conan_config_lib()
@@ -115,7 +115,7 @@ project "Motor"
         -- "src/Color.cpp", "include/Color.hpp",
         "src/JobSystem.cpp", "include/JobSystem.hpp",
         "src/Scripting.cpp", "include/Scripting.hpp",
-        "src/ImguiPanel.cpp", "include/ImguiPanel.hpp",
+        -- "src/ImguiPanel.cpp", "include/ImguiPanel.hpp",
         "src/ECS/Component.cpp", "include/ECS/Component.hpp",
         "src/ECS/System.cpp", "include/ECS/System.hpp",
         "src/ECS/ECSManager.cpp", "include/ECS/ECSManager.hpp",
@@ -123,7 +123,7 @@ project "Motor"
 
 project "Window"
 
-    kind "WindowedApp"
+    kind "ConsoleApp"
     language "C++"
     targetdir "build/%{prj.name}/%{cfg.buildcfg}"
     includedirs "include"
@@ -186,3 +186,29 @@ project "ECS"
     conan_config_exec("RelWithDebInfo")
     debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
     files "examples/ECS/main.cpp"
+
+project "Lights"
+
+    kind "ConsoleApp"
+    language "C++"
+    targetdir "build/%{prj.name}/%{cfg.buildcfg}"
+    includedirs "include"
+    links "Motor"
+    conan_config_exec("Debug")
+    conan_config_exec("Release")
+    conan_config_exec("RelWithDebInfo")
+    debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
+    files "examples/Lights/main.cpp"
+
+project "Camera"
+
+    kind "ConsoleApp"
+    language "C++"
+    targetdir "build/%{prj.name}/%{cfg.buildcfg}"
+    includedirs "include"
+    links "Motor"
+    conan_config_exec("Debug")
+    conan_config_exec("Release")
+    conan_config_exec("RelWithDebInfo")
+    debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
+    files "examples/Camera/main.cpp"

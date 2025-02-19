@@ -30,7 +30,7 @@ public:
 
   // Public interface
   void finalizeModel();
-  void Draw(Program program) const;
+  void Draw(Program &program) const;
   bool isLoadComplete() const { return loadComplete; }
   bool isDataLoaded() const { return dataLoaded; }
   bool isGLResourcesCreated() const { return glResourcesCreated; }

@@ -9,6 +9,8 @@ public:
   RenderSystem();
   void update(const std::vector<TransformComponent>& transforms, const std::vector<RenderComponent>& renders);
   void drawShape(const TransformComponent* transform, const ShapeComponent* shape);
+  void drawModel(const TransformComponent* transform, const RenderComponent* model, Program &program);
+  static void UpdateTransformMatrix(TransformComponent &transform);
 private:
   void renderEntity(Entity entity, const TransformComponent& transform, const RenderComponent& render);
 };
@@ -19,6 +21,7 @@ public:
 };
 class InputSystem {
 public:
-  void update(InputComponent* inputComponent, TransformComponent* transform, Input& input);
+  //void update(InputComponent* inputComponent, TransformComponent* transform, Input& input);
+  void update(InputComponent* input, CameraComponent* camera, Input& inputManager, float deltaTime);
 };
 #endif // !__SYSTEMS__

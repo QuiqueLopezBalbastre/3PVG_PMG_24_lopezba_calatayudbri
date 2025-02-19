@@ -7,6 +7,10 @@
 #include "common.hpp"
 #include "Input.hpp"
 #include "Scripting.hpp"
+#include "ModelLoader/Model.hpp"
+#include "glm/vec3.hpp"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 using Entity = unsigned int;
 
@@ -17,14 +21,34 @@ struct ComponentBase {
   bool active;
 };
 
+enum class LightType {
+  Directional,
+  Point,
+  Spot,
+  Ambient
+};
+
+struct LightComponent : ComponentBase
+{
+    LightType type;
+    glm::vec3 color;
+    glm::vec3 position;
+    glm::vec3 direction;
+    float intensity;
+    float radius; // Para point lights y spotlight
+    float cutoff; // Para spotlight
+    float outerCutoff;
+};
+
 struct TransformComponent : ComponentBase {
-  Vec3 position;
-  Vec3 rotation;
-  Vec3 scale;
+  glm::vec3 position;
+  glm::vec3 rotation;
+  glm::vec3 scale;
+  glm::mat4 transform_matrix;
 };
 struct RenderComponent : ComponentBase {
-  std::string meshName;
-  std::string textureName;
+
+  std::shared_ptr<Model> model;
 };
 enum class ShapeType {
   Square,
@@ -66,8 +90,53 @@ namespace {
     return { true, ShapeType::Circle, vertices, color };
   }
 }
+
+struct CameraComponent : ComponentBase {
+  glm::vec3 position{ 0.0f, 0.0f, 5.0f };
+  glm::vec3 front{ 0.0f, 0.0f, -1.0f };    // Dirección a la que mira la cámara
+  glm::vec3 up{ 0.0f, 1.0f, 0.0f };
+  glm::vec3 right{ 1.0f, 0.0f, 0.0f };     // Vector derecho para strafing
+
+  // Ángulos de Euler para la rotación
+  float yaw{ -90.0f };   // Rotación horizontal (en grados)
+  float pitch{ 0.0f };   // Rotación vertical (en grados)
+
+  // Configuración de la cámara
+  float movementSpeed{ 50.0f };      // Unidades por segundo
+  float sprintMultiplier{ 2.0f };   // Multiplicador de velocidad al correr
+  float mouseSensitivity{ 0.1f };   // Sensibilidad del ratón
+
+  // Matrices de la cámara
+  glm::mat4 view{ 1.0f };
+  glm::mat4 projection{ 1.0f };
+
+  // Propiedades de proyección
+  float fov{ 90.0f };
+  float aspectRatio{ 4.0f / 3.0f };
+  float nearPlane{ 0.1f };
+  float farPlane{ 1000.0f };
+
+  void updateCameraVectors() {
+    // Calcula el vector front basado en los ángulos de Euler
+    front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    front.y = sin(glm::radians(pitch));
+    front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    front = glm::normalize(front);
+
+    // Recalcula los vectores right y up
+    right = glm::normalize(glm::cross(front, glm::vec3(0.0f, 1.0f, 0.0f)));
+    up = glm::normalize(glm::cross(right, front));
+  }
+
+  void updateViewMatrix() {
+    view = glm::lookAt(position, position + front, up);
+  }
+
+  void updateProjectionMatrix() {
+    projection = glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
+  }
+};
 // TO DO:
-// CameraComponent
 // PhysicsComponent
 // AudioComponent
 // ParticleComponent
@@ -81,9 +150,9 @@ struct InputComponent : ComponentBase {
   double mouseY = 0.0;
 };
 struct AnimationComponent : ComponentBase {
-  Vec3 translation;  // Movimiento por frame (x, y, z)
-  Vec3 rotation;     // Rotación por frame (pitch, yaw, roll)
-  Vec3 scale;        // Escalado por frame (x, y, z)
+  glm::vec3 translation;  // Movimiento por frame (x, y, z)
+  glm::vec3 rotation;     // Rotación por frame (pitch, yaw, roll)
+  glm::vec3 scale;        // Escalado por frame (x, y, z)
   float duration;    // Duración de la animación en segundos
   float elapsedTime; // Tiempo transcurrido desde el inicio
 };

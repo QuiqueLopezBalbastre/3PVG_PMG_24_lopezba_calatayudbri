@@ -54,6 +54,11 @@ void Program::use() const
 
 }
 
+void Program::unuse()
+{
+    glUseProgram(0);
+}
+
 bool Program::createProgram(Program& program, Shader* vertex_shader, Shader* fragment_shader)
 {
   //Program program = Program();
@@ -64,4 +69,43 @@ bool Program::createProgram(Program& program, Shader* vertex_shader, Shader* fra
     return false;
   }
   return true;
+}
+
+void Program::setVec3(const std::string& name, const glm::vec3& value)
+{
+    glUniform3fv(MapUniformLocation(name), 1, &value[0]);
+}
+
+void Program::setInt(const std::string& name, const int value)
+{
+    glUniform1i(MapUniformLocation(name), value);
+}
+
+void Program::setFloat(const std::string& name, const float value)
+{
+    glUniform1f(MapUniformLocation(name), value);
+}
+
+int Program::MapUniformLocation(const std::string& name)
+{
+    auto it = uniform_map.find(name);
+    if (it == uniform_map.end())
+    {
+        int loc = GetUniformLocation(name);
+        it = uniform_map.emplace_hint(uniform_map.end(), name, loc);
+    }
+
+    return it->second;
+}
+
+int Program::GetUniformLocation(const std::string& location)
+{
+    int loc = glGetUniformLocation(id, location.data());
+    if (loc == -1)
+    {
+        printf("Location [%s] does not exist \n", location.data());
+        
+    }
+    
+    return loc;
 }

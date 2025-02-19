@@ -228,12 +228,13 @@ unsigned int Model::TextureFromFile(const char* path, const std::string& directo
   return textureID;
 }
 
-void Model::Draw(Program program) const {
+void Model::Draw(Program &program) const {
   for (const auto& mesh : meshes) {
     mesh.Draw(program);
   }
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glActiveTexture(GL_TEXTURE0);
+  glBindVertexArray(0);
+  //glBindTexture(GL_TEXTURE_2D, 0);
+  
 }
 
 void Model::finalizeModel() {
