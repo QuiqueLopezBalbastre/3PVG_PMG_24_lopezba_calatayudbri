@@ -28,8 +28,9 @@ uniform float directionalLightIntensity;
 
 uniform int LightType;
 
+uniform vec3 cameraPos;
 
-vec3 CalculatePointLight(vec3 normal, vec3 textureColor)
+vec3 CalculatePointLight(vec3 normal, vec3 textureColor, vec3 viewDir)
 {
     // Calcular la dirección de la luz
         vec3 lightDir = normalize(pointLightPosition - FragPos);
@@ -37,6 +38,10 @@ vec3 CalculatePointLight(vec3 normal, vec3 textureColor)
         // Calcular la intensidad de la luz basada en el ángulo entre la normal y la dirección de la luz
         float diff = max(dot(normal, lightDir), 0.0); // Producto punto entre la normal y la dirección de la luz
         vec3 diffuse = diff * textureColor.rgb; //pointLightIntensity;
+
+        vec3 reflectDir = reflect(-lightDir, normal);
+        float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+
 
         // Calcular la atenuación de la luz puntual
         float distance = length(pointLightPosition - FragPos);
@@ -47,7 +52,10 @@ vec3 CalculatePointLight(vec3 normal, vec3 textureColor)
 
         // Aplicar la luz difusa y la atenuación
         diffuse *= attenuation;
-        vec3 finalColor = pointLightColor * diffuse;
+
+        vec3 specular = pointLightColor * spec * attenuation * pointLightIntensity;
+
+        vec3 finalColor = pointLightColor * (diffuse + specular);
         
         return finalColor; 
 }
@@ -99,11 +107,12 @@ void main()
 	vec3 finalColor = textureColor.rgb;
     vec3 normalized_normal = normalize(Normal);
 
+    vec3 ViewDir = normalize(cameraPos - FragPos);
     // Calcular el color final según el tipo de luz
     if (LightType == 0) { // Directional Light
         finalColor = CalculateDirectionalLight(normalized_normal,textureColor.rgb);
     } else if (LightType == 1) { // Point Light
-    finalColor = CalculatePointLight(normalized_normal,textureColor.rgb);
+    finalColor = CalculatePointLight(normalized_normal,textureColor.rgb, ViewDir);
     } else if (LightType == 2) { // Spot Light
       finalColor = CalculateSpotLight(normalized_normal,textureColor.rgb);
     }else

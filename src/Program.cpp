@@ -86,6 +86,11 @@ void Program::setFloat(const std::string& name, const float value)
     glUniform1f(MapUniformLocation(name), value);
 }
 
+void Program::setMat4(const std::string& name, glm::mat4& value)
+{
+    glUniform4fv(MapUniformLocation(name), 1, &value[0][0]);
+}
+
 int Program::MapUniformLocation(const std::string& name)
 {
     auto it = uniform_map.find(name);

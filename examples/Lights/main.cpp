@@ -12,7 +12,6 @@
 #include "ECS/System.hpp"
 #include "ECS/ECSManager.hpp"
 
-
 void PrintShaderValues(Program program)
 {
 	GLint numUniforms = 0;
@@ -107,6 +106,7 @@ int main() {
 	ecsmanager.editComponent<CameraComponent>(CameraEntity, [](CameraComponent& camera) {
 		camera.position = glm::vec3(0.0f, 300.0f, 300.0f); // Nueva posición
 		camera.updateViewMatrix(); // Actualizar la matriz de vista
+		camera.updateProjectionMatrix();
 		});
 	ecsmanager.addComponent<InputComponent>(CameraEntity);
 
@@ -262,6 +262,8 @@ int main() {
 				// Gestion de camara
 				auto cameraComponent = ecsmanager.getComponent<CameraComponent>(entity);
 				if (cameraComponent) {
+					glm::vec3 cameraPosition = cameraComponent.value()->position;
+
 					if (inputComponentOpt)
 						inputSystem.update(inputComponentOpt.value(), cameraComponent.value(), input, 0.016f);
 					// Usa las matrices de la cámara del componente
@@ -269,14 +271,20 @@ int main() {
 					cameraComponent.value()->updateProjectionMatrix();
 					view = cameraComponent.value()->view;
 					projection = cameraComponent.value()->projection;
+					program.setVec3("cameraPos", cameraPosition);
+
+					printf("%f - %f - %f \n", cameraComponent.value()->position.x, cameraComponent.value()->position.y, cameraComponent.value()->position.z);
 				}
 				auto camera = ecsmanager.getComponent<CameraComponent>(CameraEntity).value();
 				// Pasar las matrices de vista y proyección al shader
-				GLuint viewLoc = glGetUniformLocation(program.get_id(), "view");
-				glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+				if (camera) {
+					GLuint viewLoc = glGetUniformLocation(program.get_id(), "view");
+					glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
-				GLuint projectionLoc = glGetUniformLocation(program.get_id(), "projection");
-				glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+					GLuint projectionLoc = glGetUniformLocation(program.get_id(), "projection");
+					glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+				}
 			}
 
 			glBlendFunc(GL_ONE, GL_ONE);
