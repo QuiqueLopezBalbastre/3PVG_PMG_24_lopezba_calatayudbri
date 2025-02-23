@@ -25,7 +25,7 @@ public:
 	void setVec3(const std::string &name, const glm::vec3 &value);
 	void setInt(const std::string& name, const int value);
 	void setFloat(const std::string& name, const float value);
-	void setMat4(const std::string& name, glm::mat4& value);
+	void setmat4(const std::string& name, glm::mat4& value);
 private:
 	/** Atributos */
 	std::unordered_map<std::string, int> uniform_map;

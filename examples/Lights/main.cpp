@@ -254,8 +254,9 @@ int main() {
 
 				if (transformOpt && modelOpt) {
 					// Pasar la matriz de modelo al shader
-					GLuint modelLoc = glGetUniformLocation(program.get_id(), "model");
-					glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(transformOpt.value()->transform_matrix));
+					program.setmat4("model", transformOpt.value()->transform_matrix);
+					/*GLuint modelLoc = glGetUniformLocation(program.get_id(), "model");
+					glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(transformOpt.value()->transform_matrix));*/
 					// Dibujar el modelo
 					renderSystem.drawModel(transformOpt.value(), modelOpt.value(), program);
 				}
@@ -273,16 +274,19 @@ int main() {
 					projection = cameraComponent.value()->projection;
 					program.setVec3("cameraPos", cameraPosition);
 
-					printf("%f - %f - %f \n", cameraComponent.value()->position.x, cameraComponent.value()->position.y, cameraComponent.value()->position.z);
+					//printf("%f - %f - %f \n", cameraComponent.value()->position.x, cameraComponent.value()->position.y, cameraComponent.value()->position.z);
 				}
 				auto camera = ecsmanager.getComponent<CameraComponent>(CameraEntity).value();
 				// Pasar las matrices de vista y proyección al shader
 				if (camera) {
-					GLuint viewLoc = glGetUniformLocation(program.get_id(), "view");
-					glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
-					GLuint projectionLoc = glGetUniformLocation(program.get_id(), "projection");
-					glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+					program.setmat4("view", view);
+					/*GLuint viewLoc = glGetUniformLocation(program.get_id(), "view");
+					glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));*/
+
+					program.setmat4("projection", projection);
+					/*GLuint projectionLoc = glGetUniformLocation(program.get_id(), "projection");
+					glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));*/
 
 				}
 			}
