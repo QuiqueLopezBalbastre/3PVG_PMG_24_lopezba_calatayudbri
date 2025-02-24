@@ -26,11 +26,13 @@ public:
 	void setInt(const std::string& name, const int value);
 	void setFloat(const std::string& name, const float value);
 	void setmat4(const std::string& name, glm::mat4& value);
+	void CreateShadowMap();
 private:
 	/** Atributos */
 	std::unordered_map<std::string, int> uniform_map;
 	int MapUniformLocation(const std::string &name);
 	int GetUniformLocation(const std::string &location);
 	GLuint id;
+	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 };
 #endif // !__PROGRAM__
