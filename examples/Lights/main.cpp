@@ -12,6 +12,9 @@
 #include "ECS/System.hpp"
 #include "ECS/ECSManager.hpp"
 
+float deltaTime = 0.0f; // Tiempo entre frames
+float lastFrameTime = 0.0f; // Tiempo del frame anterior
+
 void PrintShaderValues(Program program)
 {
 	GLint numUniforms = 0;
@@ -150,6 +153,15 @@ int main() {
 		light.radius = 250.0f; // Radio de influencia de la luz
 		});
 
+	Entity lightEntity3 = ecsmanager.createEntity();
+	ecsmanager.editComponent<LightComponent>(lightEntity3, [](LightComponent& light) {
+		light.type = LightType::Point; // Tipo de luz (Point Light)
+		light.color = glm::vec3(0.0f, 0.0f, 1.0f); // Color de la luz (RGB)
+		light.position = glm::vec3(50.0f, 100.0f, 0.0f); // Posición de la luz
+		light.intensity = 2.0f; // Intensidad de la luz
+		light.radius = 250.0f; // Radio de influencia de la luz
+		});
+
 	//ecsmanager.editComponent<LightComponent>(lightEntity2, [](LightComponent& light) {
 	//	light.type = LightType::Ambient; // Tipo de luz (Point Light)
 	//	light.color = glm::vec3(1.0f, 1.0f, 1.0f); // Color de la luz (blanco)
@@ -188,6 +200,14 @@ int main() {
 
 // Ciclo del juego
 	while (!window->isOpen()) {
+		float currentFrameTime = glfwGetTime();
+
+		// Calcular el delta time
+		deltaTime = currentFrameTime - lastFrameTime;
+
+		// Actualizar el tiempo del frame anterior
+		lastFrameTime = currentFrameTime;
+
 		float rotation = glm::radians((float)glfwGetTime() * 100.0f);
 		//glEnable(GL_COLOR_BUFFER_BIT);
 		for (Entity entity = 1; entity < ecsmanager.get_nextEntity(); ++entity)
@@ -216,6 +236,37 @@ int main() {
 		model = glm::mat4(1.0f);
 		view = glm::mat4(1.0f);
 		projection = glm::mat4(1.0f);
+
+		// Gestion de camara
+		auto cameraComponent = ecsmanager.getComponent<CameraComponent>(CameraEntity);
+		auto inputCameraComponentOpt = ecsmanager.getComponent<InputComponent>(CameraEntity);
+		if (cameraComponent) {
+			glm::vec3 cameraPosition = cameraComponent.value()->position;
+
+			if (inputCameraComponentOpt)
+				inputSystem.update(inputCameraComponentOpt.value(), cameraComponent.value(), input, deltaTime);
+			// Usa las matrices de la cámara del componente
+			cameraComponent.value()->updateViewMatrix();
+			cameraComponent.value()->updateProjectionMatrix();
+			view = cameraComponent.value()->view;
+			projection = cameraComponent.value()->projection;
+			program.setVec3("cameraPos", cameraPosition);
+
+			printf("%f | %f | %f \n", cameraComponent.value()->position.x, cameraComponent.value()->position.y, cameraComponent.value()->position.z);
+		}
+		auto camera = ecsmanager.getComponent<CameraComponent>(CameraEntity).value();
+		// Pasar las matrices de vista y proyección al shader
+		if (camera) {
+
+			program.setmat4("view", view);
+			/*GLuint viewLoc = glGetUniformLocation(program.get_id(), "view");
+			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));*/
+
+			program.setmat4("projection", projection);
+			/*GLuint projectionLoc = glGetUniformLocation(program.get_id(), "projection");
+			glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));*/
+
+		}
 
 		for (Entity Light_entity = 1; Light_entity < ecsmanager.get_nextEntity(); ++Light_entity) {
 			// Configurar la luz en el shader
@@ -259,35 +310,6 @@ int main() {
 					glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(transformOpt.value()->transform_matrix));*/
 					// Dibujar el modelo
 					renderSystem.drawModel(transformOpt.value(), modelOpt.value(), program);
-				}
-				// Gestion de camara
-				auto cameraComponent = ecsmanager.getComponent<CameraComponent>(entity);
-				if (cameraComponent) {
-					glm::vec3 cameraPosition = cameraComponent.value()->position;
-
-					if (inputComponentOpt)
-						inputSystem.update(inputComponentOpt.value(), cameraComponent.value(), input, 0.016f);
-					// Usa las matrices de la cámara del componente
-					cameraComponent.value()->updateViewMatrix();
-					cameraComponent.value()->updateProjectionMatrix();
-					view = cameraComponent.value()->view;
-					projection = cameraComponent.value()->projection;
-					program.setVec3("cameraPos", cameraPosition);
-
-					//printf("%f - %f - %f \n", cameraComponent.value()->position.x, cameraComponent.value()->position.y, cameraComponent.value()->position.z);
-				}
-				auto camera = ecsmanager.getComponent<CameraComponent>(CameraEntity).value();
-				// Pasar las matrices de vista y proyección al shader
-				if (camera) {
-
-					program.setmat4("view", view);
-					/*GLuint viewLoc = glGetUniformLocation(program.get_id(), "view");
-					glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));*/
-
-					program.setmat4("projection", projection);
-					/*GLuint projectionLoc = glGetUniformLocation(program.get_id(), "projection");
-					glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));*/
-
 				}
 			}
 

@@ -110,10 +110,10 @@ void InputSystem::update(InputComponent* input, CameraComponent* camera, Input& 
 	static double lastX = mouseX;
 	static double lastY = mouseY;
 
-	float xOffset = mouseX - lastX;
-	float yOffset = lastY - mouseY; // Invertido porque Y va de abajo hacia arriba
+	float xOffset = (float)(mouseX - lastX);
+	float yOffset = (float)(lastY - mouseY); // Invertido porque Y va de abajo hacia arriba
 
-	lastX = mouseX;
+	lastX = mouseX; 
 	lastY = mouseY;
 
 	// Actualizar ángulos de la cámara solo si el botón derecho está presionado
@@ -125,7 +125,7 @@ void InputSystem::update(InputComponent* input, CameraComponent* camera, Input& 
 		camera->pitch = glm::clamp(camera->pitch, -89.0f, 89.0f);
 
 		// Actualizar los vectores de la cámara basados en los nuevos ángulos
-		camera->updateCameraVectors();
+		//camera->updateCameraVectors();
 
 		// Velocidad base de movimiento
 		float currentSpeed = camera->movementSpeed;
@@ -147,8 +147,11 @@ void InputSystem::update(InputComponent* input, CameraComponent* camera, Input& 
 		if (input->keyReceived == Input::KEY_Q)
 			camera->position -= camera->up * currentSpeed;
 	}
+		camera->updateCameraVectors();
 
 
 	// Actualizar la matriz de vista después del movimiento
 	camera->updateViewMatrix();
+	camera->updateProjectionMatrix();
+	
 }
