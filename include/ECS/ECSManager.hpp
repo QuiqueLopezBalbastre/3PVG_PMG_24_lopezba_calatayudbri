@@ -46,7 +46,7 @@ private:
   std::vector<Entity> deadEntities_;
 };
 
-#endif
+
 
 template<typename T>
 void ECSManager::addComponentType() {
@@ -135,3 +135,5 @@ void ComponentList<T>::grow(unsigned int current_entities) {
   }
   componentlist.resize(new_size, std::nullopt);
 }
+
+#endif

@@ -60,7 +60,7 @@ int main() {
 
 	/** Creating shaders */
 	Shader vertex = Shader();
-	if (!vertex.loadFromFile(Shader::ShaderType::kShaderType_Vertex, "../data/Shaders/vertex.vs")) {
+	if (!vertex.loadFromFile(Shader::ShaderType::kShaderType_Vertex, "../data/Shaders/shadow_vertex.vs")) {
 		std::cerr << "Error al cargar el vertex shader desde archivo." << std::endl;
 		return -2;
 	}
@@ -70,7 +70,7 @@ int main() {
 	}
 
 	Shader fragment = Shader();
-	if (!fragment.loadFromFile(Shader::ShaderType::kShaderType_Fragment, "../data/Shaders/fragment.fs")) {
+	if (!fragment.loadFromFile(Shader::ShaderType::kShaderType_Fragment, "../data/Shaders/shadow_fragment.fs")) {
 		std::cerr << "Error al cargar el fragment shader desde archivo." << std::endl;
 		return -4;
 	}
@@ -202,12 +202,6 @@ int main() {
 	while (!window->isOpen()) {
 		float currentFrameTime = glfwGetTime();
 
-		float near_plane = 1.0f, far_plane = 7.5f;
-		glm::mat4 lightProjection, lightView;
-		glm::mat4 lightSpaceMatrix;
-
-		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-		lightSpaceMatrix = lightProjection * lightView;
 		// Calcular el delta time
 		deltaTime = currentFrameTime - lastFrameTime;
 
@@ -243,8 +237,12 @@ int main() {
 		view = glm::mat4(1.0f);
 		projection = glm::mat4(1.0f);
 
-		// Gestion de camara
+		glm::mat4 lightProjection, lightView, lightSpaceMatrix;
+		
 		auto cameraComponent = ecsmanager.getComponent<CameraComponent>(CameraEntity);
+		
+
+		// Gestion de camara
 		auto inputCameraComponentOpt = ecsmanager.getComponent<InputComponent>(CameraEntity);
 		if (cameraComponent) {
 			glm::vec3 cameraPosition = cameraComponent.value()->position;
@@ -276,13 +274,17 @@ int main() {
 
 		for (Entity Light_entity = 1; Light_entity < ecsmanager.get_nextEntity(); ++Light_entity) {
 			// Configurar la luz en el shader
-			if (!ecsmanager.isEntityAlive(Light_entity)) continue;
 			auto lightOpt = ecsmanager.getComponent<LightComponent>(Light_entity);
-
-			lightView = glm::lookAt(lightOpt.value()->position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-			
-
+			if (!ecsmanager.isEntityAlive(Light_entity)) continue;
 			if (!lightOpt.has_value()) continue;
+			program.setInt("shadowMap", 1);
+			program.setInt("depthMap", 2);
+			lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, cameraComponent.value()->nearPlane, cameraComponent.value()->farPlane);
+			lightView = glm::lookAt(lightOpt.value()->position,glm::vec3(0.0f),glm::vec3(0.0f,1.0f,0.0f));
+			lightSpaceMatrix = lightProjection * lightView;
+
+			program.setmat4("lightSpaceMatrix", lightSpaceMatrix);
+
 			if (lightOpt && lightOpt.value()->type == LightType::Point) {
 				program.setVec3("pointLightColor", lightOpt.value()->color);
 				program.setVec3("pointLightPosition", lightOpt.value()->position);
@@ -304,24 +306,9 @@ int main() {
 				program.setFloat("directionalLightIntensity", lightOpt.value()->intensity);
 				program.setInt("LightType", static_cast<int>(lightOpt.value()->type));
 			}
-			// Renderizar todas las entidades
-			for (Entity entity = 1; entity < ecsmanager.get_nextEntity(); ++entity) {
-				if (!ecsmanager.isEntityAlive(entity)) continue;
-				if (ecsmanager.getComponent<LightComponent>(entity).has_value()) continue;
-				// Obtener los componentes de la entidad
-				auto transformOpt = ecsmanager.getComponent<TransformComponent>(entity);
-				auto modelOpt = ecsmanager.getComponent<RenderComponent>(entity);
-				auto inputComponentOpt = ecsmanager.getComponent<InputComponent>(entity);
 
-				if (transformOpt && modelOpt) {
-					// Pasar la matriz de modelo al shader
-					program.setmat4("model", transformOpt.value()->transform_matrix);
-					/*GLuint modelLoc = glGetUniformLocation(program.get_id(), "model");
-					glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(transformOpt.value()->transform_matrix));*/
-					// Dibujar el modelo
-					renderSystem.drawModel(transformOpt.value(), modelOpt.value(), program);
-				}
-			}
+			// Renderizar todas las entidades
+			renderSystem.RenderScene(ecsmanager,program,model,view,projection);
 
 			glBlendFunc(GL_ONE, GL_ONE);
 			glDepthMask(false);

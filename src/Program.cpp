@@ -37,6 +37,11 @@ GLuint Program::get_id()
   return id;
 }
 
+GLuint Program::get_depthMapFBO()
+{
+    return depthMapFBO;
+}
+
 void Program::setUniform(const std::string& name, int value)
 {
   GLint location = glGetUniformLocation(id, name.c_str());
@@ -93,7 +98,7 @@ void Program::setmat4(const std::string& name, glm::mat4& value)
 
 void Program::CreateShadowMap()
 {
-    GLuint depthMapFBO;
+    
     glGenFramebuffers(1, &depthMapFBO);
 
     GLuint depthMap;

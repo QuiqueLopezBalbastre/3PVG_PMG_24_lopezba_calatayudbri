@@ -7,7 +7,8 @@ in vec3 FragPos;
 in vec3 Normal;
 
 uniform sampler2D texture_diffuse1;
-
+uniform sampler2D shadowMap;
+uniform sampler2D depthMap;
 
 uniform vec3 pointLightColor; // Color de la point light
 uniform vec3 pointLightPosition; // Posición de la point light

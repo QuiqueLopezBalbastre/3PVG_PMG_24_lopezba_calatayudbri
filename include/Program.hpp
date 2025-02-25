@@ -18,6 +18,7 @@ public:
 	void attach(Shader* shader);
 	bool link();
 	GLuint get_id();
+	GLuint get_depthMapFBO();
 	void setUniform(const std::string& name, int value);
 	void use() const;
 	void unuse();
@@ -33,6 +34,7 @@ private:
 	int MapUniformLocation(const std::string &name);
 	int GetUniformLocation(const std::string &location);
 	GLuint id;
+	GLuint depthMapFBO;
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 };
 #endif // !__PROGRAM__

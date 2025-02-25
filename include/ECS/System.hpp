@@ -3,6 +3,7 @@
 
 #include <GL/glew.h>
 #include "Component.hpp"
+#include "ECS/ECSManager.hpp"
 
 class RenderSystem {
 public:
@@ -11,6 +12,7 @@ public:
   void drawShape(const TransformComponent* transform, const ShapeComponent* shape);
   void drawModel(const TransformComponent* transform, const RenderComponent* model, Program &program);
   static void UpdateTransformMatrix(TransformComponent &transform);
+  void RenderScene(ECSManager& ecsmanager, Program& program, glm::mat4x4& model, glm::mat4x4& view, glm::mat4x4& projection);
 private:
   void renderEntity(Entity entity, const TransformComponent& transform, const RenderComponent& render);
 };
