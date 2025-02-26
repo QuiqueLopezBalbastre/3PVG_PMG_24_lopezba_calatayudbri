@@ -1,5 +1,11 @@
 #include "ECS/System.hpp"
 #include <iostream>
+#include "glm/glm.hpp"
+#include <glm/mat4x4.hpp>
+#include <glm/ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
+#include <glm/ext/matrix_clip_space.hpp> // perspective
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 #include <Input.hpp>
 
 RenderSystem::RenderSystem()
@@ -40,11 +46,20 @@ void RenderSystem::renderEntity(Entity entity, const TransformComponent& transfo
 		<< ".\n";
 }
 
-void RenderSystem::drawModel(const TransformComponent* transform, const RenderComponent* model, Program program) {
+void RenderSystem::drawModel(const TransformComponent* transform, const RenderComponent* model, Program &program) {
 	if (!model || !model->model) return;
 
-
 	model->model->Draw(program);
+}
+
+void RenderSystem::UpdateTransformMatrix(TransformComponent& transform)
+{
+	
+	transform.transform_matrix = glm::mat4(1.0f);
+	transform.transform_matrix = glm::translate(transform.transform_matrix, transform.position);
+	transform.transform_matrix  *= glm::mat4_cast(glm::quat(glm::radians(transform.rotation)));
+	transform.transform_matrix = glm::scale(transform.transform_matrix, transform.scale);
+	
 }
 
 
@@ -83,51 +98,60 @@ void AnimationSystem::update(TransformComponent* transform, AnimationComponent* 
 		transform->scale = transform->scale + (anim->scale * deltaTime);
 	}
 }
+void InputSystem::update(InputComponent* input, CameraComponent* camera, Input& inputManager, float deltaTime) {
+	if (!input->active) return;
 
-void InputSystem::update(InputComponent* inputComponent, TransformComponent* transform, Input& input) {
-	if (inputComponent->active) {
-		inputComponent->keyReceived = input.getCurrentlyPressedKey();
+	input->keyReceived = inputManager.getCurrentlyPressedKey();
 
-		if (inputComponent->followingMouse) {
-			double mouseX, mouseY;
-			input.getMousePosition(mouseX, mouseY);
-			inputComponent->mouseX = mouseX;
-			inputComponent->mouseY = mouseY;
-			transform->position = glm::vec3((float)inputComponent->mouseX, (float)inputComponent->mouseY, 0.0f);
-		}
-		else {
-			// Para movimiento
-			if (inputComponent->keyReceived == Input::KEY_W) {
-				transform->position = transform->position + glm::vec3(0.0f, 0.25f * 0.016f, 0.0f);
-			}
-			if (inputComponent->keyReceived == Input::KEY_S) {
-				transform->position = transform->position - glm::vec3(0.0f, 0.25f * 0.016f, 0.0f);
-			}
-			if (inputComponent->keyReceived == Input::KEY_D) {
-				transform->position = transform->position + glm::vec3(0.25f * 0.016f, 0.0f, 0.0f);
-			}
-			if (inputComponent->keyReceived == Input::KEY_A) {
-				transform->position = transform->position - glm::vec3(0.25f * 0.016f, 0.0f, 0.0f);
-			}
+	// Procesar movimiento del ratón
+	double mouseX, mouseY;
+	inputManager.getMousePosition(mouseX, mouseY);
 
-			// Para rotaciÃ³n
-			if (inputComponent->keyReceived == Input::KEY_E) {
-				transform->rotation = transform->rotation - glm::vec3(0.0f, 0.0f, 25.0f * 0.016f);
-			}
-			if (inputComponent->keyReceived == Input::KEY_Q) {
-				transform->rotation = transform->rotation + glm::vec3(0.0f, 0.0f, 25.0f * 0.016f);
-			}
+	static double lastX = mouseX;
+	static double lastY = mouseY;
 
-			// Para escala
-			if (inputComponent->keyReceived == Input::KEY_Z) {
-				transform->scale = transform->scale + glm::vec3(0.25f * 0.016f);
-			}
-			if (inputComponent->keyReceived == Input::KEY_X) {
-				// Evitar escalas negativas
-				if (transform->scale.x > 0.1f && transform->scale.y > 0.1f && transform->scale.z > 0.1f) {
-					transform->scale = transform->scale - glm::vec3(0.25f * 0.016f);
-				}
-			}
-		}
+	float xOffset = (float)(mouseX - lastX);
+	float yOffset = (float)(lastY - mouseY); // Invertido porque Y va de abajo hacia arriba
+
+	lastX = mouseX; 
+	lastY = mouseY;
+
+	// Actualizar ángulos de la cámara solo si el botón derecho está presionado
+	if (inputManager.isMouseButtonPressed(inputManager.MOUSE_BUTTON_RIGHT)) {
+		camera->yaw += xOffset * camera->mouseSensitivity;
+		camera->pitch += yOffset * camera->mouseSensitivity;
+
+		// Limitar el pitch para evitar que la cámara se voltee
+		camera->pitch = glm::clamp(camera->pitch, -89.0f, 89.0f);
+
+		// Actualizar los vectores de la cámara basados en los nuevos ángulos
+		//camera->updateCameraVectors();
+
+		// Velocidad base de movimiento
+		float currentSpeed = camera->movementSpeed;
+
+		// Ajustar por deltaTime para movimiento consistente
+		currentSpeed *= deltaTime;
+
+		// Procesar entrada de teclado para movimiento
+		if (input->keyReceived == Input::KEY_W)
+			camera->position += camera->front * currentSpeed;
+		if (input->keyReceived == Input::KEY_S)
+			camera->position -= camera->front * currentSpeed;
+		if (input->keyReceived == Input::KEY_A)
+			camera->position -= camera->right * currentSpeed;
+		if (input->keyReceived == Input::KEY_D)
+			camera->position += camera->right * currentSpeed;
+		if (input->keyReceived == Input::KEY_E)
+			camera->position += camera->up * currentSpeed;
+		if (input->keyReceived == Input::KEY_Q)
+			camera->position -= camera->up * currentSpeed;
 	}
+		camera->updateCameraVectors();
+
+
+	// Actualizar la matriz de vista después del movimiento
+	camera->updateViewMatrix();
+	camera->updateProjectionMatrix();
+	
 }

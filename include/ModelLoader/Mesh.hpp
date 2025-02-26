@@ -34,7 +34,7 @@ public:
   Mesh(const Mesh&) = delete;
   Mesh(Mesh&& other) noexcept;
   Mesh& operator=(Mesh&& other) noexcept;
-  void Draw(Program program) const;
+  void Draw(Program &program) const;
   std::vector<Texture> textures_;
   GLuint VAO, VBO, EBO;
   GLuint getVAO();
