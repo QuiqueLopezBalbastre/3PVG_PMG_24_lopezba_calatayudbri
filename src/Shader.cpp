@@ -1,7 +1,8 @@
 #include "Shader.hpp"
 #include <iostream>
-#include "fstream"
-#include "sstream"
+#include <fstream>
+#include <sstream>
+#include <GL/glew.h>
 
 Shader::Shader()
 {
@@ -16,7 +17,6 @@ Shader::~Shader()
 
 bool Shader::loadSource(const ShaderType shader_type, const char* source, const unsigned int source_size)
 {
-	glewInit();
 	type = shader_type;
 	switch (shader_type) {
 	case kShaderType_Vertex:

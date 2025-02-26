@@ -46,13 +46,16 @@ void PrintShaderValues(Program program)
 
 int main() {
 	glfwInit();
-
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	auto window = Window::make(1024, 1024, "LUQUI");
 	if (nullptr == window->window) {
 		return -1;
 	}
 	srand((unsigned int)time(NULL));
 	window->setCurrentWindowActive();
+	glewInit();
 
 	// Declaramos un gestor de input asociado a la ventana en activo.
 	Input input(window->window);

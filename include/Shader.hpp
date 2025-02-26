@@ -1,7 +1,6 @@
 #ifndef __SHADER_H__
 #define __SHADER_H__ 1
 
-#include <GL/glew.h>
 #include "string"
 
 

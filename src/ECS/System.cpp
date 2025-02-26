@@ -8,6 +8,7 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <Input.hpp>
 
+#include <GL/glew.h>
 
 
 RenderSystem::RenderSystem()
