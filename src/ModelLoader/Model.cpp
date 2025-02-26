@@ -198,6 +198,11 @@ void Model::createGLResources() {
   loadComplete = true;
 }
 
+std::vector<Mesh::Texture> Model::get_LoadedTextures()
+{
+    return textures_loaded;
+}
+
 unsigned int Model::TextureFromFile(const char* path, const std::string& directory) {
   std::string filename = directory + '/' + std::string(path);
   unsigned int textureID;

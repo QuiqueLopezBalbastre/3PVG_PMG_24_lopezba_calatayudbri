@@ -7,7 +7,7 @@ layout(location = 2) in vec2 aTexCoords; // Coordenadas de textura
 out vec2 TexCoords;
 out vec3 FragPos;       // Posición del fragmento en el espacio mundial
 out vec3 Normal;        // Normal del fragmento en el espacio mundial
-
+out vec4 FragPosLightSpace;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
@@ -24,6 +24,8 @@ void main()
 
     // Pasar las coordenadas de textura al fragment shader
     TexCoords = aTexCoords;
+
+    FragPosLightSpace = lightSpaceMatrix * vec4(FragPos, 1.0);
 
     // Transformar la posición del vértice al espacio de la cámara
     gl_Position = projection * view * model * vec4(aPos, 1.0);

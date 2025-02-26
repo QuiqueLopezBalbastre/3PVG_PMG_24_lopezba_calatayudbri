@@ -19,6 +19,9 @@ public:
 	bool link();
 	GLuint get_id();
 	GLuint get_depthMapFBO();
+	GLuint get_depthMap();
+	unsigned int get_SHADOW_WIDTH();
+	unsigned int get_SHADOW_HEIGHT();
 	void setUniform(const std::string& name, int value);
 	void use() const;
 	void unuse();
@@ -35,6 +38,7 @@ private:
 	int GetUniformLocation(const std::string &location);
 	GLuint id;
 	GLuint depthMapFBO;
+	GLuint depthMap;
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 };
 #endif // !__PROGRAM__

@@ -38,7 +38,7 @@ public:
   // Public data (consider making private with accessors)
   std::vector<Mesh> meshes;
   void createGLResources();
-
+  std::vector<Mesh::Texture> get_LoadedTextures();
 private:
   // Structures for handling loading state
   struct MaterialInfo {

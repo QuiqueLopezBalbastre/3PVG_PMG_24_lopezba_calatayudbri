@@ -42,6 +42,23 @@ GLuint Program::get_depthMapFBO()
     return depthMapFBO;
 }
 
+GLuint Program::get_depthMap()
+{
+    return depthMap;
+}
+
+unsigned int Program::get_SHADOW_WIDTH()
+{
+    return SHADOW_WIDTH;
+}
+
+unsigned int Program::get_SHADOW_HEIGHT()
+{
+    return SHADOW_HEIGHT;
+}
+
+
+
 void Program::setUniform(const std::string& name, int value)
 {
   GLint location = glGetUniformLocation(id, name.c_str());
@@ -56,7 +73,6 @@ void Program::setUniform(const std::string& name, int value)
 void Program::use() const
 {
   glUseProgram(id);
-
 }
 
 void Program::unuse()
@@ -101,7 +117,7 @@ void Program::CreateShadowMap()
     
     glGenFramebuffers(1, &depthMapFBO);
 
-    GLuint depthMap;
+    
     glGenTextures(1, &depthMap);
     glBindTexture(GL_TEXTURE_2D, depthMap);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,

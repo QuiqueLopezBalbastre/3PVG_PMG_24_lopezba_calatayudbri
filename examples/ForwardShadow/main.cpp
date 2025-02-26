@@ -47,7 +47,7 @@ void PrintShaderValues(Program program)
 int main() {
 	glfwInit();
 
-	auto window = Window::make(1280, 1040, "LUQUI");
+	auto window = Window::make(1024, 1024, "LUQUI");
 	if (nullptr == window->window) {
 		return -1;
 	}
@@ -59,8 +59,28 @@ int main() {
 
 
 	/** Creating shaders */
+	Shader shadow_vertex = Shader();
+	if (!shadow_vertex.loadFromFile(Shader::ShaderType::kShaderType_Vertex, "../data/Shaders/shadow_vertex.vs")) {
+		std::cerr << "Error al cargar el vertex shader desde archivo." << std::endl;
+		return -2;
+	}
+	if (!shadow_vertex.compile()) {
+		std::cerr << "Error al compilar el vertex shader." << std::endl;
+		return -3;
+	}
+
+	Shader shadow_fragment = Shader();
+	if (!shadow_fragment.loadFromFile(Shader::ShaderType::kShaderType_Fragment, "../data/Shaders/shadow_fragment.fs")) {
+		std::cerr << "Error al cargar el fragment shader desde archivo." << std::endl;
+		return -4;
+	}
+	if (!shadow_fragment.compile()) {
+		std::cerr << "Error al compilar el fragment shader." << std::endl;
+		return -5;
+	}
+
 	Shader vertex = Shader();
-	if (!vertex.loadFromFile(Shader::ShaderType::kShaderType_Vertex, "../data/Shaders/shadow_vertex.vs")) {
+	if (!vertex.loadFromFile(Shader::ShaderType::kShaderType_Vertex, "../data/Shaders/vertex.vs")) {
 		std::cerr << "Error al cargar el vertex shader desde archivo." << std::endl;
 		return -2;
 	}
@@ -70,7 +90,7 @@ int main() {
 	}
 
 	Shader fragment = Shader();
-	if (!fragment.loadFromFile(Shader::ShaderType::kShaderType_Fragment, "../data/Shaders/shadow_fragment.fs")) {
+	if (!fragment.loadFromFile(Shader::ShaderType::kShaderType_Fragment, "../data/Shaders/fragment.fs")) {
 		std::cerr << "Error al cargar el fragment shader desde archivo." << std::endl;
 		return -4;
 	}
@@ -78,6 +98,7 @@ int main() {
 		std::cerr << "Error al compilar el fragment shader." << std::endl;
 		return -5;
 	}
+
 	/** Creating Program */
 	Program program = Program();
 	program.attach(&vertex);
@@ -87,6 +108,13 @@ int main() {
 		return -4;
 	}
 
+	Program shadow_program = Program();
+	shadow_program.attach(&shadow_fragment);
+	shadow_program.attach(&shadow_vertex);
+	if (!shadow_program.link()) {
+		std::cout << "Error al linkar el programa sombra" << std::endl;
+		return -4;
+	}
 	///////END OF PROGRAM & SHADERS/////
 
 	// Creamos un gestor de entidades
@@ -136,31 +164,31 @@ int main() {
 	ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
 		light.type = LightType::Spot; // Tipo de luz (Spotlight)
 		light.color = glm::vec3(1.0f, 1.0f, 1.0f); // Color de la luz (blanco)
-		light.position = glm::vec3(0.0f, 800.0f, 500.0f); // Posición de la luz
-		light.direction = glm::vec3(0.0f, -1.0f, -1.0f); // Dirección de la luz
+		light.position = glm::vec3(0.0f, 800.0f, 000.0f); // Posición de la luz
+		light.direction = glm::vec3(0.0f, -1.0f, 0.0f); // Dirección de la luz
 		light.intensity = 2.0f; // Intensidad de la luz
 		light.cutoff = glm::cos(glm::radians(12.5f)); // Ángulo de corte interior (12.5 grados)
 		light.outerCutoff = glm::cos(glm::radians(17.5f)); // Ángulo de corte exterior (17.5 grados)
 		});
 
 	// Configurar la luz como Point Light
-	Entity lightEntity2 = ecsmanager.createEntity();
-	ecsmanager.editComponent<LightComponent>(lightEntity2, [](LightComponent& light) {
-		light.type = LightType::Point; // Tipo de luz (Point Light)
-		light.color = glm::vec3(0.0f, 1.0f, 0.0f); // Color de la luz (RGB)
-		light.position = glm::vec3(0.0f, 100.0f, 0.0f); // Posición de la luz
-		light.intensity = 2.0f; // Intensidad de la luz
-		light.radius = 250.0f; // Radio de influencia de la luz
-		});
+	//Entity lightEntity2 = ecsmanager.createEntity();
+	//ecsmanager.editComponent<LightComponent>(lightEntity2, [](LightComponent& light) {
+	//	light.type = LightType::Point; // Tipo de luz (Point Light)
+	//	light.color = glm::vec3(0.0f, 1.0f, 0.0f); // Color de la luz (RGB)
+	//	light.position = glm::vec3(0.0f, 100.0f, 0.0f); // Posición de la luz
+	//	light.intensity = 2.0f; // Intensidad de la luz
+	//	light.radius = 250.0f; // Radio de influencia de la luz
+	//	});
 
-	Entity lightEntity3 = ecsmanager.createEntity();
-	ecsmanager.editComponent<LightComponent>(lightEntity3, [](LightComponent& light) {
-		light.type = LightType::Point; // Tipo de luz (Point Light)
-		light.color = glm::vec3(0.0f, 0.0f, 1.0f); // Color de la luz (RGB)
-		light.position = glm::vec3(50.0f, 100.0f, 0.0f); // Posición de la luz
-		light.intensity = 2.0f; // Intensidad de la luz
-		light.radius = 250.0f; // Radio de influencia de la luz
-		});
+	//Entity lightEntity3 = ecsmanager.createEntity();
+	//ecsmanager.editComponent<LightComponent>(lightEntity3, [](LightComponent& light) {
+	//	light.type = LightType::Point; // Tipo de luz (Point Light)
+	//	light.color = glm::vec3(0.0f, 0.0f, 1.0f); // Color de la luz (RGB)
+	//	light.position = glm::vec3(50.0f, 100.0f, 0.0f); // Posición de la luz
+	//	light.intensity = 2.0f; // Intensidad de la luz
+	//	light.radius = 250.0f; // Radio de influencia de la luz
+	//	});
 
 	//ecsmanager.editComponent<LightComponent>(lightEntity2, [](LightComponent& light) {
 	//	light.type = LightType::Ambient; // Tipo de luz (Point Light)
@@ -197,6 +225,7 @@ int main() {
 		modelComp.model = mesh; // Cargar el segundo modelo
 		});
 	//////////////////////////////////
+	program.CreateShadowMap();
 
 // Ciclo del juego
 	while (!window->isOpen()) {
@@ -238,9 +267,9 @@ int main() {
 		projection = glm::mat4(1.0f);
 
 		glm::mat4 lightProjection, lightView, lightSpaceMatrix;
-		
+
 		auto cameraComponent = ecsmanager.getComponent<CameraComponent>(CameraEntity);
-		
+
 
 		// Gestion de camara
 		auto inputCameraComponentOpt = ecsmanager.getComponent<InputComponent>(CameraEntity);
@@ -277,14 +306,32 @@ int main() {
 			auto lightOpt = ecsmanager.getComponent<LightComponent>(Light_entity);
 			if (!ecsmanager.isEntityAlive(Light_entity)) continue;
 			if (!lightOpt.has_value()) continue;
+			program.use();
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D,program.get_depthMap());
 			program.setInt("shadowMap", 1);
-			program.setInt("depthMap", 2);
+			program.unuse();
+			shadow_program.use();
+
 			lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, cameraComponent.value()->nearPlane, cameraComponent.value()->farPlane);
-			lightView = glm::lookAt(lightOpt.value()->position,glm::vec3(0.0f),glm::vec3(0.0f,1.0f,0.0f));
+			lightView = glm::lookAt(lightOpt.value()->position, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 			lightSpaceMatrix = lightProjection * lightView;
+			shadow_program.setmat4("lightSpaceMatrix", lightSpaceMatrix);
 
-			program.setmat4("lightSpaceMatrix", lightSpaceMatrix);
+			glViewport(0, 0, program.get_SHADOW_WIDTH(), program.get_SHADOW_HEIGHT());
+			glBindFramebuffer(GL_FRAMEBUFFER, program.get_depthMapFBO());
+			glClear(GL_DEPTH_BUFFER_BIT);
+			/*for (int i = 1; i < mesh->get_LoadedTextures().size(); i++)
+			{
+				glActiveTexture(GL_TEXTURE0 + i);
+				glBindTexture(GL_TEXTURE_2D, mesh->get_LoadedTextures().at(i).id);
+				
+			}*/
+			renderSystem.RenderScene(ecsmanager, shadow_program, model, view, projection);
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+			glViewport(0, 0, 1024, 1024);
+			program.use();
 			if (lightOpt && lightOpt.value()->type == LightType::Point) {
 				program.setVec3("pointLightColor", lightOpt.value()->color);
 				program.setVec3("pointLightPosition", lightOpt.value()->position);
@@ -308,7 +355,9 @@ int main() {
 			}
 
 			// Renderizar todas las entidades
-			renderSystem.RenderScene(ecsmanager,program,model,view,projection);
+			program.setmat4("lightSpaceMatrix", lightSpaceMatrix);
+
+			renderSystem.RenderScene(ecsmanager, program, model, view, projection);
 
 			glBlendFunc(GL_ONE, GL_ONE);
 			glDepthMask(false);
