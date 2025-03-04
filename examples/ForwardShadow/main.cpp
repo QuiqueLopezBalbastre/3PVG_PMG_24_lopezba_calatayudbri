@@ -113,9 +113,6 @@ void PrintShaderValues(Program program)
 	}
 }
 
-//float near_plane = 1.0f, far_plane = 7.5f;
-float near_plane = -25.0f, far_plane = 25.0f;
-
 int main() {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -260,38 +257,33 @@ int main() {
 	// Crear una entidad para la luz
 	Entity lightEntity = ecsmanager.createEntity();
 
-	//ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
-	//	light.type = LightType::Point; // Tipo de luz (Point Light)
-	//	light.color = glm::vec3(1.0f, 0.0f, 0.0f); // Color de la luz (RGB)
-	//	light.position = glm::vec3(20.0f, 100.0f, 0.0f); // Posición de la luz
-	//	light.intensity = 2.0f; // Intensidad de la luz
-	//	light.radius = 250.0f; // Radio de influencia de la luz
-	//	});
-
 	ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
-		light.type = LightType::Directional; // Tipo de luz (Spotlight)
+		light.type = LightType::Spot; // Tipo de luz (Spotlight)
 		light.color = glm::vec3(1.0f, 1.0f, 1.0f); // Color de la luz (blanco)
-		light.position = glm::vec3(0.0f, 4.0f, 0.0f); // Posición de la luz
+		light.position = glm::vec3(0.0f, 10.0f, 0.0f); // Posición de la luz
 		light.direction = glm::vec3(0.0f, -1.0f, 0.0f); // Dirección de la luz
 		light.intensity = 2.0f; // Intensidad de la luz
-		//light.cutoff = glm::cos(glm::radians(12.5f)); // Ángulo de corte interior (12.5 grados)
-		//light.outerCutoff = glm::cos(glm::radians(17.5f)); // Ángulo de corte exterior (17.5 grados)
+		light.farPlane = 25.0f;
+		light.nearPlane = 1.0f;
+		light.cutoff = glm::cos(glm::radians(12.5f)); // Ángulo de corte interior (12.5 grados)
+		light.outerCutoff = glm::cos(glm::radians(17.5f)); // Ángulo de corte exterior (17.5 grados)
+		light.radius = 25.0f;
 		});
 
 	auto mesh = std::make_shared<Model>("../data/Models/Alduin/Alduin.obj");
 	auto cube_mesh = std::make_shared<Model>("../data/Models/cube/cube.obj");
 
 	//// Crear la primera entidad para el modelo 1
-	//Entity modelEntity1 = ecsmanager.createEntity();
+	Entity modelEntity1 = ecsmanager.createEntity();
 
-	//ecsmanager.editComponent<TransformComponent>(modelEntity1, [](TransformComponent& transform) {
-	//	transform.position = {0.0f, 0.0f, 0.0f }; // Posición del primer modelo
-	//	transform.scale = { 1.0f, 1.0f, 1.0f };
-	//	});
+	ecsmanager.editComponent<TransformComponent>(modelEntity1, [](TransformComponent& transform) {
+		transform.position = {0.0f, 0.0f, 0.0f }; // Posición del primer modelo
+		transform.scale = { 0.01f, 0.01f, 0.01f };
+		});
 
-	//ecsmanager.editComponent<RenderComponent>(modelEntity1, [&](RenderComponent& modelComp) {
-	//	modelComp.model = mesh; // Cargar el primer modelo
-	//	});
+	ecsmanager.editComponent<RenderComponent>(modelEntity1, [&](RenderComponent& modelComp) {
+		modelComp.model = mesh; // Cargar el primer modelo
+		});
 	//// Crear la segunda entidad para el modelo 2
 	//Entity modelEntity2 = ecsmanager.createEntity();
 
@@ -437,9 +429,26 @@ int main() {
 			glBindTexture(GL_TEXTURE_2D,program.get_depthMap());
 			program.unuse();
 			shadow_program.use();
-			lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane,far_plane);
+
 			glm::vec3 camera_target = cameraComponent.value()->position + cameraComponent.value()->front * 10.0f;
-			lightView = glm::lookAt(camera_target - lightOpt.value()->direction, camera_target, cameraComponent.value()->up);
+			switch (lightOpt.value()->type)
+			{
+
+			case LightType::Directional:
+				lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, lightOpt.value()->nearPlane, lightOpt.value()->farPlane);
+				lightView = glm::lookAt(camera_target - lightOpt.value()->direction, camera_target, cameraComponent.value()->up);
+				break;
+
+			case LightType::Spot:
+				lightProjection = glm::perspective(glm::radians(lightOpt.value()->fov), 1.0f, lightOpt.value()->nearPlane, lightOpt.value()->farPlane);
+				lightView = glm::lookAt(lightOpt.value()->position - lightOpt.value()->direction,lightOpt.value()->position, glm::vec3(0.0f,0.0f,1.0f) /* en el futuro sera el up*/);
+				break;
+
+			default:
+				break;
+			}
+			
+			
 			//lightView = glm::lookAt(lightOpt.value()->position, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 			lightSpaceMatrix = lightProjection * lightView;
 			shadow_program.setmat4("lightSpaceMatrix", lightSpaceMatrix);
@@ -467,6 +476,7 @@ int main() {
 				program.setFloat("spotlightIntensity", lightOpt.value()->intensity);
 				program.setFloat("spotlightCutoff", lightOpt.value()->cutoff);
 				program.setFloat("spotlightOuterCutoff", lightOpt.value()->outerCutoff);
+				program.setFloat("spotLightRadius", lightOpt.value()->radius);
 				program.setInt("LightType", static_cast<int>(lightOpt.value()->type));
 			}
 			if (lightOpt && lightOpt.value()->type == LightType::Directional) {
@@ -492,8 +502,8 @@ int main() {
 		// render Depth map to quad for visual debugging
   // ---------------------------------------------
 		quad_program.use();
-		quad_program.setFloat("near_plane", near_plane);
-		quad_program.setFloat("far_plane", far_plane);
+		quad_program.setFloat("near_plane", -25.0f);
+		quad_program.setFloat("far_plane", 25.0f);
 		glActiveTexture(GL_TEXTURE10);
 		glBindTexture(GL_TEXTURE_2D, program.get_depthMap());
 		//renderQuad();

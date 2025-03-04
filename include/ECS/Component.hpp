@@ -34,10 +34,14 @@ struct LightComponent : ComponentBase
     glm::vec3 color;
     glm::vec3 position;
     glm::vec3 direction;
+    float ortho = 10.0f; // para directional
+    float fov = 90.0f; //para point y spot
     float intensity;
     float radius; // Para point lights y spotlight
     float cutoff; // Para spotlight
     float outerCutoff;
+    float nearPlane;
+    float farPlane;
 };
 
 struct TransformComponent : ComponentBase {
