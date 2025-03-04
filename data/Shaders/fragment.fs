@@ -1,4 +1,4 @@
-#version 330 core
+#version 460 
 	
 out vec4 FragColor;
 
@@ -7,8 +7,8 @@ in vec3 FragPos;
 in vec3 Normal;
 in vec4 FragPosLightSpace;
 
-uniform sampler2D texture_diffuse1;
-uniform sampler2D shadowMap;
+layout(binding = 0) uniform sampler2D texture_diffuse1;
+layout(binding = 10) uniform sampler2D shadowMap;
 
 uniform vec3 pointLightColor; // Color de la point light
 uniform vec3 pointLightPosition; // Posición de la point light

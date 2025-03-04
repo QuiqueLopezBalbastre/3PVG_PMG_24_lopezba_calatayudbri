@@ -113,113 +113,8 @@ void PrintShaderValues(Program program)
 	}
 }
 
-float near_plane = 1.0f, far_plane = 7.5f;
-
-unsigned int cubeVAO = 0;
-unsigned int cubeVBO = 0;
-void renderCube()
-{
-	// initialize (if necessary)
-	if (cubeVAO == 0)
-	{
-		float vertices[] = {
-			// back face
-			-1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f, // bottom-left
-			 1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f, // top-right
-			 1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 0.0f, // bottom-right         
-			 1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f, // top-right
-			-1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f, // bottom-left
-			-1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 1.0f, // top-left
-			// front face
-			-1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f, // bottom-left
-			 1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f, // bottom-right
-			 1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f, // top-right
-			 1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f, // top-right
-			-1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f, // top-left
-			-1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f, // bottom-left
-			// left face
-			-1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-right
-			-1.0f,  1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f, // top-left
-			-1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-left
-			-1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-left
-			-1.0f, -1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f, // bottom-right
-			-1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-right
-			// right face
-			 1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-left
-			 1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-right
-			 1.0f,  1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f, // top-right         
-			 1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-right
-			 1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-left
-			 1.0f, -1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f, // bottom-left     
-			 // bottom face
-			 -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f, // top-right
-			  1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f, // top-left
-			  1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f, // bottom-left
-			  1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f, // bottom-left
-			 -1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f, // bottom-right
-			 -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f, // top-right
-			 // top face
-			 -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f, // top-left
-			  1.0f,  1.0f , 1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, // bottom-right
-			  1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 1.0f, // top-right     
-			  1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, // bottom-right
-			 -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f, // top-left
-			 -1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f  // bottom-left        
-		};
-		glGenVertexArrays(1, &cubeVAO);
-		glGenBuffers(1, &cubeVBO);
-		// fill buffer
-		glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-		// link vertex attributes
-		glBindVertexArray(cubeVAO);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
-	}
-	// render Cube
-	glBindVertexArray(cubeVAO);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-	glBindVertexArray(0);
-}
-unsigned int planeVBO;
-unsigned int planeVAO;
-void renderScene(Program& shader)
-{
-	//// floor
-	glm::mat4 model = glm::mat4(1.0f);
-	//model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-	//shader.setmat4("model", model);
-	//glBindVertexArray(planeVAO);
-	//glDrawArrays(GL_TRIANGLES, 0, 6);
-
-	model = glm::translate(model, glm::vec3(0.0f, -3.0f, 0.0));
-	model = glm::scale(model, glm::vec3(10.0f, 1.0f, 10.0f));
-	shader.setmat4("model", model);
-	renderCube();
-	// cubes
-	model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 1.5f, 0.0));
-	model = glm::scale(model, glm::vec3(0.5f));
-	shader.setmat4("model", model);
-	renderCube();
-	model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 1.0));
-	model = glm::scale(model, glm::vec3(0.5f));
-	shader.setmat4("model", model);
-	renderCube();
-	model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 2.0));
-	model = glm::rotate(model, glm::radians(60.0f), glm::normalize(glm::vec3(1.0, 0.0, 1.0)));
-	model = glm::scale(model, glm::vec3(0.25));
-	shader.setmat4("model", model);
-	renderCube();
-}
+//float near_plane = 1.0f, far_plane = 7.5f;
+float near_plane = -25.0f, far_plane = 25.0f;
 
 int main() {
 	glfwInit();
@@ -239,33 +134,6 @@ int main() {
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
 	// Declaramos un gestor de input asociado a la ventana en activo.
 	Input input(window->window);
-
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-   // ------------------------------------------------------------------
-	float planeVertices[] = {
-		// positions            // normals         // texcoords
-		 25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
-		-25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,
-		-25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,   0.0f, 25.0f,
-
-		 25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
-		-25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,   0.0f, 25.0f,
-		 25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,  25.0f, 25.0f
-	};
-	// plane VAO
-	unsigned int planeVBO;
-	glGenVertexArrays(1, &planeVAO);
-	glGenBuffers(1, &planeVBO);
-	glBindVertexArray(planeVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glBindVertexArray(0);
 
 	/** Creating shaders */
 	Shader shadow_vertex = Shader();
@@ -403,60 +271,85 @@ int main() {
 	ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
 		light.type = LightType::Directional; // Tipo de luz (Spotlight)
 		light.color = glm::vec3(1.0f, 1.0f, 1.0f); // Color de la luz (blanco)
-		light.position = glm::vec3(-2.0f, 4.0f, -1.0f); // Posición de la luz
+		light.position = glm::vec3(0.0f, 4.0f, 0.0f); // Posición de la luz
 		light.direction = glm::vec3(0.0f, -1.0f, 0.0f); // Dirección de la luz
 		light.intensity = 2.0f; // Intensidad de la luz
 		//light.cutoff = glm::cos(glm::radians(12.5f)); // Ángulo de corte interior (12.5 grados)
 		//light.outerCutoff = glm::cos(glm::radians(17.5f)); // Ángulo de corte exterior (17.5 grados)
 		});
 
-	// Configurar la luz como Point Light
-	//Entity lightEntity2 = ecsmanager.createEntity();
-	//ecsmanager.editComponent<LightComponent>(lightEntity2, [](LightComponent& light) {
-	//	light.type = LightType::Point; // Tipo de luz (Point Light)
-	//	light.color = glm::vec3(0.0f, 1.0f, 0.0f); // Color de la luz (RGB)
-	//	light.position = glm::vec3(0.0f, 100.0f, 0.0f); // Posición de la luz
-	//	light.intensity = 2.0f; // Intensidad de la luz
-	//	light.radius = 250.0f; // Radio de influencia de la luz
+	auto mesh = std::make_shared<Model>("../data/Models/Alduin/Alduin.obj");
+	auto cube_mesh = std::make_shared<Model>("../data/Models/cube/cube.obj");
+
+	//// Crear la primera entidad para el modelo 1
+	//Entity modelEntity1 = ecsmanager.createEntity();
+
+	//ecsmanager.editComponent<TransformComponent>(modelEntity1, [](TransformComponent& transform) {
+	//	transform.position = {0.0f, 0.0f, 0.0f }; // Posición del primer modelo
+	//	transform.scale = { 1.0f, 1.0f, 1.0f };
 	//	});
 
-	//Entity lightEntity3 = ecsmanager.createEntity();
-	//ecsmanager.editComponent<LightComponent>(lightEntity3, [](LightComponent& light) {
-	//	light.type = LightType::Point; // Tipo de luz (Point Light)
-	//	light.color = glm::vec3(0.0f, 0.0f, 1.0f); // Color de la luz (RGB)
-	//	light.position = glm::vec3(50.0f, 100.0f, 0.0f); // Posición de la luz
-	//	light.intensity = 2.0f; // Intensidad de la luz
-	//	light.radius = 250.0f; // Radio de influencia de la luz
+	//ecsmanager.editComponent<RenderComponent>(modelEntity1, [&](RenderComponent& modelComp) {
+	//	modelComp.model = mesh; // Cargar el primer modelo
 	//	});
+	//// Crear la segunda entidad para el modelo 2
+	//Entity modelEntity2 = ecsmanager.createEntity();
+
+	//ecsmanager.editComponent<TransformComponent>(modelEntity2, [](TransformComponent& transform) {
+	//	transform.position = { 200.0f, -300.0f, 50.0f }; // Posición del segundo modelo
+	//	transform.scale = { 1.0f, 1.0f, 1.0f };
+
+	//	transform.rotation = { 0.0f,45.0f,0.0f };
+	//	});
+
+	//ecsmanager.editComponent<RenderComponent>(modelEntity2, [&](RenderComponent& modelComp) {
+	//	modelComp.model = mesh; // Cargar el segundo modelo
+	//	});
+
+	Entity cubeEntity1 = ecsmanager.createEntity();
+	Entity cubeEntity2 = ecsmanager.createEntity();
+	Entity cubeEntity3 = ecsmanager.createEntity();
+	Entity cubeEntity4 = ecsmanager.createEntity();
+	ecsmanager.editComponent<TransformComponent>(cubeEntity1, [](TransformComponent& transform) {
+		transform.position = { 0.0f, 1.5f, 0.0f }; // Posición del primer modelo
+		transform.scale = { 0.5f, 0.5f, 0.5f };
+		});
+
+	ecsmanager.editComponent<RenderComponent>(cubeEntity1, [&](RenderComponent& modelComp) {
+		modelComp.model = cube_mesh; // Cargar el primer modelo
+		});
+
+	ecsmanager.editComponent<TransformComponent>(cubeEntity2, [](TransformComponent& transform) {
+		transform.position = { 2.0f, 0.0f, 1.0f }; // Posición del primer modelo
+		transform.scale = { 0.5f, 0.5f, 0.5f };
+		});
+
+	ecsmanager.editComponent<RenderComponent>(cubeEntity2, [&](RenderComponent& modelComp) {
+		modelComp.model = cube_mesh; // Cargar el primer modelo
+		});
 
 	
 
-	auto mesh = std::make_shared<Model>("../data/Models/Alduin/Alduin.obj");
-
-	// Crear la primera entidad para el modelo 1
-	Entity modelEntity1 = ecsmanager.createEntity();
-
-	ecsmanager.editComponent<TransformComponent>(modelEntity1, [](TransformComponent& transform) {
-		transform.position = {0.0f, 0.0f, 0.0f }; // Posición del primer modelo
-		transform.scale = { 1.0f, 1.0f, 1.0f };
+	ecsmanager.editComponent<TransformComponent>(cubeEntity3, [](TransformComponent& transform) {
+		transform.position = { -1.0f,0.0f,2.0f }; // Posición del primer modelo
+		transform.scale = { 0.25f, 0.25f, 0.25f };
+		transform.rotation = { 60.0f,0.0f,60.0f };
 		});
 
-	ecsmanager.editComponent<RenderComponent>(modelEntity1, [&](RenderComponent& modelComp) {
-		modelComp.model = mesh; // Cargar el primer modelo
-		});
-	// Crear la segunda entidad para el modelo 2
-	Entity modelEntity2 = ecsmanager.createEntity();
-
-	ecsmanager.editComponent<TransformComponent>(modelEntity2, [](TransformComponent& transform) {
-		transform.position = { 200.0f, -300.0f, 50.0f }; // Posición del segundo modelo
-		transform.scale = { 1.0f, 1.0f, 1.0f };
-
-		transform.rotation = { 0.0f,45.0f,0.0f };
+	ecsmanager.editComponent<RenderComponent>(cubeEntity3, [&](RenderComponent& modelComp) {
+		modelComp.model = cube_mesh; // Cargar el primer modelo
 		});
 
-	ecsmanager.editComponent<RenderComponent>(modelEntity2, [&](RenderComponent& modelComp) {
-		modelComp.model = mesh; // Cargar el segundo modelo
+
+	ecsmanager.editComponent<TransformComponent>(cubeEntity4, [](TransformComponent& transform) {
+		transform.position = { 0.0f,-2.0f, 0.0f }; // Posición del primer modelo
+		transform.scale = { 10.0f, 1.0f, 10.0f };
 		});
+
+	ecsmanager.editComponent<RenderComponent>(cubeEntity4, [&](RenderComponent& modelComp) {
+		modelComp.model = cube_mesh; // Cargar el primer modelo
+		});
+
 	//////////////////////////////////
 	program.CreateShadowMap();
 
@@ -540,27 +433,23 @@ int main() {
 			if (!ecsmanager.isEntityAlive(Light_entity)) continue;
 			if (!lightOpt.has_value()) continue;
 			program.use();
-			glActiveTexture(GL_TEXTURE1);
+			glActiveTexture(GL_TEXTURE10);
 			glBindTexture(GL_TEXTURE_2D,program.get_depthMap());
-			program.setInt("shadowMap", 1);
 			program.unuse();
 			shadow_program.use();
 			lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane,far_plane);
-			lightView = glm::lookAt(lightOpt.value()->position, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			glm::vec3 camera_target = cameraComponent.value()->position + cameraComponent.value()->front * 10.0f;
+			lightView = glm::lookAt(camera_target - lightOpt.value()->direction, camera_target, cameraComponent.value()->up);
+			//lightView = glm::lookAt(lightOpt.value()->position, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 			lightSpaceMatrix = lightProjection * lightView;
 			shadow_program.setmat4("lightSpaceMatrix", lightSpaceMatrix);
 
 			glViewport(0, 0, program.get_SHADOW_WIDTH(), program.get_SHADOW_HEIGHT());
 			glBindFramebuffer(GL_FRAMEBUFFER, program.get_depthMapFBO());
 			glClear(GL_DEPTH_BUFFER_BIT);
-			/*for (int i = 1; i < mesh->get_LoadedTextures().size(); i++)
-			{
-				glActiveTexture(GL_TEXTURE0 + i);
-				glBindTexture(GL_TEXTURE_2D, mesh->get_LoadedTextures().at(i).id);
-				
-			}*/
+			
 			renderSystem.RenderScene(ecsmanager, shadow_program, model, view, projection);
-			renderScene(shadow_program);
+			
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 			glViewport(0, 0, 1024, 1024);
@@ -592,7 +481,7 @@ int main() {
 			program.setmat4("lightSpaceMatrix", lightSpaceMatrix);
 
 			renderSystem.RenderScene(ecsmanager, program, model, view, projection);
-			renderScene(program);
+			
 			glBlendFunc(GL_ONE, GL_ONE);
 			glDepthMask(false);
 		}
@@ -605,8 +494,7 @@ int main() {
 		quad_program.use();
 		quad_program.setFloat("near_plane", near_plane);
 		quad_program.setFloat("far_plane", far_plane);
-		quad_program.setInt("depthMap", 0);
-		glActiveTexture(GL_TEXTURE0);
+		glActiveTexture(GL_TEXTURE10);
 		glBindTexture(GL_TEXTURE_2D, program.get_depthMap());
 		//renderQuad();
 		

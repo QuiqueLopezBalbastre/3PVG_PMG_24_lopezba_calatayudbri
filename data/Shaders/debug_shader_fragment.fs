@@ -1,9 +1,9 @@
-#version 330 core
+#version 460 
 out vec4 FragColor;
 
 in vec2 TexCoords;
 
-uniform sampler2D depthMap;
+layout(binding = 10) uniform sampler2D depthMap;
 uniform float near_plane;
 uniform float far_plane;
 

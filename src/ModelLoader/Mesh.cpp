@@ -110,6 +110,7 @@ void Mesh::Draw(Program &program) const
   glBindVertexArray(VAO);
   glDrawElements(GL_TRIANGLES, indices_size_, GL_UNSIGNED_INT, nullptr);
   glBindVertexArray(0);
+  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 GLuint Mesh::getVAO()
