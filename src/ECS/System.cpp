@@ -16,13 +16,14 @@ RenderSystem::RenderSystem()
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f); // Fondo gris oscuro
 	// Configurar la matriz de proyección (ortográfica para simplicidad)
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+	
+	//glMatrixMode(GL_PROJECTION);
+	//glLoadIdentity();
+	//glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
 
-	// Configurar la matriz de modelo/vista
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	//// Configurar la matriz de modelo/vista
+	//glMatrixMode(GL_MODELVIEW);
+	//glLoadIdentity();
 }
 
 void RenderSystem::update(const std::vector<TransformComponent>& transforms, const std::vector<RenderComponent>& renders)

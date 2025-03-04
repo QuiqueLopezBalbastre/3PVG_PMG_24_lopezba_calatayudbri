@@ -53,7 +53,7 @@ int main() {
 	}
 	srand((unsigned int)time(NULL));
 	window->setCurrentWindowActive();
-
+	glewInit();
 	// Declaramos un gestor de input asociado a la ventana en activo.
 	Input input(window->window);
 

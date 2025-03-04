@@ -26,6 +26,7 @@ uniform float spotlightOuterCutoff; // Ángulo de corte exterior (en radianes)
 uniform vec3 directionalLightColor;
 uniform vec3 directionalLightDirection;
 uniform float directionalLightIntensity;
+uniform vec3 directionLightPosition;
 
 uniform int LightType;
 
@@ -129,8 +130,10 @@ vec3 CalculateDirectionalLight(vec3 normal, vec3 textureColor)
         float diff = max(dot(normal, lightDir), 0.0); // Producto punto entre la normal y la dirección de la luz
         vec3 diffuse = diff * textureColor.rgb * directionalLightColor * directionalLightIntensity;
 
+        float shadow = ShadowCalculation(FragPosLightSpace, normal,directionLightPosition);
+
         // Combinar la luz ambiental y la luz difusa
-      vec3 finalColor = textureColor.rgb * diffuse;
+      vec3 finalColor = (1.0 - shadow) * textureColor.rgb * diffuse;
 
       return finalColor; 
 }
@@ -143,7 +146,6 @@ void main()
 	}
 	vec3 finalColor = textureColor.rgb;
     vec3 normalized_normal = normalize(Normal);
-    float shadow = ShadowCalculation(FragPosLightSpace, normalized_normal,spotlightPosition);
     vec3 ViewDir = normalize(cameraPos - FragPos);
     // Calcular el color final según el tipo de luz
     if (LightType == 0) { // Directional Light

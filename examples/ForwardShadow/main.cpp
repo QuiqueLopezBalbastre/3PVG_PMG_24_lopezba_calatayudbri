@@ -15,6 +15,75 @@
 float deltaTime = 0.0f; // Tiempo entre frames
 float lastFrameTime = 0.0f; // Tiempo del frame anterior
 
+// -----------------------------------------
+unsigned int quadVAO = 0;
+unsigned int quadVBO;
+
+void message_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar const* message, void const* user_param)
+{
+	auto const src_str = [source]() {
+		switch (source)
+		{
+		case GL_DEBUG_SOURCE_API: return "API";
+		case GL_DEBUG_SOURCE_WINDOW_SYSTEM: return "WINDOW SYSTEM";
+		case GL_DEBUG_SOURCE_SHADER_COMPILER: return "SHADER COMPILER";
+		case GL_DEBUG_SOURCE_THIRD_PARTY: return "THIRD PARTY";
+		case GL_DEBUG_SOURCE_APPLICATION: return "APPLICATION";
+		case GL_DEBUG_SOURCE_OTHER: return "OTHER";
+		}
+		}();
+
+	auto const type_str = [type]() {
+		switch (type)
+		{
+		case GL_DEBUG_TYPE_ERROR: return "ERROR";
+		case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: return "DEPRECATED_BEHAVIOR";
+		case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR: return "UNDEFINED_BEHAVIOR";
+		case GL_DEBUG_TYPE_PORTABILITY: return "PORTABILITY";
+		case GL_DEBUG_TYPE_PERFORMANCE: return "PERFORMANCE";
+		case GL_DEBUG_TYPE_MARKER: return "MARKER";
+		case GL_DEBUG_TYPE_OTHER: return "OTHER";
+		}
+		}();
+
+	auto const severity_str = [severity]() {
+		switch (severity) {
+		case GL_DEBUG_SEVERITY_NOTIFICATION: return "NOTIFICATION";
+		case GL_DEBUG_SEVERITY_LOW: return "LOW";
+		case GL_DEBUG_SEVERITY_MEDIUM: return "MEDIUM";
+		case GL_DEBUG_SEVERITY_HIGH: return "HIGH";
+		}
+		}();
+	std::cout << src_str << ", " << type_str << ", " << severity_str << ", " << id << ": " << message << '\n';
+}
+
+void renderQuad()
+{
+	if (quadVAO == 0)
+	{
+		float quadVertices[] = {
+			// positions        // texture Coords
+			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+		};
+		// setup plane VAO
+		glGenVertexArrays(1, &quadVAO);
+		glGenBuffers(1, &quadVBO);
+		glBindVertexArray(quadVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	}
+	glBindVertexArray(quadVAO);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glBindVertexArray(0);
+}
+
 void PrintShaderValues(Program program)
 {
 	GLint numUniforms = 0;
@@ -44,6 +113,114 @@ void PrintShaderValues(Program program)
 	}
 }
 
+float near_plane = 1.0f, far_plane = 7.5f;
+
+unsigned int cubeVAO = 0;
+unsigned int cubeVBO = 0;
+void renderCube()
+{
+	// initialize (if necessary)
+	if (cubeVAO == 0)
+	{
+		float vertices[] = {
+			// back face
+			-1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f, // bottom-left
+			 1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f, // top-right
+			 1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 0.0f, // bottom-right         
+			 1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f, // top-right
+			-1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f, // bottom-left
+			-1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 1.0f, // top-left
+			// front face
+			-1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f, // bottom-left
+			 1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f, // bottom-right
+			 1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f, // top-right
+			 1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f, // top-right
+			-1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f, // top-left
+			-1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f, // bottom-left
+			// left face
+			-1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-right
+			-1.0f,  1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f, // top-left
+			-1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-left
+			-1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-left
+			-1.0f, -1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f, // bottom-right
+			-1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-right
+			// right face
+			 1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-left
+			 1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-right
+			 1.0f,  1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f, // top-right         
+			 1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-right
+			 1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-left
+			 1.0f, -1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f, // bottom-left     
+			 // bottom face
+			 -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f, // top-right
+			  1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f, // top-left
+			  1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f, // bottom-left
+			  1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f, // bottom-left
+			 -1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f, // bottom-right
+			 -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f, // top-right
+			 // top face
+			 -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f, // top-left
+			  1.0f,  1.0f , 1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, // bottom-right
+			  1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 1.0f, // top-right     
+			  1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, // bottom-right
+			 -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f, // top-left
+			 -1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f  // bottom-left        
+		};
+		glGenVertexArrays(1, &cubeVAO);
+		glGenBuffers(1, &cubeVBO);
+		// fill buffer
+		glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		// link vertex attributes
+		glBindVertexArray(cubeVAO);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+	}
+	// render Cube
+	glBindVertexArray(cubeVAO);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glBindVertexArray(0);
+}
+unsigned int planeVBO;
+unsigned int planeVAO;
+void renderScene(Program& shader)
+{
+	//// floor
+	glm::mat4 model = glm::mat4(1.0f);
+	//model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	//shader.setmat4("model", model);
+	//glBindVertexArray(planeVAO);
+	//glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	model = glm::translate(model, glm::vec3(0.0f, -3.0f, 0.0));
+	model = glm::scale(model, glm::vec3(10.0f, 1.0f, 10.0f));
+	shader.setmat4("model", model);
+	renderCube();
+	// cubes
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(0.0f, 1.5f, 0.0));
+	model = glm::scale(model, glm::vec3(0.5f));
+	shader.setmat4("model", model);
+	renderCube();
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 1.0));
+	model = glm::scale(model, glm::vec3(0.5f));
+	shader.setmat4("model", model);
+	renderCube();
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 2.0));
+	model = glm::rotate(model, glm::radians(60.0f), glm::normalize(glm::vec3(1.0, 0.0, 1.0)));
+	model = glm::scale(model, glm::vec3(0.25));
+	shader.setmat4("model", model);
+	renderCube();
+}
+
 int main() {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -56,10 +233,39 @@ int main() {
 	srand((unsigned int)time(NULL));
 	window->setCurrentWindowActive();
 	glewInit();
-
+	glEnable(GL_DEBUG_OUTPUT);
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+	glDebugMessageCallback(message_callback, nullptr);
+	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
 	// Declaramos un gestor de input asociado a la ventana en activo.
 	Input input(window->window);
 
+	// set up vertex data (and buffer(s)) and configure vertex attributes
+   // ------------------------------------------------------------------
+	float planeVertices[] = {
+		// positions            // normals         // texcoords
+		 25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
+		-25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,
+		-25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,   0.0f, 25.0f,
+
+		 25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
+		-25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,   0.0f, 25.0f,
+		 25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,  25.0f, 25.0f
+	};
+	// plane VAO
+	unsigned int planeVBO;
+	glGenVertexArrays(1, &planeVAO);
+	glGenBuffers(1, &planeVBO);
+	glBindVertexArray(planeVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glBindVertexArray(0);
 
 	/** Creating shaders */
 	Shader shadow_vertex = Shader();
@@ -102,6 +308,26 @@ int main() {
 		return -5;
 	}
 
+	Shader quad_vertex = Shader();
+	if (!quad_vertex.loadFromFile(Shader::ShaderType::kShaderType_Vertex, "../data/Shaders/debug_shader_vertex.vs")) {
+		std::cerr << "Error al cargar el vertex shader desde archivo." << std::endl;
+		return -2;
+	}
+	if (!quad_vertex.compile()) {
+		std::cerr << "Error al compilar el vertex shader." << std::endl;
+		return -3;
+	}
+
+	Shader quad_fragment = Shader();
+	if (!quad_fragment.loadFromFile(Shader::ShaderType::kShaderType_Fragment, "../data/Shaders/debug_shader_fragment.fs")) {
+		std::cerr << "Error al cargar el fragment shader desde archivo." << std::endl;
+		return -4;
+	}
+	if (!quad_fragment.compile()) {
+		std::cerr << "Error al compilar el fragment shader." << std::endl;
+		return -5;
+	}
+
 	/** Creating Program */
 	Program program = Program();
 	program.attach(&vertex);
@@ -118,6 +344,16 @@ int main() {
 		std::cout << "Error al linkar el programa sombra" << std::endl;
 		return -4;
 	}
+
+	/** Creating Program */
+	Program quad_program = Program();
+	quad_program.attach(&quad_vertex);
+	quad_program.attach(&quad_fragment);
+	if (!quad_program.link()) {
+		std::cout << "Error al linkar el programa" << std::endl;
+		return -4;
+	}
+
 	///////END OF PROGRAM & SHADERS/////
 
 	// Creamos un gestor de entidades
@@ -138,7 +374,7 @@ int main() {
 	Entity CameraEntity = ecsmanager.createEntity();
 	ecsmanager.addComponent<CameraComponent>(CameraEntity);
 	ecsmanager.editComponent<CameraComponent>(CameraEntity, [](CameraComponent& camera) {
-		camera.position = glm::vec3(0.0f, 300.0f, 300.0f); // Nueva posición
+		camera.position = glm::vec3(0.0f, 0.0f, 0.0f); // Nueva posición
 		camera.updateViewMatrix(); // Actualizar la matriz de vista
 		camera.updateProjectionMatrix();
 		});
@@ -165,13 +401,13 @@ int main() {
 	//	});
 
 	ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
-		light.type = LightType::Spot; // Tipo de luz (Spotlight)
+		light.type = LightType::Directional; // Tipo de luz (Spotlight)
 		light.color = glm::vec3(1.0f, 1.0f, 1.0f); // Color de la luz (blanco)
-		light.position = glm::vec3(0.0f, 800.0f, 000.0f); // Posición de la luz
+		light.position = glm::vec3(-2.0f, 4.0f, -1.0f); // Posición de la luz
 		light.direction = glm::vec3(0.0f, -1.0f, 0.0f); // Dirección de la luz
 		light.intensity = 2.0f; // Intensidad de la luz
-		light.cutoff = glm::cos(glm::radians(12.5f)); // Ángulo de corte interior (12.5 grados)
-		light.outerCutoff = glm::cos(glm::radians(17.5f)); // Ángulo de corte exterior (17.5 grados)
+		//light.cutoff = glm::cos(glm::radians(12.5f)); // Ángulo de corte interior (12.5 grados)
+		//light.outerCutoff = glm::cos(glm::radians(17.5f)); // Ángulo de corte exterior (17.5 grados)
 		});
 
 	// Configurar la luz como Point Light
@@ -193,13 +429,7 @@ int main() {
 	//	light.radius = 250.0f; // Radio de influencia de la luz
 	//	});
 
-	//ecsmanager.editComponent<LightComponent>(lightEntity2, [](LightComponent& light) {
-	//	light.type = LightType::Ambient; // Tipo de luz (Point Light)
-	//	light.color = glm::vec3(1.0f, 1.0f, 1.0f); // Color de la luz (blanco)
-	//	light.position = glm::vec3(0.0f, 400.0f, 0.0f); // Posición de la luz
-	//	light.intensity = 1.0f; // Intensidad de la luz
-	//	light.radius = 0.0f; // Radio de influencia de la luz (point light)
-	//	});
+	
 
 	auto mesh = std::make_shared<Model>("../data/Models/Alduin/Alduin.obj");
 
@@ -207,7 +437,7 @@ int main() {
 	Entity modelEntity1 = ecsmanager.createEntity();
 
 	ecsmanager.editComponent<TransformComponent>(modelEntity1, [](TransformComponent& transform) {
-		transform.position = { -200.0f, 0.0f, 0.0f }; // Posición del primer modelo
+		transform.position = {0.0f, 0.0f, 0.0f }; // Posición del primer modelo
 		transform.scale = { 1.0f, 1.0f, 1.0f };
 		});
 
@@ -261,7 +491,7 @@ int main() {
 		glCullFace(GL_BACK);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ZERO);
-
+		
 
 		program.use();
 		glm::mat4x4 model, view, projection;
@@ -315,8 +545,7 @@ int main() {
 			program.setInt("shadowMap", 1);
 			program.unuse();
 			shadow_program.use();
-
-			lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, cameraComponent.value()->nearPlane, cameraComponent.value()->farPlane);
+			lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane,far_plane);
 			lightView = glm::lookAt(lightOpt.value()->position, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 			lightSpaceMatrix = lightProjection * lightView;
 			shadow_program.setmat4("lightSpaceMatrix", lightSpaceMatrix);
@@ -331,6 +560,7 @@ int main() {
 				
 			}*/
 			renderSystem.RenderScene(ecsmanager, shadow_program, model, view, projection);
+			renderScene(shadow_program);
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 			glViewport(0, 0, 1024, 1024);
@@ -354,6 +584,7 @@ int main() {
 				program.setVec3("directionalLightColor", lightOpt.value()->color);
 				program.setVec3("directionalLightDirection", lightOpt.value()->direction);
 				program.setFloat("directionalLightIntensity", lightOpt.value()->intensity);
+				program.setVec3("directionLightPosition", lightOpt.value()->position);
 				program.setInt("LightType", static_cast<int>(lightOpt.value()->type));
 			}
 
@@ -361,7 +592,7 @@ int main() {
 			program.setmat4("lightSpaceMatrix", lightSpaceMatrix);
 
 			renderSystem.RenderScene(ecsmanager, program, model, view, projection);
-
+			renderScene(program);
 			glBlendFunc(GL_ONE, GL_ONE);
 			glDepthMask(false);
 		}
@@ -369,7 +600,18 @@ int main() {
 		glDepthFunc(GL_LESS);
 		glDisable(GL_BLEND);
 		program.unuse();
+		// render Depth map to quad for visual debugging
+  // ---------------------------------------------
+		quad_program.use();
+		quad_program.setFloat("near_plane", near_plane);
+		quad_program.setFloat("far_plane", far_plane);
+		quad_program.setInt("depthMap", 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, program.get_depthMap());
+		//renderQuad();
+		
 		// Intercambiar buffers
+
 		window->render();
 	}
 

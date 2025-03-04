@@ -56,10 +56,10 @@ bool Shader::loadFromFile(const ShaderType shader_type, const std::string& fileP
 
 bool Shader::compile()
 {
-	GLint Length;
+	GLint Length = 0;
 	std::string output_log;
 	glCompileShader(id);
-	GLint params = 0;
+	GLint params = -1;
 	glGetShaderiv(id, GL_COMPILE_STATUS, &params);
 	glGetShaderiv(id, GL_INFO_LOG_LENGTH, &Length);
 	output_log.reserve(Length);
