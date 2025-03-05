@@ -46,8 +46,6 @@ private:
   std::vector<Entity> deadEntities_;
 };
 
-#endif
-
 template<typename T>
 void ECSManager::addComponentType() {
   size_t key = typeid(T).hash_code();
@@ -135,3 +133,5 @@ void ComponentList<T>::grow(unsigned int current_entities) {
   }
   componentlist.resize(new_size, std::nullopt);
 }
+
+#endif

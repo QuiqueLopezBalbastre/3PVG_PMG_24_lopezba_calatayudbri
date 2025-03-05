@@ -94,7 +94,7 @@ project "Motor"
 
     kind "StaticLib"
     targetdir "build/%{cfg.buildcfg}"
-    includedirs { "include", "deps/assimp/include", "deps/glew/include",  "deps/glm", "deps/stb", "data"} 
+    includedirs { "include", "deps/assimp/include", "deps/glew/include",  "deps/glm", "deps/stb", "data", "deps/imgui"} 
     libdirs { "deps/assimp/lib", "deps/glew/lib"}
     -- UseLibs {"glload", "freeglut"}
     conan_config_lib()
@@ -115,10 +115,15 @@ project "Motor"
         -- "src/Color.cpp", "include/Color.hpp",
         "src/JobSystem.cpp", "include/JobSystem.hpp",
         "src/Scripting.cpp", "include/Scripting.hpp",
-        -- "src/ImguiPanel.cpp", "include/ImguiPanel.hpp",
+        "src/Imgui.cpp", "include/Imgui.hpp",
         "src/ECS/Component.cpp", "include/ECS/Component.hpp",
         "src/ECS/System.cpp", "include/ECS/System.hpp",
         "src/ECS/ECSManager.cpp", "include/ECS/ECSManager.hpp",
+
+        "deps/imgui/imgui.h",  "deps/imgui/imgui.cpp",
+        "deps/imgui/imgui_impl_opengl3.h", "deps/imgui/imgui_impl_opengl3.cpp",
+        "deps/imgui/imgui_impl_glfw.h", "deps/imgui/imgui_impl_glfw.cpp",
+        "deps/imgui/imgui_tables.cpp", "deps/imgui/imgui_draw.cpp", "deps/imgui/imgui_widgets.cpp"
     }
 
 project "Window"
@@ -212,3 +217,16 @@ project "Camera"
     conan_config_exec("RelWithDebInfo")
     debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
     files "examples/Camera/main.cpp"
+
+project "ImGui"
+
+    kind "ConsoleApp"
+    language "C++"
+    targetdir "build/%{prj.name}/%{cfg.buildcfg}"
+    includedirs "include"
+    links "Motor"
+    conan_config_exec("Debug")
+    conan_config_exec("Release")
+    conan_config_exec("RelWithDebInfo")
+    debugargs { _MAIN_SCRIPT_DIR .. "/src/data" }
+    files "examples/ImGui/main.cpp"
