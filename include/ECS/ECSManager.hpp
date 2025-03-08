@@ -9,18 +9,25 @@
 #include <iostream>
 #include "ModelLoader/Model.hpp"
 
+using Entity = unsigned int;
+
 struct ComponentListBase {
   virtual ~ComponentListBase() {};
   virtual void grow(unsigned int current_entities) = 0;
+  virtual void resetComponent(Entity entity) = 0;
 };
 
 template <typename T>
 struct ComponentList : ComponentListBase {
   std::vector<std::optional<T>> componentlist;
   virtual void grow(unsigned int current_entities) override;
+  virtual void resetComponent(Entity entity) override {
+    if (entity < componentlist.size()) {
+      componentlist[entity] = std::nullopt;
+    }
+  }
 };
 
-using Entity = unsigned int;
 
 
 
@@ -31,6 +38,7 @@ public:
   Entity createEntity();
   void destroyEntity(Entity entity);
   bool isEntityAlive(Entity entity) const;
+  
   Entity get_nextEntity();
   template<typename T>
   void addComponentType();
@@ -138,5 +146,7 @@ void ComponentList<T>::grow(unsigned int current_entities) {
   }
   componentlist.resize(new_size, std::nullopt);
 }
+
+
 
 #endif
