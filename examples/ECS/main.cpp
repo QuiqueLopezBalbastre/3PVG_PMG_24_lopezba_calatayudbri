@@ -226,8 +226,8 @@ int main() {
         renderSystem.drawShape(transformOpt.value(), shapeOpt.value());
       }
       auto inputComponentOpt = ecsmanager.getComponent<InputComponent>(entity);
-      if (inputComponentOpt)
-        inputSystem.update(inputComponentOpt.value(), transformOpt.value(), input);
+      //if (inputComponentOpt)
+        //inputSystem.update(inputComponentOpt.value(), transformOpt.value(), input);
 
       //Dibujado del modelo//
       auto modelOpt = ecsmanager.getComponent<RenderComponent>(entity);
