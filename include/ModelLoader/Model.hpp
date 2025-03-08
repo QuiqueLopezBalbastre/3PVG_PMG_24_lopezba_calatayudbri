@@ -25,14 +25,17 @@
  */
 class Model {
 public:
+
+  // Constructors for synchronous and asynchronous loading
+  Model(const std::string& path, std::string name_);
+
   /**
    * @brief Constructor that loads a model synchronously.
    *
    * Loads and processes the model immediately, making it ready for rendering.
    *
    * @param path Path to the model file to load.
-   */
-  Model(const std::string& path);
+
 
   /**
    * @brief Constructor that loads a model asynchronously using a job system.
@@ -43,6 +46,7 @@ public:
    * @param path Path to the model file to load.
    * @param jobSystem Reference to the job system to use for asynchronous loading.
    */
+
   Model(const std::string& path, JobSystem& jobSystem);
 
   /**
@@ -124,7 +128,7 @@ public:
    * Converts the loaded mesh data into OpenGL mesh objects with buffers and textures.
    */
   void createGLResources();
-
+  std::string get_name();
 private:
   /**
    * @struct MaterialInfo
@@ -152,9 +156,14 @@ private:
     std::string directory;                    ///< Directory containing the model's textures
   };
 
+
+  std::string name;
+  // Member variables for loading state
+
   /**
    * @brief Vector of mesh data loaded from file but not yet processed.
    */
+
   std::vector<MeshLoadData> meshesData;
 
   /**

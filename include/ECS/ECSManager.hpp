@@ -7,6 +7,9 @@
 #include <unordered_map>
 #include <memory>
 #include <iostream>
+#include "ModelLoader/Model.hpp"
+
+using Entity = unsigned int;
 
 /**
  * @class ComponentListBase
@@ -28,6 +31,7 @@ struct ComponentListBase {
    * @param current_entities The number of entities to ensure capacity for.
    */
   virtual void grow(unsigned int current_entities) = 0;
+  virtual void resetComponent(Entity entity) = 0;
 };
 
 /**
@@ -55,15 +59,13 @@ struct ComponentList : ComponentListBase {
    * @param current_entities The number of entities to ensure capacity for.
    */
   virtual void grow(unsigned int current_entities) override;
+  virtual void resetComponent(Entity entity) override {
+    if (entity < componentlist.size()) {
+      componentlist[entity] = std::nullopt;
+    }
+  }
 };
 
-/**
- * @typedef Entity
- * @brief Type definition for entity identifiers in the ECS system.
- *
- * Entities are represented as unsigned integers.
- */
-using Entity = unsigned int;
 
 /**
  * @class ECSManager
@@ -102,11 +104,6 @@ public:
    */
   bool isEntityAlive(Entity entity) const;
 
-  /**
-   * @brief Gets the next available entity ID.
-   *
-   * @return The next entity ID that would be assigned.
-   */
   Entity get_nextEntity();
 
   /**
@@ -151,6 +148,8 @@ public:
   template<typename T>
   bool editComponent(size_t entity, const std::function<void(T&)>& editor);
 
+  std::vector<std::shared_ptr<Model>> resources;
+
 private:
   /**
    * @typedef map_type
@@ -178,7 +177,7 @@ private:
   std::vector<Entity> deadEntities_;
 };
 
-#endif
+
 
 /**
  * @brief Registers a component type with the ECS manager.
@@ -187,6 +186,7 @@ private:
  *
  * @tparam T The component type to register.
  */
+
 template<typename T>
 void ECSManager::addComponentType() {
   size_t key = typeid(T).hash_code();
@@ -302,3 +302,7 @@ void ComponentList<T>::grow(unsigned int current_entities) {
   }
   componentlist.resize(new_size, std::nullopt);
 }
+
+
+
+#endif

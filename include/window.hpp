@@ -1,6 +1,7 @@
 #ifndef __WINDOW__
 #define __WINDOW__ 1
 
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <optional>
 #include "Figure.hpp"

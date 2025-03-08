@@ -2,8 +2,9 @@
 #include "ModelLoader/Model.hpp"
 #include <iostream>
 
-Model::Model(const std::string& path) : asyncMode(false) {
+Model::Model(const std::string& path, std::string name_) : asyncMode(false),name(name_) {
   loadModel(path);
+
 }
 
 Model::Model(const std::string& path, JobSystem& jobSystem) : asyncMode(true) {
@@ -196,6 +197,11 @@ void Model::createGLResources() {
   meshesData.clear();
   glResourcesCreated = true;
   loadComplete = true;
+}
+
+std::string Model::get_name()
+{
+    return name;
 }
 
 unsigned int Model::TextureFromFile(const char* path, const std::string& directory) {

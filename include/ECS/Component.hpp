@@ -271,4 +271,9 @@ struct ScriptComponent : ComponentBase {
   std::shared_ptr<LuaScript> script;  ///< Shared pointer to the Lua script
 };
 
+
+struct NameComponent : ComponentBase {
+    std::string name;
+};
 #endif // !__COMPONENT__
+
