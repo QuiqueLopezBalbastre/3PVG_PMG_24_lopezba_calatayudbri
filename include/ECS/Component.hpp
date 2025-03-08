@@ -160,4 +160,8 @@ struct AnimationComponent : ComponentBase {
 struct ScriptComponent : ComponentBase {
   std::shared_ptr<LuaScript> script;
 };
+
+struct NameComponent : ComponentBase {
+    std::string name;
+};
 #endif // !__COMPONENT__

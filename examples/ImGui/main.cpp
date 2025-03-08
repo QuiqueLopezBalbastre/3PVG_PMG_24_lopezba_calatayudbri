@@ -101,6 +101,7 @@ int main() {
 	ecsmanager.addComponentType<RenderComponent>();
 	ecsmanager.addComponentType<LightComponent>();
 	ecsmanager.addComponentType<CameraComponent>();
+	ecsmanager.addComponentType<NameComponent>();
 
 	//Camera Entity
 	Entity CameraEntity = ecsmanager.createEntity();
@@ -120,6 +121,10 @@ int main() {
 		tr.position = { 0.0f, 0.0f, 5.0f };
 		});
 
+	ecsmanager.addComponent<NameComponent>(CameraEntity);
+	ecsmanager.editComponent<NameComponent>(CameraEntity, [](NameComponent& cameraName) {
+		cameraName.name = "camera";
+		});
 	// Crear una entidad para la luz
 	Entity lightEntity = ecsmanager.createEntity();
 
@@ -131,6 +136,10 @@ int main() {
 		light.radius = 250.0f; // Radio de influencia de la luz
 		});
 
+	ecsmanager.addComponent<NameComponent>(lightEntity);
+	ecsmanager.editComponent<NameComponent>(lightEntity, [](NameComponent& cameraName) {
+		cameraName.name = "red pointlight 1 <3";
+		});
 	//ecsmanager.editComponent<LightComponent>(lightEntity, [](LightComponent& light) {
 	//	light.type = LightType::Spot; // Tipo de luz (Spotlight)
 	//	light.color = glm::vec3(1.0f, 1.0f, 1.0f); // Color de la luz (blanco)
@@ -159,7 +168,11 @@ int main() {
 	//	light.radius = 0.0f; // Radio de influencia de la luz (point light)
 	//	});
 
-	auto mesh = std::make_shared<Model>("../data/Models/Alduin/Alduin.obj");
+	auto mesh = std::make_shared<Model>("../data/Models/Alduin/Alduin.obj","alduin");
+
+	//ecsmanager.resources.push_back(nullptr);
+
+	ecsmanager.resources.push_back(mesh);
 
 	// Crear la primera entidad para el modelo 1
 	Entity modelEntity1 = ecsmanager.createEntity();

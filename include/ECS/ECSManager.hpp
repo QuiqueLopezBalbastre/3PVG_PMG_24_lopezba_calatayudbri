@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <memory>
 #include <iostream>
+#include "ModelLoader/Model.hpp"
 
 struct ComponentListBase {
   virtual ~ComponentListBase() {};
@@ -20,6 +21,8 @@ struct ComponentList : ComponentListBase {
 };
 
 using Entity = unsigned int;
+
+
 
 class ECSManager {
 public:
@@ -37,6 +40,8 @@ public:
   int addComponent(size_t entity);
   template<typename T>
   bool editComponent(size_t entity, const std::function<void(T&)>& editor);
+
+  std::vector<std::shared_ptr<Model>> resources;
 
 private:
   typedef std::unordered_map<size_t, std::unique_ptr<ComponentListBase>> map_type;

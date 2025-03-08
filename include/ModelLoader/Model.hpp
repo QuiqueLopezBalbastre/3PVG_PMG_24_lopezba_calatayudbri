@@ -18,7 +18,7 @@
 class Model {
 public:
   // Constructors for synchronous and asynchronous loading
-  Model(const std::string& path);
+  Model(const std::string& path, std::string name_);
   Model(const std::string& path, JobSystem& jobSystem);
 
   // Destructor and move semantics
@@ -38,7 +38,7 @@ public:
   // Public data (consider making private with accessors)
   std::vector<Mesh> meshes;
   void createGLResources();
-
+  std::string get_name();
 private:
   // Structures for handling loading state
   struct MaterialInfo {
@@ -54,6 +54,7 @@ private:
     std::string directory;
   };
 
+  std::string name;
   // Member variables for loading state
   std::vector<MeshLoadData> meshesData;
   std::vector<Mesh::Texture> textures_loaded;

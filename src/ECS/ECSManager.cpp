@@ -1,4 +1,5 @@
 #include "ECS/ECSManager.hpp"
+#include "ECS/Component.hpp"
 #include <iostream>
 
 Entity ECSManager::createEntity()
@@ -16,6 +17,11 @@ Entity ECSManager::createEntity()
   for (auto& [key, componentList] : componentListMap_) {
     componentList->grow(nextEntity);
   }
+
+  this->addComponent<NameComponent>(newEntity);
+  this->editComponent<NameComponent>(newEntity, [](NameComponent& EntityName) {
+      EntityName.name = " ";
+      });
 
   return newEntity;
 }

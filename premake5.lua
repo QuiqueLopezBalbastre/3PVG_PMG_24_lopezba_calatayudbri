@@ -123,7 +123,8 @@ project "Motor"
         "deps/imgui/imgui.h",  "deps/imgui/imgui.cpp",
         "deps/imgui/imgui_impl_opengl3.h", "deps/imgui/imgui_impl_opengl3.cpp",
         "deps/imgui/imgui_impl_glfw.h", "deps/imgui/imgui_impl_glfw.cpp",
-        "deps/imgui/imgui_tables.cpp", "deps/imgui/imgui_draw.cpp", "deps/imgui/imgui_widgets.cpp"
+        "deps/imgui/imgui_tables.cpp", "deps/imgui/imgui_draw.cpp", "deps/imgui/imgui_widgets.cpp",
+        "deps/imgui/imgui_stdlib.h", "deps/imgui/imgui_stdlib.cpp",
     }
 
 project "Window"
