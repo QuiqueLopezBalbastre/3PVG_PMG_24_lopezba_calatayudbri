@@ -288,6 +288,7 @@ int main() {
         GLuint spotlightIntensityLoc = glGetUniformLocation(program.get_id(), "spotlightIntensity");
         GLuint spotlightCutoffLoc = glGetUniformLocation(program.get_id(), "spotlightCutoff");
         GLuint spotlightOuterCutoffLoc = glGetUniformLocation(program.get_id(), "spotlightOuterCutoff");
+        GLuint spotLightRadiusLoc = glGetUniformLocation(program.get_id(), "spotLightRadius");
         GLuint LightTypeLoc = glGetUniformLocation(program.get_id(), "LightType");
 
         glUniform3f(spotlightColorLoc, lightOpt.value()->color.r, lightOpt.value()->color.g, lightOpt.value()->color.b);
@@ -296,6 +297,7 @@ int main() {
         glUniform1f(spotlightIntensityLoc, lightOpt.value()->intensity);
         glUniform1f(spotlightCutoffLoc, lightOpt.value()->cutoff);
         glUniform1f(spotlightOuterCutoffLoc, lightOpt.value()->outerCutoff);
+        glUniform1f(spotLightRadiusLoc, lightOpt.value()->radius);
         glUniform1i(LightTypeLoc, static_cast<int>(lightOpt.value()->type));
       }
 

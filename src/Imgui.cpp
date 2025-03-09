@@ -238,13 +238,29 @@ void LuquiImgui::EntityProperties(ECSManager& ecsManager) {
             lighty.color.b = lightcolor[2];
             });
         }
-        
-        /* glm::vec3 position;    ///< Position of the light (for point and spot lights)
-           glm::vec3 direction;   ///< Direction the light is pointing (for directional and spot lights)
-           float intensity;       ///< Brightness of the light
-           float radius;          ///< Radius of effect (for point lights and spotlights)
-           float cutoff;          ///< Inner cutoff angle for spotlight (in degrees)
-           float outerCutoff;     ///< Outer cutoff angle for spotlight (in degrees)*/
+        // Editar la intensidad de la luz
+        ImGui::DragFloat("Intensity", &light.value()->intensity, 0.1f, 0.0f, 100.0f);
+
+        // Editar el radio de la luz (para luces puntuales y focales)
+        if (light.value()->type == LightType::Point || light.value()->type == LightType::Spot) {
+            ImGui::DragFloat("Radius", &light.value()->radius, 0.1f, 0.0f, 1000.0f);
+        }
+
+        // Editar los ángulos de corte (para luces focales)
+        if (light.value()->type == LightType::Spot) {
+            ImGui::DragFloat("Cutoff", &light.value()->cutoff, 0.1f, 0.0f, 90.0f);
+            ImGui::DragFloat("Outer Cutoff", &light.value()->outerCutoff, 0.1f, 0.0f, 90.0f);
+        }
+
+        // Editar la dirección de la luz (para luces direccionales y focales)
+        if (light.value()->type == LightType::Directional || light.value()->type == LightType::Spot) {
+            ImGui::DragFloat3("Direction", &light.value()->direction.x, 0.1f);
+        }
+
+        // Editar la posición de la luz (para luces puntuales y focales)
+        if (light.value()->type == LightType::Point || light.value()->type == LightType::Spot) {
+            ImGui::DragFloat3("Position", &light.value()->position.x, 0.1f);
+        }
       }
     }
 

@@ -21,6 +21,7 @@ uniform vec3 spotlightDirection;
 uniform float spotlightIntensity;
 uniform float spotlightCutoff; // Ángulo de corte interior (en radianes)
 uniform float spotlightOuterCutoff; // Ángulo de corte exterior (en radianes)
+uniform float spotLightRadius;
 
 uniform vec3 directionalLightColor;
 uniform vec3 directionalLightDirection;
@@ -62,25 +63,27 @@ vec3 CalculatePointLight(vec3 normal, vec3 textureColor, vec3 viewDir)
 
 vec3 CalculateSpotLight(vec3 normal, vec3 textureColor)
 {
-    
     vec3 lightDir = normalize(spotlightPosition - FragPos);
-        float theta = dot(lightDir, normalize(-spotlightDirection));
-        float epsilon = spotlightCutoff - spotlightOuterCutoff;
-        float intensity = clamp((theta - spotlightOuterCutoff) / epsilon, 0.0, 1.0);
-        vec3 finalColor = textureColor.rgb;
+    vec3 diffuse = vec3(0);
+    // Diffuse shading
+    float diff = max(dot(normal, lightDir), 0.0);
+    diffuse = diff * textureColor;
+   
+    
+    // Attenuation
+    float distance = length(spotlightPosition - FragPos);
+    float SpotLightMaxDistance = spotLightRadius;
+    float att = clamp(1.0f - (distance * distance)/(SpotLightMaxDistance * SpotLightMaxDistance), 0.0f, 1.0f);
 
-        if (theta < spotlightOuterCutoff) {
-            float diff = max(dot(normal, lightDir), 0.0);
-            vec3 diffuse = diff * spotlightColor * spotlightIntensity * intensity;
-            float distance = length(spotlightPosition - FragPos);
-            float attenuation = 1.0 / (1.0 + 0.1 * distance + 0.01 * (distance * distance));
+    // Spotlight intensity
+    float theta = dot(lightDir, normalize(-spotlightDirection));
+    float epsilon = spotlightCutoff - spotlightOuterCutoff;
+    float intensity = clamp((theta - spotlightOuterCutoff) / epsilon, 0.0, 1.0);
+    
+    diffuse *= att * intensity; 
 
-           finalColor = textureColor.rgb * diffuse * attenuation;
-        } else {
-            finalColor = textureColor.rgb * spotlightColor * spotlightIntensity; // Fuera del cono de luz
-        }
-
-        return finalColor;
+    // Combine results
+    return (spotlightColor * (diffuse)); 
 }
 
 vec3 CalculateDirectionalLight(vec3 normal, vec3 textureColor)
