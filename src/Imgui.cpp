@@ -96,6 +96,7 @@ void LuquiImgui::EntitySelector(ECSManager& ecsManager) {
 // Create entity properties window
 void LuquiImgui::EntityProperties(ECSManager& ecsManager) {
   ImGui::Begin("Inspector de propiedades");
+  static Entity lastEntity = 0;
 
   if (selectedEntity > 0 && ecsManager.isEntityAlive(selectedEntity)) {
     ImGui::Text("Entity ID: %u", selectedEntity);
@@ -168,7 +169,7 @@ void LuquiImgui::EntityProperties(ECSManager& ecsManager) {
     auto animation = ecsManager.getComponent<AnimationComponent>(selectedEntity);
     if (animation.has_value()) {
       if (ImGui::CollapsingHeader("Animation Component", ImGuiTreeNodeFlags_DefaultOpen)) {
-        ImGui::Checkbox("Active", &animation.value()->active);
+        ImGui::Checkbox("Animation Active", &animation.value()->active);
         ImGui::DragFloat3("Translation", &animation.value()->translation.x, 0.01f);
         ImGui::DragFloat3("Rotation", &animation.value()->rotation.x, 0.1f);
         ImGui::DragFloat3("Scale", &animation.value()->scale.x, 0.01f);
@@ -181,9 +182,69 @@ void LuquiImgui::EntityProperties(ECSManager& ecsManager) {
     auto input = ecsManager.getComponent<InputComponent>(selectedEntity);
     if (input.has_value()) {
       if (ImGui::CollapsingHeader("Input Component", ImGuiTreeNodeFlags_DefaultOpen)) {
-        ImGui::Checkbox("Active", &input.value()->active);
+        ImGui::Checkbox("Input Active", &input.value()->active);
         ImGui::Checkbox("Follow Mouse", &input.value()->followingMouse);
         ImGui::Text("Last Key: %d", input.value()->keyReceived);
+      }
+    }
+
+    auto light = ecsManager.getComponent<LightComponent>(selectedEntity);
+    if (light.has_value()) {
+      if (ImGui::CollapsingHeader("Light Component", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::Checkbox("Light Active", &light.value()->active);
+        if (ImGui::Button("Light Type")) {
+          ImGui::OpenPopup("Select Light Type");
+        }
+        ImGui::SameLine();
+        static std::string lighttype;
+        switch (light.value()->type) {
+        case LightType::Directional:
+          lighttype = "Directional";
+          break;
+        case LightType::Spot:
+          lighttype = "Spot";
+          break;
+        case LightType::Point:
+          lighttype = "Point";
+          break;
+        }
+        ImGui::Text(lighttype.c_str());
+
+        if (ImGui::BeginPopup("Select Light Type")) {
+          if (ImGui::Selectable("Directional")) {
+            light.value()->type = LightType::Directional;
+          }
+          if (ImGui::Selectable("Point")) {
+            light.value()->type = LightType::Point;
+          }
+          if (ImGui::Selectable("Spot")) {
+            light.value()->type = LightType::Spot;
+          }
+          //ImGui::CloseCurrentPopup();
+          ImGui::EndPopup();
+        }
+        static float lightcolor[3];
+        if (lastEntity != selectedEntity) {
+          lightcolor[0] = light.value()->color.r;
+          lightcolor[1] = light.value()->color.g;
+          lightcolor[2] = light.value()->color.b;
+        }
+
+        ImGui::ColorPicker3("Light color", lightcolor);
+        if (ImGui::Button("Apply color")) {
+          ecsManager.editComponent<LightComponent>(selectedEntity, [](LightComponent& lighty) {
+            lighty.color.r = lightcolor[0];
+            lighty.color.g = lightcolor[1];
+            lighty.color.b = lightcolor[2];
+            });
+        }
+        
+        /* glm::vec3 position;    ///< Position of the light (for point and spot lights)
+           glm::vec3 direction;   ///< Direction the light is pointing (for directional and spot lights)
+           float intensity;       ///< Brightness of the light
+           float radius;          ///< Radius of effect (for point lights and spotlights)
+           float cutoff;          ///< Inner cutoff angle for spotlight (in degrees)
+           float outerCutoff;     ///< Outer cutoff angle for spotlight (in degrees)*/
       }
     }
 
@@ -192,7 +253,6 @@ void LuquiImgui::EntityProperties(ECSManager& ecsManager) {
     auto nameComponent = ecsManager.getComponent<NameComponent>(selectedEntity);
 
     if (ImGui::CollapsingHeader("Entity Name", ImGuiTreeNodeFlags_DefaultOpen)) {
-      static Entity lastEntity = 0;
       if (lastEntity != selectedEntity) {
         editingName = nameComponent.value()->name;
         lastEntity = selectedEntity;
@@ -261,6 +321,7 @@ void LuquiImgui::EntityProperties(ECSManager& ecsManager) {
           c.keyReceived = 0;
           });
       }
+
 
       ImGui::EndPopup();
     }
