@@ -80,7 +80,7 @@ vec3 CalculateSpotLight(vec3 normal, vec3 textureColor)
     float epsilon = spotlightCutoff - spotlightOuterCutoff;
     float intensity = clamp((theta - spotlightOuterCutoff) / epsilon, 0.0, 1.0);
     
-    diffuse *= att * intensity; 
+    diffuse *= att * spotlightIntensity; 
 
     // Combine results
     return (spotlightColor * (diffuse)); 

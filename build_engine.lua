@@ -1,4 +1,4 @@
-project "Motor"
+project "LUQUI"
 
     kind "StaticLib"
     targetdir "build/%{cfg.buildcfg}"

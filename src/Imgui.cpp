@@ -59,7 +59,9 @@ void LuquiImgui::EntityWindows(ECSManager& ecsManager) {
 
 // Create entity selector window
 void LuquiImgui::EntitySelector(ECSManager& ecsManager) {
-  ImGui::Begin("Selector de entidades");
+  ImGui::SetNextWindowPos(ImVec2(1.0f, 1.0f));
+  ImGui::SetNextWindowSize(ImVec2(175.0f, 350.0f));
+  ImGui::Begin("Entity Selector");
 
   // Show all entities up to the next entity ID
   Entity nextEntity = ecsManager.get_nextEntity();
@@ -82,7 +84,7 @@ void LuquiImgui::EntitySelector(ECSManager& ecsManager) {
   }
 
   // Add button to create a new entity
-  if (ImGui::Button("Crear entidad")) {
+  if (ImGui::Button("Create Entity")) {
     Entity newEntity = ecsManager.createEntity();
     selectedEntity = newEntity;
   }
@@ -95,7 +97,9 @@ void LuquiImgui::EntitySelector(ECSManager& ecsManager) {
 
 // Create entity properties window
 void LuquiImgui::EntityProperties(ECSManager& ecsManager) {
-  ImGui::Begin("Inspector de propiedades");
+    ImGui::SetNextWindowPos(ImVec2(1000.0f, 1.0f));
+    ImGui::SetNextWindowSize(ImVec2(280.0f, 550.0f));
+  ImGui::Begin("Property Inspector");
   static Entity lastEntity = 0;
 
   if (selectedEntity > 0 && ecsManager.isEntityAlive(selectedEntity)) {
@@ -121,7 +125,7 @@ void LuquiImgui::EntityProperties(ECSManager& ecsManager) {
         }
 
         if (ImGui::BeginPopup("mesh_popup")) {
-          ImGui::Text("Seleccionar modelo:");
+          ImGui::Text("Pick Model:");
           // Variable para almacenar el índice seleccionado (si es necesario)
           static int selectedIndex = -1;
 
@@ -351,7 +355,9 @@ void LuquiImgui::EntityProperties(ECSManager& ecsManager) {
 
 // Create camera properties window
 void LuquiImgui::CameraProperties(CameraComponent& camera) {
-  ImGui::Begin("Inspector de la cámara principal");
+  ImGui::SetNextWindowPos(ImVec2(1.0f, 600.0f));
+  ImGui::SetNextWindowSize(ImVec2(400.0f, 400.0f));
+  ImGui::Begin("Main Camera Inspector");
 
   ImGui::Checkbox("Active", &camera.active);
 

@@ -70,7 +70,7 @@ configs = {'Debug','Release','RelWithDebInfo'}
 end
 
 
-workspace "Motor"
+workspace "LUQUI"
 
 configurations { "Debug", "Release", "RelWithDebInfo" }
 architecture "x64"
@@ -102,7 +102,7 @@ if _OPTIONS["build-engine"] then
         end
     end
 
-project "Motor"
+project "LUQUI"
 
     kind "StaticLib"
     targetdir "build/%{cfg.buildcfg}"
@@ -144,7 +144,7 @@ project "Window"
     language "C++"
     targetdir "build/%{prj.name}/%{cfg.buildcfg}"
     includedirs "include"
-    links "Motor"
+    links "LUQUI"
     conan_config_exec("Debug")
     conan_config_exec("Release")
     conan_config_exec("RelWithDebInfo")
@@ -157,7 +157,7 @@ project "Triangle"
     language "C++"
     targetdir "build/%{prj.name}/%{cfg.buildcfg}"
     includedirs "include"
-    links "Motor"
+    links "LUQUI"
     conan_config_exec("Debug")
     conan_config_exec("Release")
     conan_config_exec("RelWithDebInfo")
@@ -170,7 +170,7 @@ project "OBJLoader"
     language "C++"
     targetdir "build/%{prj.name}/%{cfg.buildcfg}"
     includedirs "include"
-    links "Motor"
+    links "LUQUI"
     conan_config_exec("Debug")
     conan_config_exec("Release")
     conan_config_exec("RelWithDebInfo")
@@ -183,7 +183,7 @@ project "JobSystem"
     language "C++"
     targetdir "build/%{prj.name}/%{cfg.buildcfg}"
     includedirs "include"
-    links "Motor"
+    links "LUQUI"
     conan_config_exec("Debug")
     conan_config_exec("Release")
     conan_config_exec("RelWithDebInfo")
@@ -197,7 +197,7 @@ project "ECS"
     language "C++"
     targetdir "build/%{prj.name}/%{cfg.buildcfg}"
     includedirs "include"
-    links "Motor"
+    links "LUQUI"
     conan_config_exec("Debug")
     conan_config_exec("Release")
     conan_config_exec("RelWithDebInfo")
@@ -210,7 +210,7 @@ project "Lights"
     language "C++"
     targetdir "build/%{prj.name}/%{cfg.buildcfg}"
     includedirs "include"
-    links "Motor"
+    links "LUQUI"
     conan_config_exec("Debug")
     conan_config_exec("Release")
     conan_config_exec("RelWithDebInfo")
@@ -223,7 +223,7 @@ project "Camera"
     language "C++"
     targetdir "build/%{prj.name}/%{cfg.buildcfg}"
     includedirs "include"
-    links "Motor"
+    links "LUQUI"
     conan_config_exec("Debug")
     conan_config_exec("Release")
     conan_config_exec("RelWithDebInfo")
@@ -236,7 +236,7 @@ project "ImGui"
     language "C++"
     targetdir "build/%{prj.name}/%{cfg.buildcfg}"
     includedirs "include"
-    links "Motor"
+    links "LUQUI"
     conan_config_exec("Debug")
     conan_config_exec("Release")
     conan_config_exec("RelWithDebInfo")

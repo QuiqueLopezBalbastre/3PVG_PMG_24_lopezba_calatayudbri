@@ -6,34 +6,72 @@
 #include "ECS/Component.hpp"
 #include "ECS/ECSManager.hpp"
 
+/**
+ * @class LuquiImgui
+ * @brief Handles the graphical user interface using Dear ImGui.
+ */
 class LuquiImgui {
 public:
-  LuquiImgui(Window* window);
-  ~LuquiImgui();
+	/**
+ * @brief Constructor of LuquiImgui.
+ * @param window Pointer to the window where the UI will be rendered.
+	 */
+	LuquiImgui(Window* window);
 
-  void NewFrame();
+	/**
+   * @brief Destructor of LuquiImgui.
+   */
+	~LuquiImgui();
 
-  // Creates all entity-related windows
-  void EntityWindows(ECSManager& ecsManager);
+	/**
+   * @brief Starts a new ImGui frame.
+   */
+	void NewFrame();
 
-  // Entity selector window
-  void EntitySelector(ECSManager& ecsManager);
 
-  // Entity properties window
-  void EntityProperties(ECSManager& ecsManager);
+	/**
+   * @brief Creates all entity-related windows.
+   * @param ecsManager Reference to the ECS manager.
+   */
+	void EntityWindows(ECSManager& ecsManager);
 
-  // Camera properties window
-  void CameraProperties(CameraComponent& camera);
+	/**
+  * @brief Entity selection window.
+  * @param ecsManager Reference to the ECS manager.
+  */
+	void EntitySelector(ECSManager& ecsManager);
 
-  // Getter and setter for selected entity
-  Entity GetSelectedEntity() const;
-  void SetSelectedEntity(Entity entity);
+	/**
+ * @brief Entity properties window.
+ * @param ecsManager Reference to the ECS manager.
+ */
+	void EntityProperties(ECSManager& ecsManager);
 
-  // Render ImGui windows
-  void Render();
+	/**
+	  * @brief Camera properties window.
+	  * @param camera Reference to the camera component.
+	  */
+	void CameraProperties(CameraComponent& camera);
+
+	/**
+  * @brief Gets the currently selected entity.
+  * @return The selected entity.
+  */
+	Entity GetSelectedEntity() const;
+
+	/**
+ * @brief Sets the selected entity.
+ * @param entity Entity ID to select.
+ */
+	void SetSelectedEntity(Entity entity);
+
+	/**
+   * @brief Renders ImGui windows.
+   */
+	void Render();
 
 private:
-  Entity selectedEntity;
+	Entity selectedEntity;
 };
 
 #endif // !__LUQUI_IMGUI__

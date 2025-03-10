@@ -43,6 +43,16 @@ static const char* glErrorString(GLenum err) {
 }
 
 /**
+ * @brief Width of the main application window.
+ */
+const int LUQUI_Window_Width = 1280;
+
+/**
+ * @brief Height of the main application window.
+ */
+const int LUQUI_Window_Height = 1040;
+
+/**
  * @struct Vec2
  * @brief A 2D vector structure with basic vector operations.
  */

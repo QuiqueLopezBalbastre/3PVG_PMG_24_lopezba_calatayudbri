@@ -46,7 +46,7 @@ void PrintShaderValues(Program program)
 int main() {
   glfwInit();
 
-  auto window = Window::make(1280, 1040, "LUQUI");
+  auto window = Window::make(LUQUI_Window_Width, LUQUI_Window_Height, "LUQUI");
   if (nullptr == window->window) {
     return -1;
   }
