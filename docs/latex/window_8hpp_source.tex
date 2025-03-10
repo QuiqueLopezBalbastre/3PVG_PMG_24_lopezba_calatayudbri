@@ -1,0 +1,50 @@
+\doxysection{window.\+hpp}
+\hypertarget{window_8hpp_source}{}\label{window_8hpp_source}\index{C:/Users/quilo/Documents/GitHub/3PVG\_PMG\_24\_lopezba\_calatayudbri/include/window.hpp@{C:/Users/quilo/Documents/GitHub/3PVG\_PMG\_24\_lopezba\_calatayudbri/include/window.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ \_\_WINDOW\_\_}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ \_\_WINDOW\_\_\ 1}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <GL/glew.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <GLFW/glfw3.h>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <optional>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}Figure.hpp"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_window_aeba255df025ccb2b5e63000ebbcb4260}{Window}}\ \{}
+\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \mbox{\hyperlink{class_window_aeba255df025ccb2b5e63000ebbcb4260}{Window}}(GLFWwindow*\ glfwWindow);}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00032\ \ \ \mbox{\hyperlink{class_window_a245d821e6016fa1f6970ccbbedd635f6}{\string~Window}}();}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00037\ \ \ \mbox{\hyperlink{class_window_a362fb58d60e3254edddfe71e546e6993}{Window}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_window_aeba255df025ccb2b5e63000ebbcb4260}{Window}}\&\ other)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00044\ \ \ \mbox{\hyperlink{class_window_a493ef00d0bef6b2c3cd4f8acfde4e32d}{Window}}(\mbox{\hyperlink{class_window_aeba255df025ccb2b5e63000ebbcb4260}{Window}}\&\&\ other)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00049\ \ \ \mbox{\hyperlink{class_window_aeba255df025ccb2b5e63000ebbcb4260}{Window}}\&\ \mbox{\hyperlink{class_window_adad96731bf201ddcb63e13b117594a62}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_window_aeba255df025ccb2b5e63000ebbcb4260}{Window}}\&\ other)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00057\ \ \ \mbox{\hyperlink{class_window_aeba255df025ccb2b5e63000ebbcb4260}{Window}}\&\ \mbox{\hyperlink{class_window_a23daa6a6a18f173f1f7083f2a73d58ad}{operator=}}(\mbox{\hyperlink{class_window_aeba255df025ccb2b5e63000ebbcb4260}{Window}}\&\ other);}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{static}\ std::optional<Window>\ \mbox{\hyperlink{class_window_ad3ad76027e01c5d557919d8eb7f00824}{make}}(\textcolor{keywordtype}{int}\ window\_width,\ \textcolor{keywordtype}{int}\ window\_height,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ window\_name);}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_window_abd5c9f3c0f5aca5c4b6c0218a12d11d2}{setCurrentWindowActive}}();}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00081\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_window_a0a2093bd2ed34740c08a6a2fdfc059c9}{render}}();}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00088\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_window_a38bc43bdd1a97e5de7f346ba4c3957ef}{clear}}();}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_window_a944062b4351d78907bac4846df857a67}{renderFigure}}(\mbox{\hyperlink{class_figure}{Figure}}\&\ figure);}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_window_ad45c4f063acdfc079d38c06a5d9a99f6}{handleInput}}(\mbox{\hyperlink{class_figure}{Figure}}\&\ figure);}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00109\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_window_a3f012722de2661cc424857cd8c3d4475}{destroyWindow}}();}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_window_a0530ead23b2c91ef90a5f98e4df41cb8}{isOpen}}();}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00122\ \ \ GLFWwindow*\ \mbox{\hyperlink{class_window_a9957db4afdad3d57e5c5b6626b44b6d0}{window}};}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordtype}{bool}\ destroy;}
+\DoxyCodeLine{00132\ \};}
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ !\_\_WINDOW\_\_}}
+
+\end{DoxyCode}

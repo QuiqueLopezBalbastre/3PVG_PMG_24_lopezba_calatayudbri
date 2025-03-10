@@ -1,0 +1,39 @@
+\doxysection{Scripting.\+hpp}
+\hypertarget{_scripting_8hpp_source}{}\label{_scripting_8hpp_source}\index{C:/Users/quilo/Documents/GitHub/3PVG\_PMG\_24\_lopezba\_calatayudbri/include/Scripting.hpp@{C:/Users/quilo/Documents/GitHub/3PVG\_PMG\_24\_lopezba\_calatayudbri/include/Scripting.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ \_\_SCRIPTING\_\_}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ \_\_SCRIPTING\_\_}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}lua.hpp"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <filesystem>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_lua_script_ab209b14f183ed1130fd6f8d541c112f6}{LuaScript}}\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \mbox{\hyperlink{class_lua_script_ab209b14f183ed1130fd6f8d541c112f6}{LuaScript}}(std::string\ filepath);}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00029\ \ \ \mbox{\hyperlink{class_lua_script_ad78bd6d80c89fa6b502bcf994644f8f7}{\string~LuaScript}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00039\ \ \ \mbox{\hyperlink{class_lua_script_ab209b14f183ed1130fd6f8d541c112f6}{LuaScript}}\&\ \mbox{\hyperlink{class_lua_script_a30dbbbb7859d9eecbb8657a6024e0800}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_lua_script_ab209b14f183ed1130fd6f8d541c112f6}{LuaScript}}\&\ other);}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_lua_script_a660adae8a22f43671ba60f5ba66eab7e}{check}}(\textcolor{keywordtype}{int}\ error);}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00054\ \ \ std::string\ \mbox{\hyperlink{class_lua_script_a1cdbe52a4c21b5f11caaf44e20955942}{getContent}}();}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_lua_script_a20299c9488a06333f5bc3d043d05773b}{run}}(\textcolor{keyword}{const}\ std::string\&\ str);}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00072\ \ \ std::unique\_ptr<lua\_State,\ \textcolor{keyword}{decltype}(\&lua\_close)>\ state\_;}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00079\ \ \ lua\_State*\ s\_;}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00084\ \ \ std::string\ content;}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00092\ \ \ std::string\ readFileContent(\textcolor{keyword}{const}\ std::filesystem::path\&\ filepath);}
+\DoxyCodeLine{00093\ \};}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ !\_\_SCRIPTING\_\_}}
+
+\end{DoxyCode}

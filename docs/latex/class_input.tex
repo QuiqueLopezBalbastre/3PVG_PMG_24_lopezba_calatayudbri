@@ -1,0 +1,400 @@
+\doxysection{Input Class Reference}
+\hypertarget{class_input}{}\label{class_input}\index{Input@{Input}}
+
+
+Manages and abstracts user input through GLFW.  
+
+
+
+
+{\ttfamily \#include $<$Input.\+hpp$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{class_input_ac74df526ba38aedbefa716292b6534d5}{Key}} \{ \newline
+{\bfseries KEY\+\_\+\+UNKNOWN} = -\/1
+, {\bfseries KEY\+\_\+A} = 1
+, {\bfseries KEY\+\_\+B}
+, {\bfseries KEY\+\_\+C}
+, \newline
+{\bfseries KEY\+\_\+D}
+, {\bfseries KEY\+\_\+E}
+, {\bfseries KEY\+\_\+F}
+, {\bfseries KEY\+\_\+G}
+, \newline
+{\bfseries KEY\+\_\+H}
+, {\bfseries KEY\+\_\+I}
+, {\bfseries KEY\+\_\+J}
+, {\bfseries KEY\+\_\+K}
+, \newline
+{\bfseries KEY\+\_\+L}
+, {\bfseries KEY\+\_\+M}
+, {\bfseries KEY\+\_\+N}
+, {\bfseries KEY\+\_\+O}
+, \newline
+{\bfseries KEY\+\_\+P}
+, {\bfseries KEY\+\_\+Q}
+, {\bfseries KEY\+\_\+R}
+, {\bfseries KEY\+\_\+S}
+, \newline
+{\bfseries KEY\+\_\+T}
+, {\bfseries KEY\+\_\+U}
+, {\bfseries KEY\+\_\+V}
+, {\bfseries KEY\+\_\+W}
+, \newline
+{\bfseries KEY\+\_\+X}
+, {\bfseries KEY\+\_\+Y}
+, {\bfseries KEY\+\_\+Z}
+, {\bfseries KEY\+\_\+0}
+, \newline
+{\bfseries KEY\+\_\+1}
+, {\bfseries KEY\+\_\+2}
+, {\bfseries KEY\+\_\+3}
+, {\bfseries KEY\+\_\+4}
+, \newline
+{\bfseries KEY\+\_\+5}
+, {\bfseries KEY\+\_\+6}
+, {\bfseries KEY\+\_\+7}
+, {\bfseries KEY\+\_\+8}
+, \newline
+{\bfseries KEY\+\_\+9}
+, {\bfseries KEY\+\_\+\+F1}
+, {\bfseries KEY\+\_\+\+F2}
+, {\bfseries KEY\+\_\+\+F3}
+, \newline
+{\bfseries KEY\+\_\+\+F4}
+, {\bfseries KEY\+\_\+\+F5}
+, {\bfseries KEY\+\_\+\+F6}
+, {\bfseries KEY\+\_\+\+F7}
+, \newline
+{\bfseries KEY\+\_\+\+F8}
+, {\bfseries KEY\+\_\+\+F9}
+, {\bfseries KEY\+\_\+\+F10}
+, {\bfseries KEY\+\_\+\+F11}
+, \newline
+{\bfseries KEY\+\_\+\+F12}
+, {\bfseries KEY\+\_\+\+UP}
+, {\bfseries KEY\+\_\+\+DOWN}
+, {\bfseries KEY\+\_\+\+LEFT}
+, \newline
+{\bfseries KEY\+\_\+\+RIGHT}
+, {\bfseries KEY\+\_\+\+SPACE}
+, {\bfseries KEY\+\_\+\+TAB}
+, {\bfseries KEY\+\_\+\+ENTER}
+, \newline
+{\bfseries KEY\+\_\+\+BACKSPACE}
+, {\bfseries KEY\+\_\+\+ESCAPE}
+ \}
+\begin{DoxyCompactList}\small\item\em Enumeration of supported keyboard keys. \end{DoxyCompactList}\item 
+\Hypertarget{class_input_a9c884c5940c151785997081feb06d804}\label{class_input_a9c884c5940c151785997081feb06d804} 
+enum \mbox{\hyperlink{class_input_a9c884c5940c151785997081feb06d804}{Mouse\+\_\+\+Key}} \{ {\bfseries MOUSE\+\_\+\+BUTTON\+\_\+\+LEFT}
+, {\bfseries MOUSE\+\_\+\+BUTTON\+\_\+\+RIGHT}
+, {\bfseries MOUSE\+\_\+\+BUTTON\+\_\+\+WHEEL}
+ \}
+\begin{DoxyCompactList}\small\item\em Enumeration of supported mouse buttons. \end{DoxyCompactList}\item 
+\Hypertarget{class_input_a88e740043d2e00400e7f8d8cc2ea051e}\label{class_input_a88e740043d2e00400e7f8d8cc2ea051e} 
+enum \mbox{\hyperlink{class_input_a88e740043d2e00400e7f8d8cc2ea051e}{Modifier\+\_\+\+Key}} \{ {\bfseries MOD\+\_\+\+KEY\+\_\+\+SHIFT}
+, {\bfseries MOD\+\_\+\+KEY\+\_\+\+CONTROL}
+, {\bfseries MOD\+\_\+\+KEY\+\_\+\+ALT}
+ \}
+\begin{DoxyCompactList}\small\item\em Enumeration of supported keyboard modifier keys. \end{DoxyCompactList}\item 
+\Hypertarget{class_input_a1362dbb1d4e03621426ca7c00fddd8b2}\label{class_input_a1362dbb1d4e03621426ca7c00fddd8b2} 
+enum \mbox{\hyperlink{class_input_a1362dbb1d4e03621426ca7c00fddd8b2}{Action}} \{ {\bfseries MOVE\+\_\+\+FORWARD}
+, {\bfseries JUMP}
+, {\bfseries SHOOT}
+ \}
+\begin{DoxyCompactList}\small\item\em Enumeration of high-\/level game actions that can be mapped to inputs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_input_a6eeadbfd22a5c646e34407e8f1689089}{Input}} (GLFWwindow \texorpdfstring{$\ast$}{*}window)
+\begin{DoxyCompactList}\small\item\em Constructor that initializes input handling for a GLFW window. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_input_adb6e3f99be1b86d301dabd67c7306c27}{is\+Key\+Pressed}} (int key)
+\begin{DoxyCompactList}\small\item\em Checks if a specific key is currently pressed. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_input_abd244da8f667a86ae6e5c8ffb11324cc}{is\+Key\+Released}} (int key)
+\begin{DoxyCompactList}\small\item\em Checks if a specific key is currently released. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_input_a2d213bda16ddfbd9d4cdde343b44bd92}{is\+Mouse\+Button\+Pressed}} (int button)
+\begin{DoxyCompactList}\small\item\em Checks if a specific mouse button is currently pressed. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_input_abcc37ae162cb9310699b356d6e1157cd}{get\+Mouse\+Position}} (double \&x\+Pos, double \&y\+Pos)
+\begin{DoxyCompactList}\small\item\em Gets the current mouse cursor position. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_input_aced19da7d5a9a10d7a8e7dce76c45227}{get\+Mouse\+Scroll}} ()
+\begin{DoxyCompactList}\small\item\em Gets the current mouse scroll wheel offset. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_input_a45a636ece9f6c97ccdcfa8bd1deb8a8a}{is\+Modifier\+Pressed}} (int modifier)
+\begin{DoxyCompactList}\small\item\em Checks if a specific keyboard modifier is currently pressed. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_input_a368598b1e03116d7b8e3ea1c67ced16c}{is\+Joystick\+Connected}} (int joystick\+ID)
+\begin{DoxyCompactList}\small\item\em Checks if a joystick/gamepad is connected. \end{DoxyCompactList}\item 
+const float \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_input_ac644e61a94c398c326250a749ed3cb6c}{get\+Joystick\+Axes}} (int joystick\+ID, int \&count)
+\begin{DoxyCompactList}\small\item\em Gets the state of all axes for a specific joystick. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_input_a00fe008206cc6d870685235bdf42e103}{map\+Action}} (\mbox{\hyperlink{class_input_a1362dbb1d4e03621426ca7c00fddd8b2}{Action}} action, int key)
+\begin{DoxyCompactList}\small\item\em Maps a high-\/level action to a specific key. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_input_a2c7ee8dbe929d10b4d5784a4312c6bff}{is\+Action\+Pressed}} (\mbox{\hyperlink{class_input_a1362dbb1d4e03621426ca7c00fddd8b2}{Action}} action)
+\begin{DoxyCompactList}\small\item\em Checks if the key mapped to a specific action is currently pressed. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_input_a95ea2a0b42f5093a517bb6d7f64df6d7}{was\+Key\+Just\+Pressed}} (int key)
+\begin{DoxyCompactList}\small\item\em Checks if a key was just pressed this frame (debouncing). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_input_aad8bb93de392379e94f512d2b852a2c5}{get\+Currently\+Pressed\+Key}} ()
+\begin{DoxyCompactList}\small\item\em Gets the currently pressed key, if any. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_input_ac577fcd056d7ab395632b9d819ed0435}{initialize\+Callbacks}} ()
+\begin{DoxyCompactList}\small\item\em Initializes GLFW callbacks for input events. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages and abstracts user input through GLFW. 
+
+The \doxylink{class_input}{Input} class serves as a layer between the application and GLFW\textquotesingle{}s input handling, providing a consistent interface for keyboard, mouse, and gamepad input. It also implements an action mapping system that allows binding high-\/level game actions to specific input keys. 
+
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{class_input_ac74df526ba38aedbefa716292b6534d5}\index{Input@{Input}!Key@{Key}}
+\index{Key@{Key}!Input@{Input}}
+\doxysubsubsection{\texorpdfstring{Key}{Key}}
+{\footnotesize\ttfamily \label{class_input_ac74df526ba38aedbefa716292b6534d5} 
+enum \mbox{\hyperlink{class_input_ac74df526ba38aedbefa716292b6534d5}{Input\+::\+Key}}}
+
+
+
+Enumeration of supported keyboard keys. 
+
+These constants represent keyboard keys in an engine-\/specific format, which are mapped to GLFW key codes internally. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_input_a6eeadbfd22a5c646e34407e8f1689089}\index{Input@{Input}!Input@{Input}}
+\index{Input@{Input}!Input@{Input}}
+\doxysubsubsection{\texorpdfstring{Input()}{Input()}}
+{\footnotesize\ttfamily \label{class_input_a6eeadbfd22a5c646e34407e8f1689089} 
+Input\+::\+Input (\begin{DoxyParamCaption}\item[{GLFWwindow \texorpdfstring{$\ast$}{*}}]{window}{}\end{DoxyParamCaption})}
+
+
+
+Constructor that initializes input handling for a GLFW window. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em window} & Pointer to the GLFW window to monitor for input events. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_input_aad8bb93de392379e94f512d2b852a2c5}\index{Input@{Input}!getCurrentlyPressedKey@{getCurrentlyPressedKey}}
+\index{getCurrentlyPressedKey@{getCurrentlyPressedKey}!Input@{Input}}
+\doxysubsubsection{\texorpdfstring{getCurrentlyPressedKey()}{getCurrentlyPressedKey()}}
+{\footnotesize\ttfamily \label{class_input_aad8bb93de392379e94f512d2b852a2c5} 
+int Input\+::get\+Currently\+Pressed\+Key (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the currently pressed key, if any. 
+
+\begin{DoxyReturn}{Returns}
+The key code of the currently pressed key, or KEY\+\_\+\+UNKNOWN if none. 
+\end{DoxyReturn}
+\Hypertarget{class_input_ac644e61a94c398c326250a749ed3cb6c}\index{Input@{Input}!getJoystickAxes@{getJoystickAxes}}
+\index{getJoystickAxes@{getJoystickAxes}!Input@{Input}}
+\doxysubsubsection{\texorpdfstring{getJoystickAxes()}{getJoystickAxes()}}
+{\footnotesize\ttfamily \label{class_input_ac644e61a94c398c326250a749ed3cb6c} 
+const float \texorpdfstring{$\ast$}{*} Input\+::get\+Joystick\+Axes (\begin{DoxyParamCaption}\item[{int}]{joystick\+ID}{, }\item[{int \&}]{count}{}\end{DoxyParamCaption})}
+
+
+
+Gets the state of all axes for a specific joystick. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em joystick\+ID} & The ID of the joystick to query. \\
+\hline
+{\em count} & Reference to variable that will receive the number of axes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to an array of axis values. 
+\end{DoxyReturn}
+\Hypertarget{class_input_abcc37ae162cb9310699b356d6e1157cd}\index{Input@{Input}!getMousePosition@{getMousePosition}}
+\index{getMousePosition@{getMousePosition}!Input@{Input}}
+\doxysubsubsection{\texorpdfstring{getMousePosition()}{getMousePosition()}}
+{\footnotesize\ttfamily \label{class_input_abcc37ae162cb9310699b356d6e1157cd} 
+void Input\+::get\+Mouse\+Position (\begin{DoxyParamCaption}\item[{double \&}]{x\+Pos}{, }\item[{double \&}]{y\+Pos}{}\end{DoxyParamCaption})}
+
+
+
+Gets the current mouse cursor position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x\+Pos} & Reference to variable that will receive the X position. \\
+\hline
+{\em y\+Pos} & Reference to variable that will receive the Y position. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_input_aced19da7d5a9a10d7a8e7dce76c45227}\index{Input@{Input}!getMouseScroll@{getMouseScroll}}
+\index{getMouseScroll@{getMouseScroll}!Input@{Input}}
+\doxysubsubsection{\texorpdfstring{getMouseScroll()}{getMouseScroll()}}
+{\footnotesize\ttfamily \label{class_input_aced19da7d5a9a10d7a8e7dce76c45227} 
+double Input\+::get\+Mouse\+Scroll (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the current mouse scroll wheel offset. 
+
+\begin{DoxyReturn}{Returns}
+The vertical scroll offset. 
+\end{DoxyReturn}
+\Hypertarget{class_input_ac577fcd056d7ab395632b9d819ed0435}\index{Input@{Input}!initializeCallbacks@{initializeCallbacks}}
+\index{initializeCallbacks@{initializeCallbacks}!Input@{Input}}
+\doxysubsubsection{\texorpdfstring{initializeCallbacks()}{initializeCallbacks()}}
+{\footnotesize\ttfamily \label{class_input_ac577fcd056d7ab395632b9d819ed0435} 
+void Input\+::initialize\+Callbacks (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Initializes GLFW callbacks for input events. 
+
+Sets up the necessary GLFW callback functions for keyboard and mouse events. \Hypertarget{class_input_a2c7ee8dbe929d10b4d5784a4312c6bff}\index{Input@{Input}!isActionPressed@{isActionPressed}}
+\index{isActionPressed@{isActionPressed}!Input@{Input}}
+\doxysubsubsection{\texorpdfstring{isActionPressed()}{isActionPressed()}}
+{\footnotesize\ttfamily \label{class_input_a2c7ee8dbe929d10b4d5784a4312c6bff} 
+bool Input\+::is\+Action\+Pressed (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_input_a1362dbb1d4e03621426ca7c00fddd8b2}{Action}}}]{action}{}\end{DoxyParamCaption})}
+
+
+
+Checks if the key mapped to a specific action is currently pressed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em action} & The action to check, using the \doxylink{class_input_a1362dbb1d4e03621426ca7c00fddd8b2}{Input\+::\+Action} enumeration. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the action\textquotesingle{}s key is pressed, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_input_a368598b1e03116d7b8e3ea1c67ced16c}\index{Input@{Input}!isJoystickConnected@{isJoystickConnected}}
+\index{isJoystickConnected@{isJoystickConnected}!Input@{Input}}
+\doxysubsubsection{\texorpdfstring{isJoystickConnected()}{isJoystickConnected()}}
+{\footnotesize\ttfamily \label{class_input_a368598b1e03116d7b8e3ea1c67ced16c} 
+bool Input\+::is\+Joystick\+Connected (\begin{DoxyParamCaption}\item[{int}]{joystick\+ID}{}\end{DoxyParamCaption})}
+
+
+
+Checks if a joystick/gamepad is connected. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em joystick\+ID} & The ID of the joystick to check. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the joystick is connected, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_input_adb6e3f99be1b86d301dabd67c7306c27}\index{Input@{Input}!isKeyPressed@{isKeyPressed}}
+\index{isKeyPressed@{isKeyPressed}!Input@{Input}}
+\doxysubsubsection{\texorpdfstring{isKeyPressed()}{isKeyPressed()}}
+{\footnotesize\ttfamily \label{class_input_adb6e3f99be1b86d301dabd67c7306c27} 
+bool Input\+::is\+Key\+Pressed (\begin{DoxyParamCaption}\item[{int}]{key}{}\end{DoxyParamCaption})}
+
+
+
+Checks if a specific key is currently pressed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The key to check, using the \doxylink{class_input_ac74df526ba38aedbefa716292b6534d5}{Input\+::\+Key} enumeration. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the key is pressed, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_input_abd244da8f667a86ae6e5c8ffb11324cc}\index{Input@{Input}!isKeyReleased@{isKeyReleased}}
+\index{isKeyReleased@{isKeyReleased}!Input@{Input}}
+\doxysubsubsection{\texorpdfstring{isKeyReleased()}{isKeyReleased()}}
+{\footnotesize\ttfamily \label{class_input_abd244da8f667a86ae6e5c8ffb11324cc} 
+bool Input\+::is\+Key\+Released (\begin{DoxyParamCaption}\item[{int}]{key}{}\end{DoxyParamCaption})}
+
+
+
+Checks if a specific key is currently released. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The key to check, using the \doxylink{class_input_ac74df526ba38aedbefa716292b6534d5}{Input\+::\+Key} enumeration. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the key is released, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_input_a45a636ece9f6c97ccdcfa8bd1deb8a8a}\index{Input@{Input}!isModifierPressed@{isModifierPressed}}
+\index{isModifierPressed@{isModifierPressed}!Input@{Input}}
+\doxysubsubsection{\texorpdfstring{isModifierPressed()}{isModifierPressed()}}
+{\footnotesize\ttfamily \label{class_input_a45a636ece9f6c97ccdcfa8bd1deb8a8a} 
+bool Input\+::is\+Modifier\+Pressed (\begin{DoxyParamCaption}\item[{int}]{modifier}{}\end{DoxyParamCaption})}
+
+
+
+Checks if a specific keyboard modifier is currently pressed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em modifier} & The modifier to check, using the \doxylink{class_input_a88e740043d2e00400e7f8d8cc2ea051e}{Input\+::\+Modifier\+\_\+\+Key} enumeration. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the modifier is pressed, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_input_a2d213bda16ddfbd9d4cdde343b44bd92}\index{Input@{Input}!isMouseButtonPressed@{isMouseButtonPressed}}
+\index{isMouseButtonPressed@{isMouseButtonPressed}!Input@{Input}}
+\doxysubsubsection{\texorpdfstring{isMouseButtonPressed()}{isMouseButtonPressed()}}
+{\footnotesize\ttfamily \label{class_input_a2d213bda16ddfbd9d4cdde343b44bd92} 
+bool Input\+::is\+Mouse\+Button\+Pressed (\begin{DoxyParamCaption}\item[{int}]{button}{}\end{DoxyParamCaption})}
+
+
+
+Checks if a specific mouse button is currently pressed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em button} & The mouse button to check, using the \doxylink{class_input_a9c884c5940c151785997081feb06d804}{Input\+::\+Mouse\+\_\+\+Key} enumeration. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the button is pressed, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_input_a00fe008206cc6d870685235bdf42e103}\index{Input@{Input}!mapAction@{mapAction}}
+\index{mapAction@{mapAction}!Input@{Input}}
+\doxysubsubsection{\texorpdfstring{mapAction()}{mapAction()}}
+{\footnotesize\ttfamily \label{class_input_a00fe008206cc6d870685235bdf42e103} 
+void Input\+::map\+Action (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_input_a1362dbb1d4e03621426ca7c00fddd8b2}{Action}}}]{action}{, }\item[{int}]{key}{}\end{DoxyParamCaption})}
+
+
+
+Maps a high-\/level action to a specific key. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em action} & The action to map, using the \doxylink{class_input_a1362dbb1d4e03621426ca7c00fddd8b2}{Input\+::\+Action} enumeration. \\
+\hline
+{\em key} & The key to map to, using the \doxylink{class_input_ac74df526ba38aedbefa716292b6534d5}{Input\+::\+Key} enumeration. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_input_a95ea2a0b42f5093a517bb6d7f64df6d7}\index{Input@{Input}!wasKeyJustPressed@{wasKeyJustPressed}}
+\index{wasKeyJustPressed@{wasKeyJustPressed}!Input@{Input}}
+\doxysubsubsection{\texorpdfstring{wasKeyJustPressed()}{wasKeyJustPressed()}}
+{\footnotesize\ttfamily \label{class_input_a95ea2a0b42f5093a517bb6d7f64df6d7} 
+bool Input\+::was\+Key\+Just\+Pressed (\begin{DoxyParamCaption}\item[{int}]{key}{}\end{DoxyParamCaption})}
+
+
+
+Checks if a key was just pressed this frame (debouncing). 
+
+This can be used to prevent repeated triggering while a key is held down.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The key to check, using the \doxylink{class_input_ac74df526ba38aedbefa716292b6534d5}{Input\+::\+Key} enumeration. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the key was just pressed, false otherwise. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/quilo/\+Documents/\+Git\+Hub/3\+PVG\+\_\+\+PMG\+\_\+24\+\_\+lopezba\+\_\+calatayudbri/include/Input.\+hpp\end{DoxyCompactItemize}

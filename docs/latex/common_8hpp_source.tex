@@ -1,0 +1,111 @@
+\doxysection{common.\+hpp}
+\hypertarget{common_8hpp_source}{}\label{common_8hpp_source}\index{C:/Users/quilo/Documents/GitHub/3PVG\_PMG\_24\_lopezba\_calatayudbri/include/common.hpp@{C:/Users/quilo/Documents/GitHub/3PVG\_PMG\_24\_lopezba\_calatayudbri/include/common.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ \_\_COMMON\_\_}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ \_\_COMMON\_\_\ }}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <GL/glew.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ OPENGL\_CHECK\ do\{std::cout\ <<\ "{}OpenGL\ "{}\ <<\ \_\_FILE\_\_\ <<\ \_\_LINE\_\_\ <<\ "{}\ "{}<<\ glErrorString(glGetError())\ <<\ std::endl;\}\ while(false)}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ glErrorString(GLenum\ err)\ \{}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordflow}{switch}\ (err)\ \{}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordflow}{case}\ GL\_NO\_ERROR:}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}GL\_NO\_ERROR"{}};}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordflow}{case}\ GL\_INVALID\_ENUM:}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}GL\_INVALID\_ENUM"{}};}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordflow}{case}\ GL\_INVALID\_VALUE:}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}GL\_INVALID\_VALUE"{}};}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordflow}{case}\ GL\_INVALID\_OPERATION:}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}GL\_INVALID\_OPERATION"{}};}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordflow}{case}\ GL\_STACK\_OVERFLOW:}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}GL\_STACK\_OVERFLOW"{}};}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordflow}{case}\ GL\_STACK\_UNDERFLOW:}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}GL\_STACK\_UNDERFLOW"{}};}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordflow}{case}\ GL\_OUT\_OF\_MEMORY:}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}GL\_OUT\_OF\_MEMORY"{}};}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordflow}{case}\ GL\_INVALID\_FRAMEBUFFER\_OPERATION:}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}GL\_INVALID\_FRAMEBUFFER\_OPERATION"{}};}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Unknown\ error"{}};}
+\DoxyCodeLine{00042\ \ \ \}}
+\DoxyCodeLine{00043\ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ LUQUI\_Window\_Width\ =\ 1280;}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ LUQUI\_Window\_Height\ =\ 1040;}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00059\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_vec2}{Vec2}}\ \{}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{float}\ x,\ \mbox{\hyperlink{struct_vec2_a30543787e62f6d915543cf1dfb04c094}{y}};\ \ }
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00068\ \ \ \mbox{\hyperlink{struct_vec2}{Vec2}}\ \mbox{\hyperlink{struct_vec2_aa19e7e0148c4f6b5943faadbde72e63f}{operator+}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_vec2}{Vec2}}\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordflow}{return}\ \{\ x\ +\ other.x,\ \mbox{\hyperlink{struct_vec2_a30543787e62f6d915543cf1dfb04c094}{y}}\ +\ other.\mbox{\hyperlink{struct_vec2_a30543787e62f6d915543cf1dfb04c094}{y}}\ \};}
+\DoxyCodeLine{00070\ \ \ \}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00078\ \ \ \mbox{\hyperlink{struct_vec2}{Vec2}}\ \mbox{\hyperlink{struct_vec2_a91d0f10b283428ab9107def7c088c13c}{operator*}}(\textcolor{keywordtype}{float}\ scalar)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ \{\ x\ *\ scalar,\ \mbox{\hyperlink{struct_vec2_a30543787e62f6d915543cf1dfb04c094}{y}}\ *\ scalar\ \};}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00088\ \ \ \mbox{\hyperlink{struct_vec2}{Vec2}}\&\ \mbox{\hyperlink{struct_vec2_a092d1cbd23ea6b545c2997863a9bbcf5}{operator+=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_vec2}{Vec2}}\&\ other)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ x\ +=\ other.x;}
+\DoxyCodeLine{00090\ \ \ \ \ \mbox{\hyperlink{struct_vec2_a30543787e62f6d915543cf1dfb04c094}{y}}\ +=\ other.\mbox{\hyperlink{struct_vec2_a30543787e62f6d915543cf1dfb04c094}{y}};}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00100\ \ \ \mbox{\hyperlink{struct_vec2}{Vec2}}\&\ \mbox{\hyperlink{struct_vec2_abcb3740bd94ab48b8646e0c83c392b86}{operator-\/=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_vec2}{Vec2}}\&\ other)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ x\ -\/=\ other.x;}
+\DoxyCodeLine{00102\ \ \ \ \ \mbox{\hyperlink{struct_vec2_a30543787e62f6d915543cf1dfb04c094}{y}}\ -\/=\ other.\mbox{\hyperlink{struct_vec2_a30543787e62f6d915543cf1dfb04c094}{y}};}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00104\ \ \ \}}
+\DoxyCodeLine{00105\ \};}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00111\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_vec3}{Vec3}}\ \{}
+\DoxyCodeLine{00112\ \ \ \textcolor{keywordtype}{float}\ x,\ y,\ \mbox{\hyperlink{struct_vec3_a64f3f00cd2dd9076999eeb2f05210388}{z}};\ \ }
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00120\ \ \ \mbox{\hyperlink{struct_vec3}{Vec3}}\ \mbox{\hyperlink{struct_vec3_ab0d4a419f44b59597674e0271efccdbe}{operator+}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_vec3}{Vec3}}\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{return}\ \{\ x\ +\ other.x,\ y\ +\ other.y,\ \mbox{\hyperlink{struct_vec3_a64f3f00cd2dd9076999eeb2f05210388}{z}}\ +\ other.\mbox{\hyperlink{struct_vec3_a64f3f00cd2dd9076999eeb2f05210388}{z}}\ \};}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00130\ \ \ \mbox{\hyperlink{struct_vec3}{Vec3}}\ \mbox{\hyperlink{struct_vec3_aeeee9d24b297e8bc535ce972c3143cb6}{operator*}}(\textcolor{keywordtype}{float}\ scalar)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{return}\ \{\ x\ *\ scalar,\ y\ *\ scalar,\ \mbox{\hyperlink{struct_vec3_a64f3f00cd2dd9076999eeb2f05210388}{z}}\ *\ scalar\ \};}
+\DoxyCodeLine{00132\ \ \ \}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00140\ \ \ \mbox{\hyperlink{struct_vec3}{Vec3}}\&\ \mbox{\hyperlink{struct_vec3_a4381dd60ef23854bf2c1959ecc549bb4}{operator+=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_vec3}{Vec3}}\&\ other)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ x\ +=\ other.x;}
+\DoxyCodeLine{00142\ \ \ \ \ y\ +=\ other.y;}
+\DoxyCodeLine{00143\ \ \ \ \ \mbox{\hyperlink{struct_vec3_a64f3f00cd2dd9076999eeb2f05210388}{z}}\ +=\ other.\mbox{\hyperlink{struct_vec3_a64f3f00cd2dd9076999eeb2f05210388}{z}};}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00145\ \ \ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00153\ \ \ \mbox{\hyperlink{struct_vec3}{Vec3}}\&\ \mbox{\hyperlink{struct_vec3_aac60bacea3dea181c93e78e3b400fa5e}{operator-\/=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_vec3}{Vec3}}\&\ other)\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ x\ -\/=\ other.x;}
+\DoxyCodeLine{00155\ \ \ \ \ y\ -\/=\ other.y;}
+\DoxyCodeLine{00156\ \ \ \ \ \mbox{\hyperlink{struct_vec3_a64f3f00cd2dd9076999eeb2f05210388}{z}}\ -\/=\ other.\mbox{\hyperlink{struct_vec3_a64f3f00cd2dd9076999eeb2f05210388}{z}};}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00158\ \ \ \}}
+\DoxyCodeLine{00159\ \};}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00165\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_vec4}{Vec4}}\ \{}
+\DoxyCodeLine{00166\ \ \ \textcolor{keywordtype}{float}\ x,\ y,\ z,\ \mbox{\hyperlink{struct_vec4_a37bee38ceffb78ccd3875ebf82bd84b2}{w}};\ \ }
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00174\ \ \ \mbox{\hyperlink{struct_vec4}{Vec4}}\ \mbox{\hyperlink{struct_vec4_a623fe1ca32aa3c06813ef65d2aa4eff6}{operator+}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_vec4}{Vec4}}\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keywordflow}{return}\ \{\ x\ +\ other.x,\ y\ +\ other.y,\ z\ +\ other.z,\ \mbox{\hyperlink{struct_vec4_a37bee38ceffb78ccd3875ebf82bd84b2}{w}}\ +\ other.\mbox{\hyperlink{struct_vec4_a37bee38ceffb78ccd3875ebf82bd84b2}{w}}\ \};}
+\DoxyCodeLine{00176\ \ \ \}}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00184\ \ \ \mbox{\hyperlink{struct_vec4}{Vec4}}\ \mbox{\hyperlink{struct_vec4_ac5e23a0b1fc979d473b2af9e800b5fd2}{operator*}}(\textcolor{keywordtype}{float}\ scalar)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keywordflow}{return}\ \{\ x\ *\ scalar,\ y\ *\ scalar,\ z\ *\ scalar\ ,\ \mbox{\hyperlink{struct_vec4_a37bee38ceffb78ccd3875ebf82bd84b2}{w}}\ *\ scalar\ \};}
+\DoxyCodeLine{00186\ \ \ \}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00194\ \ \ \mbox{\hyperlink{struct_vec4}{Vec4}}\&\ \mbox{\hyperlink{struct_vec4_a5beb43ed29e05a7ec60eea18c4a73081}{operator+=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_vec4}{Vec4}}\&\ other)\ \{}
+\DoxyCodeLine{00195\ \ \ \ \ x\ +=\ other.x;}
+\DoxyCodeLine{00196\ \ \ \ \ y\ +=\ other.y;}
+\DoxyCodeLine{00197\ \ \ \ \ z\ +=\ other.z;}
+\DoxyCodeLine{00198\ \ \ \ \ \mbox{\hyperlink{struct_vec4_a37bee38ceffb78ccd3875ebf82bd84b2}{w}}\ +=\ other.\mbox{\hyperlink{struct_vec4_a37bee38ceffb78ccd3875ebf82bd84b2}{w}};}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00200\ \ \ \}}
+\DoxyCodeLine{00201\ \};}
+\DoxyCodeLine{00202\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ !\_\_COMMON\_\_}}
+
+\end{DoxyCode}

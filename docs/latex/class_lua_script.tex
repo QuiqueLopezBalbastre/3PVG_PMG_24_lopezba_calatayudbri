@@ -1,0 +1,133 @@
+\doxysection{Lua\+Script Class Reference}
+\hypertarget{class_lua_script}{}\label{class_lua_script}\index{LuaScript@{LuaScript}}
+
+
+Wrapper class for Lua scripting functionality.  
+
+
+
+
+{\ttfamily \#include $<$Scripting.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_lua_script_ab209b14f183ed1130fd6f8d541c112f6}{Lua\+Script}} (std\+::string filepath)
+\begin{DoxyCompactList}\small\item\em Constructor that initializes a Lua state and loads a script file. \end{DoxyCompactList}\item 
+\Hypertarget{class_lua_script_ad78bd6d80c89fa6b502bcf994644f8f7}\label{class_lua_script_ad78bd6d80c89fa6b502bcf994644f8f7} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Lua\+Script} ()=default
+\begin{DoxyCompactList}\small\item\em Default destructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_lua_script}{Lua\+Script}} \& \mbox{\hyperlink{class_lua_script_a30dbbbb7859d9eecbb8657a6024e0800}{operator=}} (const \mbox{\hyperlink{class_lua_script}{Lua\+Script}} \&other)
+\begin{DoxyCompactList}\small\item\em Assignment operator. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_lua_script_a660adae8a22f43671ba60f5ba66eab7e}{check}} (int error)
+\begin{DoxyCompactList}\small\item\em Checks for Lua errors and throws exceptions if they occur. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{class_lua_script_a1cdbe52a4c21b5f11caaf44e20955942}{get\+Content}} ()
+\begin{DoxyCompactList}\small\item\em Gets the content of the loaded script. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_lua_script_a20299c9488a06333f5bc3d043d05773b}{run}} (const std\+::string \&str)
+\begin{DoxyCompactList}\small\item\em Executes a Lua script string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Wrapper class for Lua scripting functionality. 
+
+The \doxylink{class_lua_script}{Lua\+Script} class provides a high-\/level interface for loading and executing Lua scripts. It manages a Lua state and provides methods for running Lua code and handling errors. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_lua_script_ab209b14f183ed1130fd6f8d541c112f6}\index{LuaScript@{LuaScript}!LuaScript@{LuaScript}}
+\index{LuaScript@{LuaScript}!LuaScript@{LuaScript}}
+\doxysubsubsection{\texorpdfstring{LuaScript()}{LuaScript()}}
+{\footnotesize\ttfamily \label{class_lua_script_ab209b14f183ed1130fd6f8d541c112f6} 
+Lua\+Script\+::\+Lua\+Script (\begin{DoxyParamCaption}\item[{std\+::string}]{filepath}{}\end{DoxyParamCaption})}
+
+
+
+Constructor that initializes a Lua state and loads a script file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filepath} & Path to the Lua script file to load. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_lua_script_a660adae8a22f43671ba60f5ba66eab7e}\index{LuaScript@{LuaScript}!check@{check}}
+\index{check@{check}!LuaScript@{LuaScript}}
+\doxysubsubsection{\texorpdfstring{check()}{check()}}
+{\footnotesize\ttfamily \label{class_lua_script_a660adae8a22f43671ba60f5ba66eab7e} 
+void Lua\+Script\+::check (\begin{DoxyParamCaption}\item[{int}]{error}{}\end{DoxyParamCaption})}
+
+
+
+Checks for Lua errors and throws exceptions if they occur. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em error} & The error code returned by a Lua operation. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & If the error code indicates an error. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{class_lua_script_a1cdbe52a4c21b5f11caaf44e20955942}\index{LuaScript@{LuaScript}!getContent@{getContent}}
+\index{getContent@{getContent}!LuaScript@{LuaScript}}
+\doxysubsubsection{\texorpdfstring{getContent()}{getContent()}}
+{\footnotesize\ttfamily \label{class_lua_script_a1cdbe52a4c21b5f11caaf44e20955942} 
+std\+::string Lua\+Script\+::get\+Content (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the content of the loaded script. 
+
+\begin{DoxyReturn}{Returns}
+The script content as a string. 
+\end{DoxyReturn}
+\Hypertarget{class_lua_script_a30dbbbb7859d9eecbb8657a6024e0800}\index{LuaScript@{LuaScript}!operator=@{operator=}}
+\index{operator=@{operator=}!LuaScript@{LuaScript}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \label{class_lua_script_a30dbbbb7859d9eecbb8657a6024e0800} 
+\mbox{\hyperlink{class_lua_script}{Lua\+Script}} \& Lua\+Script\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_lua_script}{Lua\+Script}} \&}]{other}{}\end{DoxyParamCaption})}
+
+
+
+Assignment operator. 
+
+Creates a new Lua state and copies relevant data.
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & The \doxylink{class_lua_script}{Lua\+Script} to copy from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Reference to this \doxylink{class_lua_script}{Lua\+Script} after assignment. 
+\end{DoxyReturn}
+\Hypertarget{class_lua_script_a20299c9488a06333f5bc3d043d05773b}\index{LuaScript@{LuaScript}!run@{run}}
+\index{run@{run}!LuaScript@{LuaScript}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily \label{class_lua_script_a20299c9488a06333f5bc3d043d05773b} 
+void Lua\+Script\+::run (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str}{}\end{DoxyParamCaption})}
+
+
+
+Executes a Lua script string. 
+
+Loads and runs the provided Lua code string in the current Lua state.
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & The Lua code to execute. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & If there\textquotesingle{}s an error loading or executing the script. \\
+\hline
+\end{DoxyExceptions}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/quilo/\+Documents/\+Git\+Hub/3\+PVG\+\_\+\+PMG\+\_\+24\+\_\+lopezba\+\_\+calatayudbri/include/Scripting.\+hpp\end{DoxyCompactItemize}

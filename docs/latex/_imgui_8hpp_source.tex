@@ -1,0 +1,42 @@
+\doxysection{Imgui.\+hpp}
+\hypertarget{_imgui_8hpp_source}{}\label{_imgui_8hpp_source}\index{C:/Users/quilo/Documents/GitHub/3PVG\_PMG\_24\_lopezba\_calatayudbri/include/Imgui.hpp@{C:/Users/quilo/Documents/GitHub/3PVG\_PMG\_24\_lopezba\_calatayudbri/include/Imgui.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ \_\_LUQUI\_IMGUI\_\_}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ \_\_LUQUI\_IMGUI\_\_\ 1}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}window.hpp"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}ECS/Component.hpp"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}ECS/ECSManager.hpp"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_luqui_imgui_a15a0c3e9146ad42e53bd4dea6c82b535}{LuquiImgui}}\ \{}
+\DoxyCodeLine{00014\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ \ \ \mbox{\hyperlink{class_luqui_imgui_a15a0c3e9146ad42e53bd4dea6c82b535}{LuquiImgui}}(\mbox{\hyperlink{class_window}{Window}}*\ window);}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00024\ \ \ \ \ \mbox{\hyperlink{class_luqui_imgui_a34f0dfcb596769aebb0e07264fb417f9}{\string~LuquiImgui}}();}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_luqui_imgui_a06746e283576c7293018d9e23928528b}{NewFrame}}();}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_luqui_imgui_ac6b61f0f4e22476a32c0f750c713df95}{EntityWindows}}(ECSManager\&\ ecsManager);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_luqui_imgui_aa7f7e6efcd5d389a1a3ddaeae624cb02}{EntitySelector}}(ECSManager\&\ ecsManager);}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_luqui_imgui_aa033b9a088d9ca3170207834ed65bfc3}{EntityProperties}}(ECSManager\&\ ecsManager);}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_luqui_imgui_ae359f1f4f5077a06dfccc4098f1c496b}{CameraProperties}}(CameraComponent\&\ camera);}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00060\ \ \ \ \ Entity\ \mbox{\hyperlink{class_luqui_imgui_a11e18eb2ff9eb389a59f1733ee8a76cf}{GetSelectedEntity}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_luqui_imgui_a82641474fc7165288eae139ade9732bb}{SetSelectedEntity}}(Entity\ entity);}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_luqui_imgui_a96f668df7c78a7f0cf1da03e39ca9120}{Render}}();}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00074\ \ \ \ \ Entity\ selectedEntity;}
+\DoxyCodeLine{00075\ \};}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ !\_\_LUQUI\_IMGUI\_\_}}
+
+\end{DoxyCode}

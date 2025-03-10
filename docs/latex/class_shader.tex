@@ -1,0 +1,176 @@
+\doxysection{Shader Class Reference}
+\hypertarget{class_shader}{}\label{class_shader}\index{Shader@{Shader}}
+
+
+Represents an individual Open\+GL shader.  
+
+
+
+
+{\ttfamily \#include $<$Shader.\+hpp$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4}{Shader\+Type}} \{ \mbox{\hyperlink{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4afb3794731fe9422dccf3e5c406df5a7a}{k\+Shader\+Type\+\_\+\+Invalid}}
+, \mbox{\hyperlink{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4af88f03b93c589ff95d64e20ac79a26f9}{k\+Shader\+Type\+\_\+\+Vertex}}
+, \mbox{\hyperlink{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4a351255429ab9f4e726f50d87d9691152}{k\+Shader\+Type\+\_\+\+Fragment}}
+, \mbox{\hyperlink{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4a5f7bd3fddabd7d476718e5b581eb5d24}{k\+Shader\+Type\+\_\+\+Geometry}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enumeration of supported shader types. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_shader_a0d654ebaca4e0555197c0724c6d30610}{Shader}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\Hypertarget{class_shader_aff01df87e8a102f270b5b135a295e59d}\label{class_shader_aff01df87e8a102f270b5b135a295e59d} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Shader} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_shader_a7415bcb3ef125603e0e45afefc898d7a}{load\+Source}} (const \mbox{\hyperlink{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4}{Shader\+Type}} shader\+\_\+type, const char \texorpdfstring{$\ast$}{*}source, const unsigned int source\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Loads shader source code from memory. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_shader_ae8ae405bae8f490449079a282cf5bd15}{load\+From\+File}} (const \mbox{\hyperlink{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4}{Shader\+Type}} shader\+\_\+type, const std\+::string \&file\+Path)
+\begin{DoxyCompactList}\small\item\em Loads shader source code from a file. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_shader_a75512fd8255dc4442d65f1fde2d5feb2}{compile}} ()
+\begin{DoxyCompactList}\small\item\em Compiles the loaded shader source. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_shader_aa7f1a6128d8c81e4ebaeb0ba6ad9efb8}{get\+\_\+is\+Compiled}} () const
+\begin{DoxyCompactList}\small\item\em Checks if the shader has been compiled successfully. \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{class_shader_a18c858faacde525b586a01d1f03efd6c}{get\+\_\+id}} ()
+\begin{DoxyCompactList}\small\item\em Gets the Open\+GL shader ID. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents an individual Open\+GL shader. 
+
+The \doxylink{class_shader}{Shader} class encapsulates an Open\+GL shader object, which is a program that runs on the GPU. It provides functionality for loading, compiling, and managing different types of shaders (vertex, fragment, geometry). 
+
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4}\index{Shader@{Shader}!ShaderType@{ShaderType}}
+\index{ShaderType@{ShaderType}!Shader@{Shader}}
+\doxysubsubsection{\texorpdfstring{ShaderType}{ShaderType}}
+{\footnotesize\ttfamily \label{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4} 
+enum \mbox{\hyperlink{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4}{Shader\+::\+Shader\+Type}}}
+
+
+
+Enumeration of supported shader types. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kShaderType\_Invalid@{kShaderType\_Invalid}!Shader@{Shader}}\index{Shader@{Shader}!kShaderType\_Invalid@{kShaderType\_Invalid}}}\Hypertarget{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4afb3794731fe9422dccf3e5c406df5a7a}\label{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4afb3794731fe9422dccf3e5c406df5a7a} 
+k\+Shader\+Type\+\_\+\+Invalid&Invalid or unspecified shader type. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kShaderType\_Vertex@{kShaderType\_Vertex}!Shader@{Shader}}\index{Shader@{Shader}!kShaderType\_Vertex@{kShaderType\_Vertex}}}\Hypertarget{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4af88f03b93c589ff95d64e20ac79a26f9}\label{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4af88f03b93c589ff95d64e20ac79a26f9} 
+k\+Shader\+Type\+\_\+\+Vertex&Vertex shader -\/ processes vertices. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kShaderType\_Fragment@{kShaderType\_Fragment}!Shader@{Shader}}\index{Shader@{Shader}!kShaderType\_Fragment@{kShaderType\_Fragment}}}\Hypertarget{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4a351255429ab9f4e726f50d87d9691152}\label{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4a351255429ab9f4e726f50d87d9691152} 
+k\+Shader\+Type\+\_\+\+Fragment&Fragment shader -\/ processes fragments/pixels. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kShaderType\_Geometry@{kShaderType\_Geometry}!Shader@{Shader}}\index{Shader@{Shader}!kShaderType\_Geometry@{kShaderType\_Geometry}}}\Hypertarget{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4a5f7bd3fddabd7d476718e5b581eb5d24}\label{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4a5f7bd3fddabd7d476718e5b581eb5d24} 
+k\+Shader\+Type\+\_\+\+Geometry&Geometry shader -\/ processes primitives. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_shader_a0d654ebaca4e0555197c0724c6d30610}\index{Shader@{Shader}!Shader@{Shader}}
+\index{Shader@{Shader}!Shader@{Shader}}
+\doxysubsubsection{\texorpdfstring{Shader()}{Shader()}}
+{\footnotesize\ttfamily \label{class_shader_a0d654ebaca4e0555197c0724c6d30610} 
+Shader\+::\+Shader (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Default constructor. 
+
+Creates a new \doxylink{class_shader}{Shader} object with default values. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_shader_a75512fd8255dc4442d65f1fde2d5feb2}\index{Shader@{Shader}!compile@{compile}}
+\index{compile@{compile}!Shader@{Shader}}
+\doxysubsubsection{\texorpdfstring{compile()}{compile()}}
+{\footnotesize\ttfamily \label{class_shader_a75512fd8255dc4442d65f1fde2d5feb2} 
+bool Shader\+::compile (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Compiles the loaded shader source. 
+
+\begin{DoxyReturn}{Returns}
+true if compilation succeeded, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_shader_a18c858faacde525b586a01d1f03efd6c}\index{Shader@{Shader}!get\_id@{get\_id}}
+\index{get\_id@{get\_id}!Shader@{Shader}}
+\doxysubsubsection{\texorpdfstring{get\_id()}{get\_id()}}
+{\footnotesize\ttfamily \label{class_shader_a18c858faacde525b586a01d1f03efd6c} 
+unsigned int Shader\+::get\+\_\+id (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the Open\+GL shader ID. 
+
+\begin{DoxyReturn}{Returns}
+The Open\+GL shader ID. 
+\end{DoxyReturn}
+\Hypertarget{class_shader_aa7f1a6128d8c81e4ebaeb0ba6ad9efb8}\index{Shader@{Shader}!get\_isCompiled@{get\_isCompiled}}
+\index{get\_isCompiled@{get\_isCompiled}!Shader@{Shader}}
+\doxysubsubsection{\texorpdfstring{get\_isCompiled()}{get\_isCompiled()}}
+{\footnotesize\ttfamily \label{class_shader_aa7f1a6128d8c81e4ebaeb0ba6ad9efb8} 
+bool Shader\+::get\+\_\+is\+Compiled (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Checks if the shader has been compiled successfully. 
+
+\begin{DoxyReturn}{Returns}
+true if the shader is compiled, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_shader_ae8ae405bae8f490449079a282cf5bd15}\index{Shader@{Shader}!loadFromFile@{loadFromFile}}
+\index{loadFromFile@{loadFromFile}!Shader@{Shader}}
+\doxysubsubsection{\texorpdfstring{loadFromFile()}{loadFromFile()}}
+{\footnotesize\ttfamily \label{class_shader_ae8ae405bae8f490449079a282cf5bd15} 
+bool Shader\+::load\+From\+File (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4}{Shader\+Type}}}]{shader\+\_\+type}{, }\item[{const std\+::string \&}]{file\+Path}{}\end{DoxyParamCaption})}
+
+
+
+Loads shader source code from a file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em shader\+\_\+type} & The type of shader to create. \\
+\hline
+{\em file\+Path} & Path to the file containing the shader source code. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the source was loaded successfully, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_shader_a7415bcb3ef125603e0e45afefc898d7a}\index{Shader@{Shader}!loadSource@{loadSource}}
+\index{loadSource@{loadSource}!Shader@{Shader}}
+\doxysubsubsection{\texorpdfstring{loadSource()}{loadSource()}}
+{\footnotesize\ttfamily \label{class_shader_a7415bcb3ef125603e0e45afefc898d7a} 
+bool Shader\+::load\+Source (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_shader_a4cab4ea28e17d2a932ffd64800d01cf4}{Shader\+Type}}}]{shader\+\_\+type}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{source}{, }\item[{const unsigned int}]{source\+\_\+size}{}\end{DoxyParamCaption})}
+
+
+
+Loads shader source code from memory. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em shader\+\_\+type} & The type of shader to create. \\
+\hline
+{\em source} & Pointer to the shader source code. \\
+\hline
+{\em source\+\_\+size} & Size of the shader source code in bytes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the source was loaded successfully, false otherwise. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/quilo/\+Documents/\+Git\+Hub/3\+PVG\+\_\+\+PMG\+\_\+24\+\_\+lopezba\+\_\+calatayudbri/include/Shader.\+hpp\end{DoxyCompactItemize}

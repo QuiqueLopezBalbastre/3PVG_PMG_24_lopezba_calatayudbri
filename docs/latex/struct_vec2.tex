@@ -1,0 +1,114 @@
+\doxysection{Vec2 Struct Reference}
+\hypertarget{struct_vec2}{}\label{struct_vec2}\index{Vec2@{Vec2}}
+
+
+A 2D vector structure with basic vector operations.  
+
+
+
+
+{\ttfamily \#include $<$common.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_vec2}{Vec2}} \mbox{\hyperlink{struct_vec2_aa19e7e0148c4f6b5943faadbde72e63f}{operator+}} (const \mbox{\hyperlink{struct_vec2}{Vec2}} \&other) const
+\begin{DoxyCompactList}\small\item\em Vector addition operator. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_vec2}{Vec2}} \mbox{\hyperlink{struct_vec2_a91d0f10b283428ab9107def7c088c13c}{operator\texorpdfstring{$\ast$}{*}}} (float scalar) const
+\begin{DoxyCompactList}\small\item\em Scalar multiplication operator. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_vec2}{Vec2}} \& \mbox{\hyperlink{struct_vec2_a092d1cbd23ea6b545c2997863a9bbcf5}{operator+=}} (const \mbox{\hyperlink{struct_vec2}{Vec2}} \&other)
+\begin{DoxyCompactList}\small\item\em Compound addition operator. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_vec2}{Vec2}} \& \mbox{\hyperlink{struct_vec2_abcb3740bd94ab48b8646e0c83c392b86}{operator-\/=}} (const \mbox{\hyperlink{struct_vec2}{Vec2}} \&other)
+\begin{DoxyCompactList}\small\item\em Compound subtraction operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_vec2_adf8ee322d4b4bcc04146762c018d731f}\label{struct_vec2_adf8ee322d4b4bcc04146762c018d731f} 
+float {\bfseries x}
+\item 
+\Hypertarget{struct_vec2_a30543787e62f6d915543cf1dfb04c094}\label{struct_vec2_a30543787e62f6d915543cf1dfb04c094} 
+float {\bfseries y}
+\begin{DoxyCompactList}\small\item\em X and Y components of the vector. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A 2D vector structure with basic vector operations. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_vec2_a91d0f10b283428ab9107def7c088c13c}\index{Vec2@{Vec2}!operator\texorpdfstring{$\ast$}{*}@{operator\texorpdfstring{$\ast$}{*}}}
+\index{operator\texorpdfstring{$\ast$}{*}@{operator\texorpdfstring{$\ast$}{*}}!Vec2@{Vec2}}
+\doxysubsubsection{\texorpdfstring{operator\texorpdfstring{$\ast$}{*}()}{operator*()}}
+{\footnotesize\ttfamily \label{struct_vec2_a91d0f10b283428ab9107def7c088c13c} 
+\mbox{\hyperlink{struct_vec2}{Vec2}} Vec2\+::operator\texorpdfstring{$\ast$}{*} (\begin{DoxyParamCaption}\item[{float}]{scalar}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Scalar multiplication operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em scalar} & The scalar value to multiply the vector by. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A new \doxylink{struct_vec2}{Vec2} containing the scaled vector. 
+\end{DoxyReturn}
+\Hypertarget{struct_vec2_aa19e7e0148c4f6b5943faadbde72e63f}\index{Vec2@{Vec2}!operator+@{operator+}}
+\index{operator+@{operator+}!Vec2@{Vec2}}
+\doxysubsubsection{\texorpdfstring{operator+()}{operator+()}}
+{\footnotesize\ttfamily \label{struct_vec2_aa19e7e0148c4f6b5943faadbde72e63f} 
+\mbox{\hyperlink{struct_vec2}{Vec2}} Vec2\+::operator+ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_vec2}{Vec2}} \&}]{other}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Vector addition operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & The vector to add to this one. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A new \doxylink{struct_vec2}{Vec2} containing the sum. 
+\end{DoxyReturn}
+\Hypertarget{struct_vec2_a092d1cbd23ea6b545c2997863a9bbcf5}\index{Vec2@{Vec2}!operator+=@{operator+=}}
+\index{operator+=@{operator+=}!Vec2@{Vec2}}
+\doxysubsubsection{\texorpdfstring{operator+=()}{operator+=()}}
+{\footnotesize\ttfamily \label{struct_vec2_a092d1cbd23ea6b545c2997863a9bbcf5} 
+\mbox{\hyperlink{struct_vec2}{Vec2}} \& Vec2\+::operator+= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_vec2}{Vec2}} \&}]{other}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Compound addition operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & The vector to add to this one. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Reference to this vector after addition. 
+\end{DoxyReturn}
+\Hypertarget{struct_vec2_abcb3740bd94ab48b8646e0c83c392b86}\index{Vec2@{Vec2}!operator-\/=@{operator-\/=}}
+\index{operator-\/=@{operator-\/=}!Vec2@{Vec2}}
+\doxysubsubsection{\texorpdfstring{operator-\/=()}{operator-=()}}
+{\footnotesize\ttfamily \label{struct_vec2_abcb3740bd94ab48b8646e0c83c392b86} 
+\mbox{\hyperlink{struct_vec2}{Vec2}} \& Vec2\+::operator-\/= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_vec2}{Vec2}} \&}]{other}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Compound subtraction operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & The vector to subtract from this one. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Reference to this vector after subtraction. 
+\end{DoxyReturn}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/quilo/\+Documents/\+Git\+Hub/3\+PVG\+\_\+\+PMG\+\_\+24\+\_\+lopezba\+\_\+calatayudbri/include/common.\+hpp\end{DoxyCompactItemize}

@@ -1,0 +1,108 @@
+\doxysection{Window\+System Class Reference}
+\hypertarget{class_window_system}{}\label{class_window_system}\index{WindowSystem@{WindowSystem}}
+
+
+A singleton-\/like system class that manages the GLFW window system lifecycle.  
+
+
+
+
+{\ttfamily \#include $<$Window\+System.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_window_system_a8b886812b3282ec48bc6c3052ce433e8}{\texorpdfstring{$\sim$}{\string~}\+Window\+System}} ()
+\begin{DoxyCompactList}\small\item\em Destructor that terminates the GLFW library if it was initialized. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_window_system_abce6b890f48b30551eb476f7c3fbe381}{Window\+System}} (\mbox{\hyperlink{class_window_system}{Window\+System}} \&\&other) noexcept
+\begin{DoxyCompactList}\small\item\em Move constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_window_system}{Window\+System}} \& \mbox{\hyperlink{class_window_system_a30d4d51abf756afbc64ba42caf669b07}{operator=}} (\mbox{\hyperlink{class_window_system}{Window\+System}} \&\&other) noexcept
+\begin{DoxyCompactList}\small\item\em Move assignment operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::optional$<$ \mbox{\hyperlink{class_window_system}{Window\+System}} $>$ \mbox{\hyperlink{class_window_system_a2cb54eef853be85fa8146ff5fc661cbf}{make}} ()
+\begin{DoxyCompactList}\small\item\em Factory method for creating a \doxylink{class_window_system}{Window\+System} instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A singleton-\/like system class that manages the GLFW window system lifecycle. 
+
+This class is responsible for initializing and terminating the GLFW library. It follows the RAII (Resource Acquisition Is Initialization) pattern to ensure proper cleanup of GLFW resources upon destruction.
+
+\begin{DoxyNote}{Note}
+This class cannot be copied, only moved, to prevent multiple initializations of the GLFW library. It uses std\+::optional for the factory method to indicate potential initialization failure. 
+\end{DoxyNote}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_window_system_a8b886812b3282ec48bc6c3052ce433e8}\index{WindowSystem@{WindowSystem}!````~WindowSystem@{\texorpdfstring{$\sim$}{\string~}WindowSystem}}
+\index{````~WindowSystem@{\texorpdfstring{$\sim$}{\string~}WindowSystem}!WindowSystem@{WindowSystem}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}WindowSystem()}{\string~WindowSystem()}}
+{\footnotesize\ttfamily \label{class_window_system_a8b886812b3282ec48bc6c3052ce433e8} 
+Window\+System\+::\texorpdfstring{$\sim$}{\string~}\+Window\+System (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Destructor that terminates the GLFW library if it was initialized. 
+
+Calls glfw\+Terminate() if the \doxylink{class_window_system}{Window\+System} instance was successfully initialized. \Hypertarget{class_window_system_abce6b890f48b30551eb476f7c3fbe381}\index{WindowSystem@{WindowSystem}!WindowSystem@{WindowSystem}}
+\index{WindowSystem@{WindowSystem}!WindowSystem@{WindowSystem}}
+\doxysubsubsection{\texorpdfstring{WindowSystem()}{WindowSystem()}}
+{\footnotesize\ttfamily \label{class_window_system_abce6b890f48b30551eb476f7c3fbe381} 
+Window\+System\+::\+Window\+System (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_window_system}{Window\+System}} \&\&}]{other}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Move constructor. 
+
+Transfers ownership of the GLFW initialization state from the source object to this one.
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & The \doxylink{class_window_system}{Window\+System} instance to move from. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_window_system_a2cb54eef853be85fa8146ff5fc661cbf}\index{WindowSystem@{WindowSystem}!make@{make}}
+\index{make@{make}!WindowSystem@{WindowSystem}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}}
+{\footnotesize\ttfamily \label{class_window_system_a2cb54eef853be85fa8146ff5fc661cbf} 
+static std\+::optional$<$ \mbox{\hyperlink{class_window_system}{Window\+System}} $>$ Window\+System\+::make (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Factory method for creating a \doxylink{class_window_system}{Window\+System} instance. 
+
+This static method attempts to initialize the GLFW library and creates a \doxylink{class_window_system}{Window\+System} instance if successful.
+
+\begin{DoxyReturn}{Returns}
+std\+::optional$<$\+Window\+System$>$ A valid \doxylink{class_window_system}{Window\+System} instance if GLFW initialization was successful, std\+::nullopt otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_window_system_a30d4d51abf756afbc64ba42caf669b07}\index{WindowSystem@{WindowSystem}!operator=@{operator=}}
+\index{operator=@{operator=}!WindowSystem@{WindowSystem}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \label{class_window_system_a30d4d51abf756afbc64ba42caf669b07} 
+\mbox{\hyperlink{class_window_system}{Window\+System}} \& Window\+System\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_window_system}{Window\+System}} \&\&}]{other}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Move assignment operator. 
+
+Transfers ownership of the GLFW initialization state from the source object to this one. If this instance already had an initialized GLFW state, it is properly terminated first.
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & The \doxylink{class_window_system}{Window\+System} instance to move from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Reference to this \doxylink{class_window_system}{Window\+System} instance. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/quilo/\+Documents/\+Git\+Hub/3\+PVG\+\_\+\+PMG\+\_\+24\+\_\+lopezba\+\_\+calatayudbri/include/Window\+System.\+hpp\end{DoxyCompactItemize}

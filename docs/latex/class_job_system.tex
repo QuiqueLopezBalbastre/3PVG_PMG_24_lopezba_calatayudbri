@@ -1,0 +1,204 @@
+\doxysection{Job\+System Class Reference}
+\hypertarget{class_job_system}{}\label{class_job_system}\index{JobSystem@{JobSystem}}
+
+
+A multi-\/threaded job system for task parallelization.  
+
+
+
+
+{\ttfamily \#include $<$Job\+System.\+hpp$>$}
+
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_job_system_1_1_prioritized_job}{Prioritized\+Job}}
+\begin{DoxyCompactList}\small\item\em A job with an associated priority level. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{class_job_system_afce067bac843fa31613c804d10c06896}{Job\+Type}} \{ \newline
+\mbox{\hyperlink{class_job_system_afce067bac843fa31613c804d10c06896a532a9bc3e6880ff35a7fa86a03052768}{Render}}
+, \mbox{\hyperlink{class_job_system_afce067bac843fa31613c804d10c06896a5f7462ac3f725621813fd08f77b737a3}{Physics}}
+, \mbox{\hyperlink{class_job_system_afce067bac843fa31613c804d10c06896ac3ad203eed0ef5617b2d2def10bd5f76}{AI}}
+, \mbox{\hyperlink{class_job_system_afce067bac843fa31613c804d10c06896acc2c12ce3a4cb6b63d35236c397b2344}{Audio}}
+, \newline
+\mbox{\hyperlink{class_job_system_afce067bac843fa31613c804d10c06896a435015134b0e4a4d59d90d5d6bcb0be9}{General}}
+ \}
+\begin{DoxyCompactList}\small\item\em Categorizes jobs into different subsystems. \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{class_job_system_ad60f9043169290456ff2822133dd7a13}{Job\+Priority}} \{ \mbox{\hyperlink{class_job_system_ad60f9043169290456ff2822133dd7a13a34d41bff3b157e217340b39dc5e5a8fb}{Low}}
+, \mbox{\hyperlink{class_job_system_ad60f9043169290456ff2822133dd7a13a1a0bc35eeaf7ec5aab88a00708269474}{Medium}}
+, \mbox{\hyperlink{class_job_system_ad60f9043169290456ff2822133dd7a13a05c18b267bea7586eef094280c56e849}{High}}
+ \}
+\begin{DoxyCompactList}\small\item\em Defines priority levels for jobs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_job_system_a343597f2c7e656b731bb45ce669e2187}{Job\+System}} (unsigned int num\+Threads)
+\begin{DoxyCompactList}\small\item\em Constructor that initializes the job system with a specific number of worker threads. \end{DoxyCompactList}\item 
+\Hypertarget{class_job_system_a14c63dba93b8b104c71b68122e90851f}\label{class_job_system_a14c63dba93b8b104c71b68122e90851f} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Job\+System} ()
+\begin{DoxyCompactList}\small\item\em Destructor that cleans up worker threads and pending jobs. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_job_system_a524c69948338f319211adcf480568049}{Job\+System}} (const \mbox{\hyperlink{class_job_system}{Job\+System}} \&other)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_job_system_afdb84bf9578d18ce3573c1b8909e1dd5}{Job\+System}} (\mbox{\hyperlink{class_job_system}{Job\+System}} \&other)
+\begin{DoxyCompactList}\small\item\em Move constructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_job_system_ae1351095653a59c0f828f4b86d5efa4e}{add\+Job}} (\mbox{\hyperlink{class_job_system_afce067bac843fa31613c804d10c06896}{Job\+Type}} type, \mbox{\hyperlink{class_job_system_ad60f9043169290456ff2822133dd7a13}{Job\+Priority}} priority, std\+::function$<$ void()$>$ f)
+\begin{DoxyCompactList}\small\item\em Adds a new job to the job system. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_job_system_a5678b2a0fab78023d712916ef35169b5}{run\+Tasks}} ()
+\begin{DoxyCompactList}\small\item\em Executes pending tasks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_job_system_a575d09e031541fe0bc24c1155a03fa2f}\label{class_job_system_a575d09e031541fe0bc24c1155a03fa2f} 
+std\+::vector$<$ std\+::thread $>$ {\bfseries workers}
+\begin{DoxyCompactList}\small\item\em The worker threads that process jobs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A multi-\/threaded job system for task parallelization. 
+
+The \doxylink{class_job_system}{Job\+System} allows for the queuing and execution of different types of tasks with varying priorities across multiple worker threads. It\textquotesingle{}s designed to efficiently distribute workloads in areas like rendering, physics, AI, and audio processing. 
+
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{class_job_system_ad60f9043169290456ff2822133dd7a13}\index{JobSystem@{JobSystem}!JobPriority@{JobPriority}}
+\index{JobPriority@{JobPriority}!JobSystem@{JobSystem}}
+\doxysubsubsection{\texorpdfstring{JobPriority}{JobPriority}}
+{\footnotesize\ttfamily \label{class_job_system_ad60f9043169290456ff2822133dd7a13} 
+enum \mbox{\hyperlink{class_job_system_ad60f9043169290456ff2822133dd7a13}{Job\+System\+::\+Job\+Priority}}}
+
+
+
+Defines priority levels for jobs. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Low@{Low}!JobSystem@{JobSystem}}\index{JobSystem@{JobSystem}!Low@{Low}}}\Hypertarget{class_job_system_ad60f9043169290456ff2822133dd7a13a34d41bff3b157e217340b39dc5e5a8fb}\label{class_job_system_ad60f9043169290456ff2822133dd7a13a34d41bff3b157e217340b39dc5e5a8fb} 
+Low&Low priority jobs, executed after medium and high priority jobs. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Medium@{Medium}!JobSystem@{JobSystem}}\index{JobSystem@{JobSystem}!Medium@{Medium}}}\Hypertarget{class_job_system_ad60f9043169290456ff2822133dd7a13a1a0bc35eeaf7ec5aab88a00708269474}\label{class_job_system_ad60f9043169290456ff2822133dd7a13a1a0bc35eeaf7ec5aab88a00708269474} 
+Medium&Medium priority jobs. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{High@{High}!JobSystem@{JobSystem}}\index{JobSystem@{JobSystem}!High@{High}}}\Hypertarget{class_job_system_ad60f9043169290456ff2822133dd7a13a05c18b267bea7586eef094280c56e849}\label{class_job_system_ad60f9043169290456ff2822133dd7a13a05c18b267bea7586eef094280c56e849} 
+High&High priority jobs, executed before medium and low priority jobs. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{class_job_system_afce067bac843fa31613c804d10c06896}\index{JobSystem@{JobSystem}!JobType@{JobType}}
+\index{JobType@{JobType}!JobSystem@{JobSystem}}
+\doxysubsubsection{\texorpdfstring{JobType}{JobType}}
+{\footnotesize\ttfamily \label{class_job_system_afce067bac843fa31613c804d10c06896} 
+enum \mbox{\hyperlink{class_job_system_afce067bac843fa31613c804d10c06896}{Job\+System\+::\+Job\+Type}}}
+
+
+
+Categorizes jobs into different subsystems. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Render@{Render}!JobSystem@{JobSystem}}\index{JobSystem@{JobSystem}!Render@{Render}}}\Hypertarget{class_job_system_afce067bac843fa31613c804d10c06896a532a9bc3e6880ff35a7fa86a03052768}\label{class_job_system_afce067bac843fa31613c804d10c06896a532a9bc3e6880ff35a7fa86a03052768} 
+Render&Jobs related to rendering. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Physics@{Physics}!JobSystem@{JobSystem}}\index{JobSystem@{JobSystem}!Physics@{Physics}}}\Hypertarget{class_job_system_afce067bac843fa31613c804d10c06896a5f7462ac3f725621813fd08f77b737a3}\label{class_job_system_afce067bac843fa31613c804d10c06896a5f7462ac3f725621813fd08f77b737a3} 
+Physics&Jobs related to physics calculations. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{AI@{AI}!JobSystem@{JobSystem}}\index{JobSystem@{JobSystem}!AI@{AI}}}\Hypertarget{class_job_system_afce067bac843fa31613c804d10c06896ac3ad203eed0ef5617b2d2def10bd5f76}\label{class_job_system_afce067bac843fa31613c804d10c06896ac3ad203eed0ef5617b2d2def10bd5f76} 
+AI&Jobs related to artificial intelligence. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Audio@{Audio}!JobSystem@{JobSystem}}\index{JobSystem@{JobSystem}!Audio@{Audio}}}\Hypertarget{class_job_system_afce067bac843fa31613c804d10c06896acc2c12ce3a4cb6b63d35236c397b2344}\label{class_job_system_afce067bac843fa31613c804d10c06896acc2c12ce3a4cb6b63d35236c397b2344} 
+Audio&Jobs related to audio processing. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{General@{General}!JobSystem@{JobSystem}}\index{JobSystem@{JobSystem}!General@{General}}}\Hypertarget{class_job_system_afce067bac843fa31613c804d10c06896a435015134b0e4a4d59d90d5d6bcb0be9}\label{class_job_system_afce067bac843fa31613c804d10c06896a435015134b0e4a4d59d90d5d6bcb0be9} 
+General&General-\/purpose jobs. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_job_system_a343597f2c7e656b731bb45ce669e2187}\index{JobSystem@{JobSystem}!JobSystem@{JobSystem}}
+\index{JobSystem@{JobSystem}!JobSystem@{JobSystem}}
+\doxysubsubsection{\texorpdfstring{JobSystem()}{JobSystem()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \label{class_job_system_a343597f2c7e656b731bb45ce669e2187} 
+Job\+System\+::\+Job\+System (\begin{DoxyParamCaption}\item[{unsigned int}]{num\+Threads}{}\end{DoxyParamCaption})}
+
+
+
+Constructor that initializes the job system with a specific number of worker threads. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+Threads} & The number of worker threads to create. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_job_system_a524c69948338f319211adcf480568049}\index{JobSystem@{JobSystem}!JobSystem@{JobSystem}}
+\index{JobSystem@{JobSystem}!JobSystem@{JobSystem}}
+\doxysubsubsection{\texorpdfstring{JobSystem()}{JobSystem()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \label{class_job_system_a524c69948338f319211adcf480568049} 
+Job\+System\+::\+Job\+System (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_job_system}{Job\+System}} \&}]{other}{}\end{DoxyParamCaption})}
+
+
+
+Copy constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & The \doxylink{class_job_system}{Job\+System} to copy from. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_job_system_afdb84bf9578d18ce3573c1b8909e1dd5}\index{JobSystem@{JobSystem}!JobSystem@{JobSystem}}
+\index{JobSystem@{JobSystem}!JobSystem@{JobSystem}}
+\doxysubsubsection{\texorpdfstring{JobSystem()}{JobSystem()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \label{class_job_system_afdb84bf9578d18ce3573c1b8909e1dd5} 
+Job\+System\+::\+Job\+System (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_job_system}{Job\+System}} \&}]{other}{}\end{DoxyParamCaption})}
+
+
+
+Move constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & The \doxylink{class_job_system}{Job\+System} to move from. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_job_system_ae1351095653a59c0f828f4b86d5efa4e}\index{JobSystem@{JobSystem}!addJob@{addJob}}
+\index{addJob@{addJob}!JobSystem@{JobSystem}}
+\doxysubsubsection{\texorpdfstring{addJob()}{addJob()}}
+{\footnotesize\ttfamily \label{class_job_system_ae1351095653a59c0f828f4b86d5efa4e} 
+void Job\+System\+::add\+Job (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_job_system_afce067bac843fa31613c804d10c06896}{Job\+Type}}}]{type}{, }\item[{\mbox{\hyperlink{class_job_system_ad60f9043169290456ff2822133dd7a13}{Job\+Priority}}}]{priority}{, }\item[{std\+::function$<$ void()$>$}]{f}{}\end{DoxyParamCaption})}
+
+
+
+Adds a new job to the job system. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & The type of job, which determines which queue it\textquotesingle{}s added to. \\
+\hline
+{\em priority} & The priority level of the job. \\
+\hline
+{\em f} & The function to execute as the job. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_job_system_a5678b2a0fab78023d712916ef35169b5}\index{JobSystem@{JobSystem}!runTasks@{runTasks}}
+\index{runTasks@{runTasks}!JobSystem@{JobSystem}}
+\doxysubsubsection{\texorpdfstring{runTasks()}{runTasks()}}
+{\footnotesize\ttfamily \label{class_job_system_a5678b2a0fab78023d712916ef35169b5} 
+void Job\+System\+::run\+Tasks (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Executes pending tasks. 
+
+This method is called by worker threads to process jobs. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/quilo/\+Documents/\+Git\+Hub/3\+PVG\+\_\+\+PMG\+\_\+24\+\_\+lopezba\+\_\+calatayudbri/include/Job\+System.\+hpp\end{DoxyCompactItemize}

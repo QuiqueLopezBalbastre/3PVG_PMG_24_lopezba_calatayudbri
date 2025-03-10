@@ -1,0 +1,154 @@
+\doxysection{Luqui\+Imgui Class Reference}
+\hypertarget{class_luqui_imgui}{}\label{class_luqui_imgui}\index{LuquiImgui@{LuquiImgui}}
+
+
+Handles the graphical user interface using Dear Im\+Gui.  
+
+
+
+
+{\ttfamily \#include $<$Imgui.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_luqui_imgui_a15a0c3e9146ad42e53bd4dea6c82b535}{Luqui\+Imgui}} (\mbox{\hyperlink{class_window}{Window}} \texorpdfstring{$\ast$}{*}window)
+\begin{DoxyCompactList}\small\item\em Constructor of \doxylink{class_luqui_imgui}{Luqui\+Imgui}. \end{DoxyCompactList}\item 
+\Hypertarget{class_luqui_imgui_a34f0dfcb596769aebb0e07264fb417f9}\label{class_luqui_imgui_a34f0dfcb596769aebb0e07264fb417f9} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Luqui\+Imgui} ()
+\begin{DoxyCompactList}\small\item\em Destructor of \doxylink{class_luqui_imgui}{Luqui\+Imgui}. \end{DoxyCompactList}\item 
+\Hypertarget{class_luqui_imgui_a06746e283576c7293018d9e23928528b}\label{class_luqui_imgui_a06746e283576c7293018d9e23928528b} 
+void {\bfseries New\+Frame} ()
+\begin{DoxyCompactList}\small\item\em Starts a new Im\+Gui frame. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_luqui_imgui_ac6b61f0f4e22476a32c0f750c713df95}{Entity\+Windows}} (ECSManager \&ecs\+Manager)
+\begin{DoxyCompactList}\small\item\em Creates all entity-\/related windows. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_luqui_imgui_aa7f7e6efcd5d389a1a3ddaeae624cb02}{Entity\+Selector}} (ECSManager \&ecs\+Manager)
+\begin{DoxyCompactList}\small\item\em Entity selection window. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_luqui_imgui_aa033b9a088d9ca3170207834ed65bfc3}{Entity\+Properties}} (ECSManager \&ecs\+Manager)
+\begin{DoxyCompactList}\small\item\em Entity properties window. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_luqui_imgui_ae359f1f4f5077a06dfccc4098f1c496b}{Camera\+Properties}} (Camera\+Component \&camera)
+\begin{DoxyCompactList}\small\item\em Camera properties window. \end{DoxyCompactList}\item 
+Entity \mbox{\hyperlink{class_luqui_imgui_a11e18eb2ff9eb389a59f1733ee8a76cf}{Get\+Selected\+Entity}} () const
+\begin{DoxyCompactList}\small\item\em Gets the currently selected entity. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_luqui_imgui_a82641474fc7165288eae139ade9732bb}{Set\+Selected\+Entity}} (Entity entity)
+\begin{DoxyCompactList}\small\item\em Sets the selected entity. \end{DoxyCompactList}\item 
+\Hypertarget{class_luqui_imgui_a96f668df7c78a7f0cf1da03e39ca9120}\label{class_luqui_imgui_a96f668df7c78a7f0cf1da03e39ca9120} 
+void {\bfseries Render} ()
+\begin{DoxyCompactList}\small\item\em Renders Im\+Gui windows. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Handles the graphical user interface using Dear Im\+Gui. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_luqui_imgui_a15a0c3e9146ad42e53bd4dea6c82b535}\index{LuquiImgui@{LuquiImgui}!LuquiImgui@{LuquiImgui}}
+\index{LuquiImgui@{LuquiImgui}!LuquiImgui@{LuquiImgui}}
+\doxysubsubsection{\texorpdfstring{LuquiImgui()}{LuquiImgui()}}
+{\footnotesize\ttfamily \label{class_luqui_imgui_a15a0c3e9146ad42e53bd4dea6c82b535} 
+Luqui\+Imgui\+::\+Luqui\+Imgui (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_window}{Window}} \texorpdfstring{$\ast$}{*}}]{window}{}\end{DoxyParamCaption})}
+
+
+
+Constructor of \doxylink{class_luqui_imgui}{Luqui\+Imgui}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em window} & Pointer to the window where the UI will be rendered. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_luqui_imgui_ae359f1f4f5077a06dfccc4098f1c496b}\index{LuquiImgui@{LuquiImgui}!CameraProperties@{CameraProperties}}
+\index{CameraProperties@{CameraProperties}!LuquiImgui@{LuquiImgui}}
+\doxysubsubsection{\texorpdfstring{CameraProperties()}{CameraProperties()}}
+{\footnotesize\ttfamily \label{class_luqui_imgui_ae359f1f4f5077a06dfccc4098f1c496b} 
+void Luqui\+Imgui\+::\+Camera\+Properties (\begin{DoxyParamCaption}\item[{Camera\+Component \&}]{camera}{}\end{DoxyParamCaption})}
+
+
+
+Camera properties window. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em camera} & Reference to the camera component. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_luqui_imgui_aa033b9a088d9ca3170207834ed65bfc3}\index{LuquiImgui@{LuquiImgui}!EntityProperties@{EntityProperties}}
+\index{EntityProperties@{EntityProperties}!LuquiImgui@{LuquiImgui}}
+\doxysubsubsection{\texorpdfstring{EntityProperties()}{EntityProperties()}}
+{\footnotesize\ttfamily \label{class_luqui_imgui_aa033b9a088d9ca3170207834ed65bfc3} 
+void Luqui\+Imgui\+::\+Entity\+Properties (\begin{DoxyParamCaption}\item[{ECSManager \&}]{ecs\+Manager}{}\end{DoxyParamCaption})}
+
+
+
+Entity properties window. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ecs\+Manager} & Reference to the ECS manager. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_luqui_imgui_aa7f7e6efcd5d389a1a3ddaeae624cb02}\index{LuquiImgui@{LuquiImgui}!EntitySelector@{EntitySelector}}
+\index{EntitySelector@{EntitySelector}!LuquiImgui@{LuquiImgui}}
+\doxysubsubsection{\texorpdfstring{EntitySelector()}{EntitySelector()}}
+{\footnotesize\ttfamily \label{class_luqui_imgui_aa7f7e6efcd5d389a1a3ddaeae624cb02} 
+void Luqui\+Imgui\+::\+Entity\+Selector (\begin{DoxyParamCaption}\item[{ECSManager \&}]{ecs\+Manager}{}\end{DoxyParamCaption})}
+
+
+
+Entity selection window. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ecs\+Manager} & Reference to the ECS manager. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_luqui_imgui_ac6b61f0f4e22476a32c0f750c713df95}\index{LuquiImgui@{LuquiImgui}!EntityWindows@{EntityWindows}}
+\index{EntityWindows@{EntityWindows}!LuquiImgui@{LuquiImgui}}
+\doxysubsubsection{\texorpdfstring{EntityWindows()}{EntityWindows()}}
+{\footnotesize\ttfamily \label{class_luqui_imgui_ac6b61f0f4e22476a32c0f750c713df95} 
+void Luqui\+Imgui\+::\+Entity\+Windows (\begin{DoxyParamCaption}\item[{ECSManager \&}]{ecs\+Manager}{}\end{DoxyParamCaption})}
+
+
+
+Creates all entity-\/related windows. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ecs\+Manager} & Reference to the ECS manager. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_luqui_imgui_a11e18eb2ff9eb389a59f1733ee8a76cf}\index{LuquiImgui@{LuquiImgui}!GetSelectedEntity@{GetSelectedEntity}}
+\index{GetSelectedEntity@{GetSelectedEntity}!LuquiImgui@{LuquiImgui}}
+\doxysubsubsection{\texorpdfstring{GetSelectedEntity()}{GetSelectedEntity()}}
+{\footnotesize\ttfamily \label{class_luqui_imgui_a11e18eb2ff9eb389a59f1733ee8a76cf} 
+Entity Luqui\+Imgui\+::\+Get\+Selected\+Entity (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Gets the currently selected entity. 
+
+\begin{DoxyReturn}{Returns}
+The selected entity. 
+\end{DoxyReturn}
+\Hypertarget{class_luqui_imgui_a82641474fc7165288eae139ade9732bb}\index{LuquiImgui@{LuquiImgui}!SetSelectedEntity@{SetSelectedEntity}}
+\index{SetSelectedEntity@{SetSelectedEntity}!LuquiImgui@{LuquiImgui}}
+\doxysubsubsection{\texorpdfstring{SetSelectedEntity()}{SetSelectedEntity()}}
+{\footnotesize\ttfamily \label{class_luqui_imgui_a82641474fc7165288eae139ade9732bb} 
+void Luqui\+Imgui\+::\+Set\+Selected\+Entity (\begin{DoxyParamCaption}\item[{Entity}]{entity}{}\end{DoxyParamCaption})}
+
+
+
+Sets the selected entity. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em entity} & Entity ID to select. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/quilo/\+Documents/\+Git\+Hub/3\+PVG\+\_\+\+PMG\+\_\+24\+\_\+lopezba\+\_\+calatayudbri/include/Imgui.\+hpp\end{DoxyCompactItemize}

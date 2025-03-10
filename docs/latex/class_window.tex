@@ -1,0 +1,231 @@
+\doxysection{Window Class Reference}
+\hypertarget{class_window}{}\label{class_window}\index{Window@{Window}}
+
+
+A wrapper class for a GLFW window with Open\+GL context.  
+
+
+
+
+{\ttfamily \#include $<$window.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_window_aeba255df025ccb2b5e63000ebbcb4260}{Window}} (GLFWwindow \texorpdfstring{$\ast$}{*}glfw\+Window)
+\begin{DoxyCompactList}\small\item\em Constructor that wraps an existing GLFWwindow pointer. \end{DoxyCompactList}\item 
+\Hypertarget{class_window_a245d821e6016fa1f6970ccbbedd635f6}\label{class_window_a245d821e6016fa1f6970ccbbedd635f6} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Window} ()
+\begin{DoxyCompactList}\small\item\em Destructor that cleans up the GLFWwindow if destroy flag is set. \end{DoxyCompactList}\item 
+\Hypertarget{class_window_a362fb58d60e3254edddfe71e546e6993}\label{class_window_a362fb58d60e3254edddfe71e546e6993} 
+{\bfseries Window} (const \mbox{\hyperlink{class_window}{Window}} \&other)=delete
+\begin{DoxyCompactList}\small\item\em Copy constructor, deleted to prevent multiple instances managing the same window. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_window_a493ef00d0bef6b2c3cd4f8acfde4e32d}{Window}} (\mbox{\hyperlink{class_window}{Window}} \&\&other) noexcept
+\begin{DoxyCompactList}\small\item\em Move constructor, transfers ownership of the window. \end{DoxyCompactList}\item 
+\Hypertarget{class_window_adad96731bf201ddcb63e13b117594a62}\label{class_window_adad96731bf201ddcb63e13b117594a62} 
+\mbox{\hyperlink{class_window}{Window}} \& {\bfseries operator=} (const \mbox{\hyperlink{class_window}{Window}} \&other)=delete
+\begin{DoxyCompactList}\small\item\em Copy assignment operator, deleted to prevent multiple instances managing the same window. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_window}{Window}} \& \mbox{\hyperlink{class_window_a23daa6a6a18f173f1f7083f2a73d58ad}{operator=}} (\mbox{\hyperlink{class_window}{Window}} \&other)
+\begin{DoxyCompactList}\small\item\em Move assignment operator, transfers ownership of the window. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_window_abd5c9f3c0f5aca5c4b6c0218a12d11d2}{set\+Current\+Window\+Active}} ()
+\begin{DoxyCompactList}\small\item\em Sets this window as the current Open\+GL context. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_window_a0a2093bd2ed34740c08a6a2fdfc059c9}{render}} ()
+\begin{DoxyCompactList}\small\item\em Renders the current frame. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_window_a38bc43bdd1a97e5de7f346ba4c3957ef}{clear}} ()
+\begin{DoxyCompactList}\small\item\em Clears the window\textquotesingle{}s framebuffer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_window_a944062b4351d78907bac4846df857a67}{render\+Figure}} (\mbox{\hyperlink{class_figure}{Figure}} \&figure)
+\begin{DoxyCompactList}\small\item\em Renders a \doxylink{class_figure}{Figure} object in the window. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_window_ad45c4f063acdfc079d38c06a5d9a99f6}{handle\+Input}} (\mbox{\hyperlink{class_figure}{Figure}} \&figure)
+\begin{DoxyCompactList}\small\item\em Handles input for a \doxylink{class_figure}{Figure} object. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_window_a3f012722de2661cc424857cd8c3d4475}{destroy\+Window}} ()
+\begin{DoxyCompactList}\small\item\em Destroys the window. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_window_a0530ead23b2c91ef90a5f98e4df41cb8}{is\+Open}} ()
+\begin{DoxyCompactList}\small\item\em Checks if the window should be closed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::optional$<$ \mbox{\hyperlink{class_window}{Window}} $>$ \mbox{\hyperlink{class_window_ad3ad76027e01c5d557919d8eb7f00824}{make}} (int window\+\_\+width, int window\+\_\+height, const char \texorpdfstring{$\ast$}{*}window\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Factory method to create a new window with specified dimensions and title. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_window_a9957db4afdad3d57e5c5b6626b44b6d0}\label{class_window_a9957db4afdad3d57e5c5b6626b44b6d0} 
+GLFWwindow \texorpdfstring{$\ast$}{*} {\bfseries window}
+\begin{DoxyCompactList}\small\item\em Pointer to the underlying GLFWwindow object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A wrapper class for a GLFW window with Open\+GL context. 
+
+This class encapsulates a GLFWwindow pointer and provides methods for window management, rendering, and input handling. It follows RAII principles to ensure proper cleanup of GLFW window resources upon destruction.
+
+The class supports move semantics but not copy semantics to prevent multiple instances from managing the same window resources. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_window_aeba255df025ccb2b5e63000ebbcb4260}\index{Window@{Window}!Window@{Window}}
+\index{Window@{Window}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{Window()}{Window()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_window_aeba255df025ccb2b5e63000ebbcb4260} 
+Window\+::\+Window (\begin{DoxyParamCaption}\item[{GLFWwindow \texorpdfstring{$\ast$}{*}}]{glfw\+Window}{}\end{DoxyParamCaption})}
+
+
+
+Constructor that wraps an existing GLFWwindow pointer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em glfw\+Window} & Pointer to an already created GLFWwindow. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_window_a493ef00d0bef6b2c3cd4f8acfde4e32d}\index{Window@{Window}!Window@{Window}}
+\index{Window@{Window}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{Window()}{Window()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_window_a493ef00d0bef6b2c3cd4f8acfde4e32d} 
+Window\+::\+Window (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_window}{Window}} \&\&}]{other}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Move constructor, transfers ownership of the window. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & The \doxylink{class_window}{Window} instance to move from. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_window_a38bc43bdd1a97e5de7f346ba4c3957ef}\index{Window@{Window}!clear@{clear}}
+\index{clear@{clear}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily \label{class_window_a38bc43bdd1a97e5de7f346ba4c3957ef} 
+void Window\+::clear (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Clears the window\textquotesingle{}s framebuffer. 
+
+Clears both the color buffer and depth buffer. \Hypertarget{class_window_a3f012722de2661cc424857cd8c3d4475}\index{Window@{Window}!destroyWindow@{destroyWindow}}
+\index{destroyWindow@{destroyWindow}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{destroyWindow()}{destroyWindow()}}
+{\footnotesize\ttfamily \label{class_window_a3f012722de2661cc424857cd8c3d4475} 
+int Window\+::destroy\+Window (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Destroys the window. 
+
+\begin{DoxyReturn}{Returns}
+Always returns 0 (seems to be unused). 
+\end{DoxyReturn}
+\Hypertarget{class_window_ad45c4f063acdfc079d38c06a5d9a99f6}\index{Window@{Window}!handleInput@{handleInput}}
+\index{handleInput@{handleInput}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{handleInput()}{handleInput()}}
+{\footnotesize\ttfamily \label{class_window_ad45c4f063acdfc079d38c06a5d9a99f6} 
+void Window\+::handle\+Input (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_figure}{Figure}} \&}]{figure}{}\end{DoxyParamCaption})}
+
+
+
+Handles input for a \doxylink{class_figure}{Figure} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em figure} & The \doxylink{class_figure}{Figure} object whose position will be updated based on input. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_window_a0530ead23b2c91ef90a5f98e4df41cb8}\index{Window@{Window}!isOpen@{isOpen}}
+\index{isOpen@{isOpen}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{isOpen()}{isOpen()}}
+{\footnotesize\ttfamily \label{class_window_a0530ead23b2c91ef90a5f98e4df41cb8} 
+bool Window\+::is\+Open (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Checks if the window should be closed. 
+
+\begin{DoxyReturn}{Returns}
+true if the window should remain open, false if it should close. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The return value is inverted from glfw\+Window\+Should\+Close. 
+\end{DoxyNote}
+\Hypertarget{class_window_ad3ad76027e01c5d557919d8eb7f00824}\index{Window@{Window}!make@{make}}
+\index{make@{make}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}}
+{\footnotesize\ttfamily \label{class_window_ad3ad76027e01c5d557919d8eb7f00824} 
+static std\+::optional$<$ \mbox{\hyperlink{class_window}{Window}} $>$ Window\+::make (\begin{DoxyParamCaption}\item[{int}]{window\+\_\+width}{, }\item[{int}]{window\+\_\+height}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{window\+\_\+name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Factory method to create a new window with specified dimensions and title. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em window\+\_\+width} & Width of the window in pixels. \\
+\hline
+{\em window\+\_\+height} & Height of the window in pixels. \\
+\hline
+{\em window\+\_\+name} & Title of the window. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::optional$<$\+Window$>$ A valid \doxylink{class_window}{Window} instance if creation was successful, std\+::nullopt otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_window_a23daa6a6a18f173f1f7083f2a73d58ad}\index{Window@{Window}!operator=@{operator=}}
+\index{operator=@{operator=}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \label{class_window_a23daa6a6a18f173f1f7083f2a73d58ad} 
+\mbox{\hyperlink{class_window}{Window}} \& Window\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_window}{Window}} \&}]{other}{}\end{DoxyParamCaption})}
+
+
+
+Move assignment operator, transfers ownership of the window. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & The \doxylink{class_window}{Window} instance to move from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Reference to this \doxylink{class_window}{Window} instance. 
+\end{DoxyReturn}
+\Hypertarget{class_window_a0a2093bd2ed34740c08a6a2fdfc059c9}\index{Window@{Window}!render@{render}}
+\index{render@{render}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{render()}{render()}}
+{\footnotesize\ttfamily \label{class_window_a0a2093bd2ed34740c08a6a2fdfc059c9} 
+void Window\+::render (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Renders the current frame. 
+
+Swaps the front and back buffers and polls for events. \Hypertarget{class_window_a944062b4351d78907bac4846df857a67}\index{Window@{Window}!renderFigure@{renderFigure}}
+\index{renderFigure@{renderFigure}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{renderFigure()}{renderFigure()}}
+{\footnotesize\ttfamily \label{class_window_a944062b4351d78907bac4846df857a67} 
+void Window\+::render\+Figure (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_figure}{Figure}} \&}]{figure}{}\end{DoxyParamCaption})}
+
+
+
+Renders a \doxylink{class_figure}{Figure} object in the window. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em figure} & The \doxylink{class_figure}{Figure} object to render. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_window_abd5c9f3c0f5aca5c4b6c0218a12d11d2}\index{Window@{Window}!setCurrentWindowActive@{setCurrentWindowActive}}
+\index{setCurrentWindowActive@{setCurrentWindowActive}!Window@{Window}}
+\doxysubsubsection{\texorpdfstring{setCurrentWindowActive()}{setCurrentWindowActive()}}
+{\footnotesize\ttfamily \label{class_window_abd5c9f3c0f5aca5c4b6c0218a12d11d2} 
+void Window\+::set\+Current\+Window\+Active (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Sets this window as the current Open\+GL context. 
+
+Makes this window\textquotesingle{}s Open\+GL context current for the calling thread. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/quilo/\+Documents/\+Git\+Hub/3\+PVG\+\_\+\+PMG\+\_\+24\+\_\+lopezba\+\_\+calatayudbri/include/window.\+hpp\end{DoxyCompactItemize}

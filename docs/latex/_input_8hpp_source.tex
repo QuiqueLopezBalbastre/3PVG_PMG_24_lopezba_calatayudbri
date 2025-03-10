@@ -1,0 +1,155 @@
+\doxysection{Input.\+hpp}
+\hypertarget{_input_8hpp_source}{}\label{_input_8hpp_source}\index{C:/Users/quilo/Documents/GitHub/3PVG\_PMG\_24\_lopezba\_calatayudbri/include/Input.hpp@{C:/Users/quilo/Documents/GitHub/3PVG\_PMG\_24\_lopezba\_calatayudbri/include/Input.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ \_\_INPUT\_\_}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ \_\_INPUT\_\_\ 1}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <GLFW/glfw3.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\#include\ "{}Window.hpp"{}\ \ \ \ //\ Incluimos\ la\ clase\ Window}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_input_a6eeadbfd22a5c646e34407e8f1689089}{Input}}\ \{}
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{class_input_ac74df526ba38aedbefa716292b6534d5}{Key}}}
+\DoxyCodeLine{00029\ \ \ \{}
+\DoxyCodeLine{00030\ \ \ \ \ KEY\_UNKNOWN\ =\ -\/1,}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{comment}{//\ letters}}
+\DoxyCodeLine{00032\ \ \ \ \ KEY\_A\ =\ 1,}
+\DoxyCodeLine{00033\ \ \ \ \ KEY\_B,}
+\DoxyCodeLine{00034\ \ \ \ \ KEY\_C,}
+\DoxyCodeLine{00035\ \ \ \ \ KEY\_D,}
+\DoxyCodeLine{00036\ \ \ \ \ KEY\_E,}
+\DoxyCodeLine{00037\ \ \ \ \ KEY\_F,}
+\DoxyCodeLine{00038\ \ \ \ \ KEY\_G,}
+\DoxyCodeLine{00039\ \ \ \ \ KEY\_H,}
+\DoxyCodeLine{00040\ \ \ \ \ KEY\_I,}
+\DoxyCodeLine{00041\ \ \ \ \ KEY\_J,}
+\DoxyCodeLine{00042\ \ \ \ \ KEY\_K,}
+\DoxyCodeLine{00043\ \ \ \ \ KEY\_L,}
+\DoxyCodeLine{00044\ \ \ \ \ KEY\_M,}
+\DoxyCodeLine{00045\ \ \ \ \ KEY\_N,}
+\DoxyCodeLine{00046\ \ \ \ \ KEY\_O,}
+\DoxyCodeLine{00047\ \ \ \ \ KEY\_P,}
+\DoxyCodeLine{00048\ \ \ \ \ KEY\_Q,}
+\DoxyCodeLine{00049\ \ \ \ \ KEY\_R,}
+\DoxyCodeLine{00050\ \ \ \ \ KEY\_S,}
+\DoxyCodeLine{00051\ \ \ \ \ KEY\_T,}
+\DoxyCodeLine{00052\ \ \ \ \ KEY\_U,}
+\DoxyCodeLine{00053\ \ \ \ \ KEY\_V,}
+\DoxyCodeLine{00054\ \ \ \ \ KEY\_W,}
+\DoxyCodeLine{00055\ \ \ \ \ KEY\_X,}
+\DoxyCodeLine{00056\ \ \ \ \ KEY\_Y,}
+\DoxyCodeLine{00057\ \ \ \ \ KEY\_Z,}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{comment}{//\ numbers}}
+\DoxyCodeLine{00059\ \ \ \ \ KEY\_0,}
+\DoxyCodeLine{00060\ \ \ \ \ KEY\_1,}
+\DoxyCodeLine{00061\ \ \ \ \ KEY\_2,}
+\DoxyCodeLine{00062\ \ \ \ \ KEY\_3,}
+\DoxyCodeLine{00063\ \ \ \ \ KEY\_4,}
+\DoxyCodeLine{00064\ \ \ \ \ KEY\_5,}
+\DoxyCodeLine{00065\ \ \ \ \ KEY\_6,}
+\DoxyCodeLine{00066\ \ \ \ \ KEY\_7,}
+\DoxyCodeLine{00067\ \ \ \ \ KEY\_8,}
+\DoxyCodeLine{00068\ \ \ \ \ KEY\_9,}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{comment}{//\ Fs}}
+\DoxyCodeLine{00070\ \ \ \ \ KEY\_F1,}
+\DoxyCodeLine{00071\ \ \ \ \ KEY\_F2,}
+\DoxyCodeLine{00072\ \ \ \ \ KEY\_F3,}
+\DoxyCodeLine{00073\ \ \ \ \ KEY\_F4,}
+\DoxyCodeLine{00074\ \ \ \ \ KEY\_F5,}
+\DoxyCodeLine{00075\ \ \ \ \ KEY\_F6,}
+\DoxyCodeLine{00076\ \ \ \ \ KEY\_F7,}
+\DoxyCodeLine{00077\ \ \ \ \ KEY\_F8,}
+\DoxyCodeLine{00078\ \ \ \ \ KEY\_F9,}
+\DoxyCodeLine{00079\ \ \ \ \ KEY\_F10,}
+\DoxyCodeLine{00080\ \ \ \ \ KEY\_F11,}
+\DoxyCodeLine{00081\ \ \ \ \ KEY\_F12,}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{comment}{//\ movement}}
+\DoxyCodeLine{00083\ \ \ \ \ KEY\_UP,}
+\DoxyCodeLine{00084\ \ \ \ \ KEY\_DOWN,}
+\DoxyCodeLine{00085\ \ \ \ \ KEY\_LEFT,}
+\DoxyCodeLine{00086\ \ \ \ \ KEY\_RIGHT,}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{comment}{//\ others}}
+\DoxyCodeLine{00088\ \ \ \ \ KEY\_SPACE,}
+\DoxyCodeLine{00089\ \ \ \ \ KEY\_TAB,}
+\DoxyCodeLine{00090\ \ \ \ \ KEY\_ENTER,}
+\DoxyCodeLine{00091\ \ \ \ \ KEY\_BACKSPACE,}
+\DoxyCodeLine{00092\ \ \ \ \ KEY\_ESCAPE,}
+\DoxyCodeLine{00093\ \ \ \};}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{class_input_a9c884c5940c151785997081feb06d804}{Mouse\_Key}}\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ MOUSE\_BUTTON\_LEFT,}
+\DoxyCodeLine{00101\ \ \ \ \ MOUSE\_BUTTON\_RIGHT,}
+\DoxyCodeLine{00102\ \ \ \ \ MOUSE\_BUTTON\_WHEEL,}
+\DoxyCodeLine{00103\ \ \ \};}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00109\ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{class_input_a88e740043d2e00400e7f8d8cc2ea051e}{Modifier\_Key}}\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ MOD\_KEY\_SHIFT,}
+\DoxyCodeLine{00111\ \ \ \ \ MOD\_KEY\_CONTROL,}
+\DoxyCodeLine{00112\ \ \ \ \ MOD\_KEY\_ALT,}
+\DoxyCodeLine{00113\ \ \ \};}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{class_input_a1362dbb1d4e03621426ca7c00fddd8b2}{Action}}\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ MOVE\_FORWARD,}
+\DoxyCodeLine{00121\ \ \ \ \ JUMP,}
+\DoxyCodeLine{00122\ \ \ \ \ SHOOT,}
+\DoxyCodeLine{00123\ \ \ \};}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00130\ \ \ \mbox{\hyperlink{class_input_a6eeadbfd22a5c646e34407e8f1689089}{Input}}(GLFWwindow*\ window);}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00138\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_input_adb6e3f99be1b86d301dabd67c7306c27}{isKeyPressed}}(\textcolor{keywordtype}{int}\ key);}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00146\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_input_abd244da8f667a86ae6e5c8ffb11324cc}{isKeyReleased}}(\textcolor{keywordtype}{int}\ key);}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00154\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_input_a2d213bda16ddfbd9d4cdde343b44bd92}{isMouseButtonPressed}}(\textcolor{keywordtype}{int}\ button);}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00162\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_input_abcc37ae162cb9310699b356d6e1157cd}{getMousePosition}}(\textcolor{keywordtype}{double}\&\ xPos,\ \textcolor{keywordtype}{double}\&\ yPos);}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00169\ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_input_aced19da7d5a9a10d7a8e7dce76c45227}{getMouseScroll}}();}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00177\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_input_a45a636ece9f6c97ccdcfa8bd1deb8a8a}{isModifierPressed}}(\textcolor{keywordtype}{int}\ modifier);}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00185\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_input_a368598b1e03116d7b8e3ea1c67ced16c}{isJoystickConnected}}(\textcolor{keywordtype}{int}\ joystickID);}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00194\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}*\ \mbox{\hyperlink{class_input_ac644e61a94c398c326250a749ed3cb6c}{getJoystickAxes}}(\textcolor{keywordtype}{int}\ joystickID,\ \textcolor{keywordtype}{int}\&\ count);}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00202\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_input_a00fe008206cc6d870685235bdf42e103}{mapAction}}(\mbox{\hyperlink{class_input_a1362dbb1d4e03621426ca7c00fddd8b2}{Action}}\ action,\ \textcolor{keywordtype}{int}\ key);}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00210\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_input_a2c7ee8dbe929d10b4d5784a4312c6bff}{isActionPressed}}(\mbox{\hyperlink{class_input_a1362dbb1d4e03621426ca7c00fddd8b2}{Action}}\ action);}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00220\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_input_a95ea2a0b42f5093a517bb6d7f64df6d7}{wasKeyJustPressed}}(\textcolor{keywordtype}{int}\ key);}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00227\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_input_aad8bb93de392379e94f512d2b852a2c5}{getCurrentlyPressedKey}}();}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00234\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_input_ac577fcd056d7ab395632b9d819ed0435}{initializeCallbacks}}();}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00240\ \ \ GLFWwindow*\ m\_window;}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00245\ \ \ std::unordered\_map<int,\ int>\ keyMapping;}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00250\ \ \ std::unordered\_map<int,\ int>\ mouseButtonMapping;}
+\DoxyCodeLine{00251\ }
+\DoxyCodeLine{00255\ \ \ std::unordered\_map<int,\ int>\ modifierMapping;}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00260\ \ \ std::unordered\_map<Action,\ int>\ actionMapping;}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00265\ \ \ \textcolor{keywordtype}{double}\ m\_scrollOffset;}
+\DoxyCodeLine{00266\ }
+\DoxyCodeLine{00272\ \ \ std::unordered\_map<int,\ bool>\ keyWasPressed;}
+\DoxyCodeLine{00273\ }
+\DoxyCodeLine{00277\ \ \ \textcolor{keywordtype}{void}\ setupKeyMapping();}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00282\ \ \ \textcolor{keywordtype}{void}\ setupActionMapping();}
+\DoxyCodeLine{00283\ }
+\DoxyCodeLine{00293\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ keyCallback(GLFWwindow*\ window,\ \textcolor{keywordtype}{int}\ key,\ \textcolor{keywordtype}{int}\ scancode,\ \textcolor{keywordtype}{int}\ action,\ \textcolor{keywordtype}{int}\ mods);}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00302\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ mouseScrollCallback(GLFWwindow*\ window,\ \textcolor{keywordtype}{double}\ xoffset,\ \textcolor{keywordtype}{double}\ yoffset);}
+\DoxyCodeLine{00303\ \};}
+\DoxyCodeLine{00304\ }
+\DoxyCodeLine{00305\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

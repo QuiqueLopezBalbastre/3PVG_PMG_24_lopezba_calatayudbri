@@ -1,0 +1,188 @@
+\doxysection{Figure Class Reference}
+\hypertarget{class_figure}{}\label{class_figure}\index{Figure@{Figure}}
+
+
+A class for representing and manipulating 2D geometric figures.  
+
+
+
+
+{\ttfamily \#include $<$figure.\+hpp$>$}
+
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_figure_1_1_vec2}{Vec2}}
+\begin{DoxyCompactList}\small\item\em A 2D vector structure used for positions and vertices. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_figure_a1d9e03a4db51fcdca64aa5137e72b076}{Figure}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_figure_a044b44130d11b21332f1005317049f23}{Figure}} (std\+::vector$<$ \mbox{\hyperlink{struct_figure_1_1_vec2}{Vec2}} $>$ \&custom\+Vertices)
+\begin{DoxyCompactList}\small\item\em Constructor with custom vertices. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_figure_af155c20558330034441de6a19d94f4a7}{\texorpdfstring{$\sim$}{\string~}\+Figure}} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_figure_ae90f02eb6cc560440347be270cfa9318}{set\+Position}} (\mbox{\hyperlink{struct_figure_1_1_vec2}{Vec2}} position)
+\begin{DoxyCompactList}\small\item\em Sets the base position of the figure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_figure_a99b8cc3ada408a67ec79ba48794f1784}{set\+Offset}} (\mbox{\hyperlink{struct_figure_1_1_vec2}{Vec2}} \mbox{\hyperlink{class_figure_acab44def19ec40d1dc903079e3b3c9e2}{offset}})
+\begin{DoxyCompactList}\small\item\em Sets the offset for the figure. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_figure_1_1_vec2}{Vec2}} \mbox{\hyperlink{class_figure_a47117d51a064a07b2b311460fb7d1d3c}{get\+Offset}} ()
+\begin{DoxyCompactList}\small\item\em Gets the current offset of the figure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_figure_ab38267fcb8f77d44f0dd2fc9ade76f67}{draw\+Figure}} ()
+\begin{DoxyCompactList}\small\item\em Renders the figure using Open\+GL. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_figure_a98c638d52289b5b1a195647634091ec0}{set\+Vertices}} (std\+::vector$<$ \mbox{\hyperlink{struct_figure_1_1_vec2}{Vec2}} $>$ \&custom\+Vertices)
+\begin{DoxyCompactList}\small\item\em Sets the vertices of the figure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_figure_a7274fecda31265134eb6b1d4cccfe068}{move\+Figure}} (\mbox{\hyperlink{class_input}{Input}} \&input)
+\begin{DoxyCompactList}\small\item\em Updates the figure\textquotesingle{}s position based on input. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_figure_aa1283fdd8dad97b52deed553fc5756f3}\label{class_figure_aa1283fdd8dad97b52deed553fc5756f3} 
+struct \mbox{\hyperlink{struct_figure_1_1_vec2}{Figure\+::\+Vec2}} {\bfseries position}
+\item 
+\Hypertarget{class_figure_acab44def19ec40d1dc903079e3b3c9e2}\label{class_figure_acab44def19ec40d1dc903079e3b3c9e2} 
+struct \mbox{\hyperlink{struct_figure_1_1_vec2}{Figure\+::\+Vec2}} {\bfseries offset}
+\begin{DoxyCompactList}\small\item\em Base position and movement offset of the figure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class for representing and manipulating 2D geometric figures. 
+
+The \doxylink{class_figure}{Figure} class provides functionality for creating, rendering, and manipulating simple 2D shapes within an Open\+GL context. It supports custom vertex definitions and interactive movement through the \doxylink{class_input}{Input} system. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_figure_a1d9e03a4db51fcdca64aa5137e72b076}\index{Figure@{Figure}!Figure@{Figure}}
+\index{Figure@{Figure}!Figure@{Figure}}
+\doxysubsubsection{\texorpdfstring{Figure()}{Figure()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_figure_a1d9e03a4db51fcdca64aa5137e72b076} 
+Figure\+::\+Figure (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Default constructor. 
+
+Creates a simple triangle figure with vertices at (-\/0.\+5, -\/0.\+5), (0.\+5, -\/0.\+5), and (0, 0.\+5). The offset is initialized to (0, 0). \Hypertarget{class_figure_a044b44130d11b21332f1005317049f23}\index{Figure@{Figure}!Figure@{Figure}}
+\index{Figure@{Figure}!Figure@{Figure}}
+\doxysubsubsection{\texorpdfstring{Figure()}{Figure()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_figure_a044b44130d11b21332f1005317049f23} 
+Figure\+::\+Figure (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{struct_figure_1_1_vec2}{Vec2}} $>$ \&}]{custom\+Vertices}{}\end{DoxyParamCaption})}
+
+
+
+Constructor with custom vertices. 
+
+Creates a figure with the specified set of vertices.
+
+
+\begin{DoxyParams}{Parameters}
+{\em custom\+Vertices} & A vector of \doxylink{struct_figure_1_1_vec2}{Vec2} points defining the figure\textquotesingle{}s shape. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_figure_af155c20558330034441de6a19d94f4a7}\index{Figure@{Figure}!````~Figure@{\texorpdfstring{$\sim$}{\string~}Figure}}
+\index{````~Figure@{\texorpdfstring{$\sim$}{\string~}Figure}!Figure@{Figure}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Figure()}{\string~Figure()}}
+{\footnotesize\ttfamily \label{class_figure_af155c20558330034441de6a19d94f4a7} 
+Figure\+::\texorpdfstring{$\sim$}{\string~}\+Figure (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Destructor. 
+
+Cleans up the vertices vector. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_figure_ab38267fcb8f77d44f0dd2fc9ade76f67}\index{Figure@{Figure}!drawFigure@{drawFigure}}
+\index{drawFigure@{drawFigure}!Figure@{Figure}}
+\doxysubsubsection{\texorpdfstring{drawFigure()}{drawFigure()}}
+{\footnotesize\ttfamily \label{class_figure_ab38267fcb8f77d44f0dd2fc9ade76f67} 
+void Figure\+::draw\+Figure (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Renders the figure using Open\+GL. 
+
+Draws the figure as a set of triangles using the current position and offset. \Hypertarget{class_figure_a47117d51a064a07b2b311460fb7d1d3c}\index{Figure@{Figure}!getOffset@{getOffset}}
+\index{getOffset@{getOffset}!Figure@{Figure}}
+\doxysubsubsection{\texorpdfstring{getOffset()}{getOffset()}}
+{\footnotesize\ttfamily \label{class_figure_a47117d51a064a07b2b311460fb7d1d3c} 
+\mbox{\hyperlink{struct_figure_1_1_vec2}{Vec2}} Figure\+::get\+Offset (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the current offset of the figure. 
+
+\begin{DoxyReturn}{Returns}
+The current offset vector. 
+\end{DoxyReturn}
+\Hypertarget{class_figure_a7274fecda31265134eb6b1d4cccfe068}\index{Figure@{Figure}!moveFigure@{moveFigure}}
+\index{moveFigure@{moveFigure}!Figure@{Figure}}
+\doxysubsubsection{\texorpdfstring{moveFigure()}{moveFigure()}}
+{\footnotesize\ttfamily \label{class_figure_a7274fecda31265134eb6b1d4cccfe068} 
+void Figure\+::move\+Figure (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_input}{Input}} \&}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Updates the figure\textquotesingle{}s position based on input. 
+
+Handles keyboard input to move the figure around.
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The \doxylink{class_input}{Input} object to check for keyboard state. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_figure_a99b8cc3ada408a67ec79ba48794f1784}\index{Figure@{Figure}!setOffset@{setOffset}}
+\index{setOffset@{setOffset}!Figure@{Figure}}
+\doxysubsubsection{\texorpdfstring{setOffset()}{setOffset()}}
+{\footnotesize\ttfamily \label{class_figure_a99b8cc3ada408a67ec79ba48794f1784} 
+void Figure\+::set\+Offset (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_figure_1_1_vec2}{Vec2}}}]{offset}{}\end{DoxyParamCaption})}
+
+
+
+Sets the offset for the figure. 
+
+The offset is added to the base position when rendering.
+
+
+\begin{DoxyParams}{Parameters}
+{\em offset} & The offset vector to apply. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_figure_ae90f02eb6cc560440347be270cfa9318}\index{Figure@{Figure}!setPosition@{setPosition}}
+\index{setPosition@{setPosition}!Figure@{Figure}}
+\doxysubsubsection{\texorpdfstring{setPosition()}{setPosition()}}
+{\footnotesize\ttfamily \label{class_figure_ae90f02eb6cc560440347be270cfa9318} 
+void Figure\+::set\+Position (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_figure_1_1_vec2}{Vec2}}}]{position}{}\end{DoxyParamCaption})}
+
+
+
+Sets the base position of the figure. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & The absolute position to set for the figure. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_figure_a98c638d52289b5b1a195647634091ec0}\index{Figure@{Figure}!setVertices@{setVertices}}
+\index{setVertices@{setVertices}!Figure@{Figure}}
+\doxysubsubsection{\texorpdfstring{setVertices()}{setVertices()}}
+{\footnotesize\ttfamily \label{class_figure_a98c638d52289b5b1a195647634091ec0} 
+void Figure\+::set\+Vertices (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{struct_figure_1_1_vec2}{Vec2}} $>$ \&}]{custom\+Vertices}{}\end{DoxyParamCaption})}
+
+
+
+Sets the vertices of the figure. 
+
+Replaces the current set of vertices with a new set.
+
+
+\begin{DoxyParams}{Parameters}
+{\em custom\+Vertices} & A vector of \doxylink{struct_figure_1_1_vec2}{Vec2} points defining the new shape. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/quilo/\+Documents/\+Git\+Hub/3\+PVG\+\_\+\+PMG\+\_\+24\+\_\+lopezba\+\_\+calatayudbri/include/figure.\+hpp\end{DoxyCompactItemize}

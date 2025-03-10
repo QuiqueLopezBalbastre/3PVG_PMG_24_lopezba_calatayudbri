@@ -1,0 +1,68 @@
+\doxysection{Job\+System.\+hpp}
+\hypertarget{_job_system_8hpp_source}{}\label{_job_system_8hpp_source}\index{C:/Users/quilo/Documents/GitHub/3PVG\_PMG\_24\_lopezba\_calatayudbri/include/JobSystem.hpp@{C:/Users/quilo/Documents/GitHub/3PVG\_PMG\_24\_lopezba\_calatayudbri/include/JobSystem.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ \_\_JOB\_SYSTEM\_\_}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ \_\_JOB\_SYSTEM\_\_\ 1}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <list>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <thread>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <mutex>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <condition\_variable>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <future>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_job_system_a343597f2c7e656b731bb45ce669e2187}{JobSystem}}\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{class_job_system_afce067bac843fa31613c804d10c06896}{JobType}}\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \mbox{\hyperlink{class_job_system_afce067bac843fa31613c804d10c06896a532a9bc3e6880ff35a7fa86a03052768}{Render}},\ \ \ \ }
+\DoxyCodeLine{00029\ \ \ \ \ \mbox{\hyperlink{class_job_system_afce067bac843fa31613c804d10c06896a5f7462ac3f725621813fd08f77b737a3}{Physics}},\ \ \ }
+\DoxyCodeLine{00030\ \ \ \ \ \mbox{\hyperlink{class_job_system_afce067bac843fa31613c804d10c06896ac3ad203eed0ef5617b2d2def10bd5f76}{AI}},\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00031\ \ \ \ \ \mbox{\hyperlink{class_job_system_afce067bac843fa31613c804d10c06896acc2c12ce3a4cb6b63d35236c397b2344}{Audio}},\ \ \ \ \ }
+\DoxyCodeLine{00032\ \ \ \ \ \mbox{\hyperlink{class_job_system_afce067bac843fa31613c804d10c06896a435015134b0e4a4d59d90d5d6bcb0be9}{General}}\ \ \ \ }
+\DoxyCodeLine{00033\ \ \ \};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{class_job_system_ad60f9043169290456ff2822133dd7a13}{JobPriority}}\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \mbox{\hyperlink{class_job_system_ad60f9043169290456ff2822133dd7a13a34d41bff3b157e217340b39dc5e5a8fb}{Low}},\ \ \ \ \ \ }
+\DoxyCodeLine{00041\ \ \ \ \ \mbox{\hyperlink{class_job_system_ad60f9043169290456ff2822133dd7a13a1a0bc35eeaf7ec5aab88a00708269474}{Medium}},\ \ \ }
+\DoxyCodeLine{00042\ \ \ \ \ \mbox{\hyperlink{class_job_system_ad60f9043169290456ff2822133dd7a13a05c18b267bea7586eef094280c56e849}{High}}\ \ \ \ \ \ }
+\DoxyCodeLine{00043\ \ \ \};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_job_system_1_1_prioritized_job}{PrioritizedJob}}\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \mbox{\hyperlink{class_job_system_ad60f9043169290456ff2822133dd7a13}{JobPriority}}\ \mbox{\hyperlink{struct_job_system_1_1_prioritized_job_a1f9a0a3e3f6f0bfbfcffaa73899da3f0}{priority}};\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00051\ \ \ \ \ std::function<void()>\ \mbox{\hyperlink{struct_job_system_1_1_prioritized_job_a597e439f064306daa7b8878fc6b222c1}{job}};\ \ \ \ \ }
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{struct_job_system_1_1_prioritized_job_a57e524fad7d2b0a8cebf860b02088406}{operator<}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_job_system_1_1_prioritized_job}{PrioritizedJob}}\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(\mbox{\hyperlink{struct_job_system_1_1_prioritized_job_a1f9a0a3e3f6f0bfbfcffaa73899da3f0}{priority}})\ <\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(other.\mbox{\hyperlink{struct_job_system_1_1_prioritized_job_a1f9a0a3e3f6f0bfbfcffaa73899da3f0}{priority}});}
+\DoxyCodeLine{00061\ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00069\ \ \ \mbox{\hyperlink{class_job_system_a343597f2c7e656b731bb45ce669e2187}{JobSystem}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ numThreads);}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00074\ \ \ \mbox{\hyperlink{class_job_system_a14c63dba93b8b104c71b68122e90851f}{\string~JobSystem}}();}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00081\ \ \ \mbox{\hyperlink{class_job_system_a524c69948338f319211adcf480568049}{JobSystem}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_job_system_a343597f2c7e656b731bb45ce669e2187}{JobSystem}}\&\ other);}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00088\ \ \ \mbox{\hyperlink{class_job_system_afdb84bf9578d18ce3573c1b8909e1dd5}{JobSystem}}(\mbox{\hyperlink{class_job_system_a343597f2c7e656b731bb45ce669e2187}{JobSystem}}\&\ other);}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_job_system_ae1351095653a59c0f828f4b86d5efa4e}{addJob}}(\mbox{\hyperlink{class_job_system_afce067bac843fa31613c804d10c06896}{JobType}}\ type,\ \mbox{\hyperlink{class_job_system_ad60f9043169290456ff2822133dd7a13}{JobPriority}}\ priority,\ std::function<\textcolor{keywordtype}{void}()>\ f);}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_job_system_a5678b2a0fab78023d712916ef35169b5}{runTasks}}();}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00109\ \ \ std::vector<std::thread>\ \mbox{\hyperlink{class_job_system_a575d09e031541fe0bc24c1155a03fa2f}{workers}};}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00115\ \ \ std::unordered\_map<JobType,\ std::list<PrioritizedJob>>\ tasks;}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00122\ \ \ std::mutex\ mutex;}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00127\ \ \ std::atomic<bool>\ quit;}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00134\ \ \ std::condition\_variable\ condition;}
+\DoxyCodeLine{00135\ \};}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ !\#define\ \_\_JOB\_SYSTEM\_\_\ 1}}
+
+\end{DoxyCode}

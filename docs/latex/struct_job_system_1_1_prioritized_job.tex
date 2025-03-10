@@ -1,0 +1,54 @@
+\doxysection{Job\+System\+::Prioritized\+Job Struct Reference}
+\hypertarget{struct_job_system_1_1_prioritized_job}{}\label{struct_job_system_1_1_prioritized_job}\index{JobSystem::PrioritizedJob@{JobSystem::PrioritizedJob}}
+
+
+A job with an associated priority level.  
+
+
+
+
+{\ttfamily \#include $<$Job\+System.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{struct_job_system_1_1_prioritized_job_a57e524fad7d2b0a8cebf860b02088406}{operator$<$}} (const \mbox{\hyperlink{struct_job_system_1_1_prioritized_job}{Prioritized\+Job}} \&other) const
+\begin{DoxyCompactList}\small\item\em Comparison operator for prioritizing jobs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_job_system_1_1_prioritized_job_a1f9a0a3e3f6f0bfbfcffaa73899da3f0}\label{struct_job_system_1_1_prioritized_job_a1f9a0a3e3f6f0bfbfcffaa73899da3f0} 
+\mbox{\hyperlink{class_job_system_ad60f9043169290456ff2822133dd7a13}{Job\+Priority}} {\bfseries priority}
+\begin{DoxyCompactList}\small\item\em The priority level of the job. \end{DoxyCompactList}\item 
+\Hypertarget{struct_job_system_1_1_prioritized_job_a597e439f064306daa7b8878fc6b222c1}\label{struct_job_system_1_1_prioritized_job_a597e439f064306daa7b8878fc6b222c1} 
+std\+::function$<$ void()$>$ {\bfseries job}
+\begin{DoxyCompactList}\small\item\em The job function to execute. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A job with an associated priority level. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_job_system_1_1_prioritized_job_a57e524fad7d2b0a8cebf860b02088406}\index{JobSystem::PrioritizedJob@{JobSystem::PrioritizedJob}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!JobSystem::PrioritizedJob@{JobSystem::PrioritizedJob}}
+\doxysubsubsection{\texorpdfstring{operator$<$()}{operator<()}}
+{\footnotesize\ttfamily \label{struct_job_system_1_1_prioritized_job_a57e524fad7d2b0a8cebf860b02088406} 
+bool Job\+System\+::\+Prioritized\+Job\+::operator$<$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_job_system_1_1_prioritized_job}{Prioritized\+Job}} \&}]{other}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Comparison operator for prioritizing jobs. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & The job to compare against. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if this job has lower priority than the other job. 
+\end{DoxyReturn}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/quilo/\+Documents/\+Git\+Hub/3\+PVG\+\_\+\+PMG\+\_\+24\+\_\+lopezba\+\_\+calatayudbri/include/Job\+System.\+hpp\end{DoxyCompactItemize}

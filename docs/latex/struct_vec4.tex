@@ -1,0 +1,100 @@
+\doxysection{Vec4 Struct Reference}
+\hypertarget{struct_vec4}{}\label{struct_vec4}\index{Vec4@{Vec4}}
+
+
+A 4D vector structure with basic vector operations.  
+
+
+
+
+{\ttfamily \#include $<$common.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_vec4}{Vec4}} \mbox{\hyperlink{struct_vec4_a623fe1ca32aa3c06813ef65d2aa4eff6}{operator+}} (const \mbox{\hyperlink{struct_vec4}{Vec4}} \&other) const
+\begin{DoxyCompactList}\small\item\em Vector addition operator. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_vec4}{Vec4}} \mbox{\hyperlink{struct_vec4_ac5e23a0b1fc979d473b2af9e800b5fd2}{operator\texorpdfstring{$\ast$}{*}}} (float scalar) const
+\begin{DoxyCompactList}\small\item\em Scalar multiplication operator. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_vec4}{Vec4}} \& \mbox{\hyperlink{struct_vec4_a5beb43ed29e05a7ec60eea18c4a73081}{operator+=}} (const \mbox{\hyperlink{struct_vec4}{Vec4}} \&other)
+\begin{DoxyCompactList}\small\item\em Compound addition operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_vec4_a3d9a7d18ac661965798b0c5bc32c56df}\label{struct_vec4_a3d9a7d18ac661965798b0c5bc32c56df} 
+float {\bfseries x}
+\item 
+\Hypertarget{struct_vec4_a21c69aa0ef01a4ea985966c5527bbd69}\label{struct_vec4_a21c69aa0ef01a4ea985966c5527bbd69} 
+float {\bfseries y}
+\item 
+\Hypertarget{struct_vec4_a60d0b599c7104dd0c6e2ae0cc4cd0310}\label{struct_vec4_a60d0b599c7104dd0c6e2ae0cc4cd0310} 
+float {\bfseries z}
+\item 
+\Hypertarget{struct_vec4_a37bee38ceffb78ccd3875ebf82bd84b2}\label{struct_vec4_a37bee38ceffb78ccd3875ebf82bd84b2} 
+float {\bfseries w}
+\begin{DoxyCompactList}\small\item\em X, Y, Z, and W components of the vector. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A 4D vector structure with basic vector operations. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_vec4_ac5e23a0b1fc979d473b2af9e800b5fd2}\index{Vec4@{Vec4}!operator\texorpdfstring{$\ast$}{*}@{operator\texorpdfstring{$\ast$}{*}}}
+\index{operator\texorpdfstring{$\ast$}{*}@{operator\texorpdfstring{$\ast$}{*}}!Vec4@{Vec4}}
+\doxysubsubsection{\texorpdfstring{operator\texorpdfstring{$\ast$}{*}()}{operator*()}}
+{\footnotesize\ttfamily \label{struct_vec4_ac5e23a0b1fc979d473b2af9e800b5fd2} 
+\mbox{\hyperlink{struct_vec4}{Vec4}} Vec4\+::operator\texorpdfstring{$\ast$}{*} (\begin{DoxyParamCaption}\item[{float}]{scalar}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Scalar multiplication operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em scalar} & The scalar value to multiply the vector by. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A new \doxylink{struct_vec4}{Vec4} containing the scaled vector. 
+\end{DoxyReturn}
+\Hypertarget{struct_vec4_a623fe1ca32aa3c06813ef65d2aa4eff6}\index{Vec4@{Vec4}!operator+@{operator+}}
+\index{operator+@{operator+}!Vec4@{Vec4}}
+\doxysubsubsection{\texorpdfstring{operator+()}{operator+()}}
+{\footnotesize\ttfamily \label{struct_vec4_a623fe1ca32aa3c06813ef65d2aa4eff6} 
+\mbox{\hyperlink{struct_vec4}{Vec4}} Vec4\+::operator+ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_vec4}{Vec4}} \&}]{other}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Vector addition operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & The vector to add to this one. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A new \doxylink{struct_vec4}{Vec4} containing the sum. 
+\end{DoxyReturn}
+\Hypertarget{struct_vec4_a5beb43ed29e05a7ec60eea18c4a73081}\index{Vec4@{Vec4}!operator+=@{operator+=}}
+\index{operator+=@{operator+=}!Vec4@{Vec4}}
+\doxysubsubsection{\texorpdfstring{operator+=()}{operator+=()}}
+{\footnotesize\ttfamily \label{struct_vec4_a5beb43ed29e05a7ec60eea18c4a73081} 
+\mbox{\hyperlink{struct_vec4}{Vec4}} \& Vec4\+::operator+= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_vec4}{Vec4}} \&}]{other}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Compound addition operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & The vector to add to this one. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Reference to this vector after addition. 
+\end{DoxyReturn}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/quilo/\+Documents/\+Git\+Hub/3\+PVG\+\_\+\+PMG\+\_\+24\+\_\+lopezba\+\_\+calatayudbri/include/common.\+hpp\end{DoxyCompactItemize}
